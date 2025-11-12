@@ -14,10 +14,10 @@ describe("Login", () => {
   });
 
   
-  //  it("Login_Client_Login_001_Verify that login with valid client email and valid client password", () => {
-  //    loginToPortal(Constants.testDesignEngineerEmail, Constants.password)
-  //    LidarViewerElements.getHomeText.should("have.text", "Home Page");
-  //  });
+   it("Login_Client_Login_001_Verify that login with valid client email and valid client password", () => {
+     loginToPortal(Constants.testDesignEngineerEmail, Constants.password)
+     LidarViewerElements.getHomeText.should("have.text", "Home Page");
+   });
  
   it("Admin_Login_002_Verify that login with valid admin email and valid admin password", () => {
     cy.wait(2000);
