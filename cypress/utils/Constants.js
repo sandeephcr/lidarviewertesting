@@ -61,4 +61,8 @@ export default {
   upperCaseEmail: "ADMIN@HCROBO.COM",
   MixedCaseEmail: "Admin@hCrobo.com",
   notExistingEmail: "1@1.1",
+  invalidFormatEmail: "atchyutha.padarthi@hcroboco",
+  nonExistingEmailForgot: "notExisting@hcrobo.com",
+  validForgotEmail: "atchyutha.padarthi@hcrobo.com",
+
 };

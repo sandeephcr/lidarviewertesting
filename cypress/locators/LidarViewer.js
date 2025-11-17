@@ -21,8 +21,9 @@ class LidarViewerElements {
     }
 
     get forgotPassword() {
-        return cy.get('#root > div > main > div.flex.page.width-100.align-center.justify-between > div > div.flex-c.gap-20.justify-between.padding-30.round-corner-6.shawdow-light > form > div.flex-r.no-wrap.align-start.justify-between > div:nth-child(2) > a')
+    return cy.contains('a.body3', 'Forgot Password');
     }
+
 
     get forgotPasswordText() {
         return cy.get('#ForgotPassword > div > div.flex-c.gap-10 > span')
@@ -83,5 +84,10 @@ class LidarViewerElements {
             '#canvas3DContainerSplit > div.d-flex.flex-r.flex-nowrap.align-start.floatingOptions.gap-0 > div > input[type=checkbox]'
         );
     }
+
+    get infoMessageContainer() {
+    return cy.get('div.info-message-container:not(.hide-message)');
+    }
+
 }
 export default new LidarViewerElements

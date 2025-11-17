@@ -98,3 +98,11 @@ export const forgotPassword = (email) => {
   LidarViewerElements.emailInForgotPasswordField.type(email);
   LidarViewerElements.sendRecoverLinkBtn.click();
 };
+
+export const forgotPasswordRequest = (email) => {
+  cy.request({
+    method: "POST",
+    url: `${Cypress.config("baseUrl")}/api/forgotPassword/${email}`,
+    failOnStatusCode: false,
+  });
+};
