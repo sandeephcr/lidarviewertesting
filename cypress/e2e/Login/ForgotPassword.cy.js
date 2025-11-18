@@ -9,7 +9,13 @@ describe("Forgot Password Tests", () => {
   });
 
   it("Forgot_Password_001_Verify user can request password reset link with valid email", () => {
-    cy.intercept("POST", "/api/forgotPassword/*").as("forgotReq");
+    cy.intercept("POST", "/api/forgotPassword/*", {
+  statusCode: 200,
+  body: {
+    msg: "Email sent successfully",
+    resetToken: "mock-token"
+      }
+    }).as("forgotReq");
 
     LidarViewerElements.emailInForgotPasswordField
       .type(Constants.validForgotEmail);
