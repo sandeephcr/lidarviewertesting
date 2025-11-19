@@ -89,5 +89,26 @@ class LidarViewerElements {
     return cy.get('div.info-message-container:not(.hide-message)');
     }
 
+    get NewPasswordField() {
+    return cy.get(
+        'div.ResetPassword div:nth-child(3) input'
+        );
+    }
+
+    get ConfirmPasswordField() {
+    return cy.get(
+        'div.ResetPassword div:nth-child(4) input'
+        );
+    }
+
+    get ResetPasswordBtn() {
+    return cy.get(".ResetPassword button");
+    }
+
+    get getForgotSendBtn() {
+    return cy.contains("button", "Send");
+    }
+
+
 }
 export default new LidarViewerElements
