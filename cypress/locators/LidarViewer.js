@@ -109,6 +109,5 @@ class LidarViewerElements {
     return cy.contains("button", "Send");
     }
 
-
 }
 export default new LidarViewerElements

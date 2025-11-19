@@ -64,5 +64,5 @@ export default {
   invalidFormatEmail: "atchyutha.padarthi@hcroboco",
   nonExistingEmailForgot: "notExisting@hcrobo.com",
   validForgotEmail: "atchyutha.padarthi@hcrobo.com",
-  resetPasswordEmail:"loadtester1@hcr.com",
+  resetPasswordEmail:"loadtester2@hcr.com",
 };
