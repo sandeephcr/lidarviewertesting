@@ -24,3 +24,39 @@
 // -- This will overwrite an existing command --
 // Cypress.Commands.overwrite('visit', (originalFn, url, options) => { ... })import 'cypress-plugin-snapshots/commands';
 // import 'cypress-plugin-snapshots/commands';
+
+Cypress.Commands.add("simulateOffline", () => {
+    cy.then(() => {
+        return Cypress.automation("remote:debugger:protocol", {
+            command: "Network.enable"
+        }).then(() => {
+            return Cypress.automation("remote:debugger:protocol", {
+                command: "Network.emulateNetworkConditions",
+                params: {
+                    offline: true,
+                    latency: 0,
+                    downloadThroughput: 0,
+                    uploadThroughput: 0
+                }
+            });
+        });
+    });
+});
+
+Cypress.Commands.add("simulateOnline", () => {
+    cy.then(() => {
+        return Cypress.automation("remote:debugger:protocol", {
+            command: "Network.enable"
+        }).then(() => {
+            return Cypress.automation("remote:debugger:protocol", {
+                command: "Network.emulateNetworkConditions",
+                params: {
+                    offline: false,
+                    latency: 0,
+                    downloadThroughput: -1,
+                    uploadThroughput: -1
+                }
+            });
+        });
+    });
+});

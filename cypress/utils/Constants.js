@@ -35,7 +35,7 @@ export default {
   testuserEmail: "abc@hcrobo.com",
   testuserPwd: "cnsw-123",
   produserEmail: "admin@hcrobo.com",
-  ProduserPwd: "cnsw-123",
+  ProduserPwd: "Cnsw-123",
   // ! Poles Input fields Test data
   Integers: "123",
   zero: "0",
