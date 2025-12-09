@@ -24,7 +24,6 @@ class LidarViewerElements {
     return cy.contains('a.body3', 'Forgot Password');
     }
 
-
     get forgotPasswordText() {
         return cy.get('#ForgotPassword > div > div.flex-c.gap-10 > span')
     }

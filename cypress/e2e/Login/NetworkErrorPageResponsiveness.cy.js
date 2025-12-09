@@ -6,19 +6,15 @@ describe("Login Module and Network Error & Responsive Tests", () => {
 beforeEach(() => {
     cy.visit(Cypress.config("baseUrl"));
   });
-  // -------------------------------
-  // NETWORK ERROR TESTS
-  // -------------------------------
+
 
     it("Network_Error_001_Handle_Network_Failure_On_Login", () => {
-        const email = Constants.produserEmail;
-        const password = Constants.ProduserPwd;
 
         cy.simulateOffline();
 
         cy.visit(`${Cypress.config("baseUrl")}/login`);
-        LidarViewerElements.getEmail.type(email);
-        LidarViewerElements.getPassword.type(password);
+        LidarViewerElements.getEmail.type(Constants.produserEmail);
+        LidarViewerElements.getPassword.type(Constants.ProduserPwd);
         LidarViewerElements.getLoginBtn.click();
 
         // Verify the toast text
@@ -32,34 +28,32 @@ beforeEach(() => {
 
 
     it("Network_Error_002_Handle_Network_Failure_On_Send_Recovery_Link", () => {
-        const email = Constants.resetPasswordEmail;
+       
+      
+      LidarViewerElements.forgotPassword.click();
 
-        LidarViewerElements.forgotPassword.click();
+      cy.simulateOffline();
 
-        cy.simulateOffline();
+      LidarViewerElements.emailInForgotPasswordField.type(Constants.resetPasswordEmail);
+      LidarViewerElements.sendRecoverLinkBtn.click();
 
-        LidarViewerElements.emailInForgotPasswordField.type(email);
-        LidarViewerElements.sendRecoverLinkBtn.click();
-
-         // Verify the toast text
-        cy.get(".info-message-container .width-100", { timeout: 5000 })
+       // Verify the toast text
+      cy.get(".info-message-container .width-100", { timeout: 5000 })
             .should("be.visible")
             .and("contain.text", "Network error. Please check your internet connection and try again.");
 
-        cy.simulateOnline()
+      cy.simulateOnline()
+
     });
 
+  it("Network_Error_003_Handle_Network_Failure_On_Reset_Password", () => {
 
-
-  it.only("Network_Error_003_Handle_Network_Failure_On_Reset_Password", () => {
-    
-        const email = Constants.resetPasswordEmail;
         const newPassword = "NewPass123!";
     
         // Step 1 – Trigger forgot password request manually via API
         cy.request({
           method: "POST",
-          url: `${Cypress.config("baseUrl")}/api/forgotPassword/${email}`,
+          url: `${Cypress.config("baseUrl")}/api/forgotPassword/${Constants.resetPasswordEmail}`,
           failOnStatusCode: false
         }).then((response) => {
     
@@ -75,7 +69,8 @@ beforeEach(() => {
     
           // Step 3 – Visit reset password page
           cy.visit(resetUrl);
-    
+          
+          // Simulate Offline Mode
           cy.simulateOffline();
 
           LidarViewerElements.NewPasswordField.type(newPassword);
@@ -83,18 +78,15 @@ beforeEach(() => {
           LidarViewerElements.ResetPasswordBtn.click();
             
           // Verify the toast text
-        cy.get(".info-message-container .width-100", { timeout: 5000 })
+          cy.get(".info-message-container .width-100", { timeout: 5000 })
             .should("be.visible")
             .and("contain.text", "Network error. Please check your internet connection and try again.");
-
-        cy.simulateOnline();
+          
+          // Simulate Online Mode
+          cy.simulateOnline();
           
         });
   });
-
-  // -------------------------------
-  // RESPONSIVENESS TESTS
-  // -------------------------------
 
   const viewports = [
     [1920, 1080],   // Desktop
@@ -123,23 +115,40 @@ beforeEach(() => {
 
 
   it("Page_Responsiveness_002_Forgot_Password_Page_Is_Fully_Responsive", () => {
+    
+    LidarViewerElements.forgotPassword.click();
     viewports.forEach(([width, height]) => {
       cy.viewport(width, height);
-      cy.visit(`${Cypress.config("baseUrl")}/forgotpassword`);
 
       checkNoHorizontalScroll();
-      cy.contains("Forgot Password").should("be.visible");
+      cy.get('span.heading2')
+        .should('be.visible')
+        .and('contain.text', 'Forgot password');
+
       cy.get("input").should("be.visible");
     });
   });
 
 
   it("Page_Responsiveness_003_Reset_Password_Page_Is_Fully_Responsive", () => {
-    const dummyToken = "testtoken123";
+        // Navigate to reset password page
+        cy.request({
+          method: "POST",
+          url: `${Cypress.config("baseUrl")}/api/forgotPassword/${Constants.resetPasswordEmail}`,
+          failOnStatusCode: false
+        }).then((response) => {
+    
+          expect(response.status).to.eq(200);
+          expect(response.body.msg).to.eq("Email sent successfully");
+          expect(response.body.resetToken).to.exist;
+    
+          const token = response.body.resetToken;
+
+          cy.visit(`${Cypress.config("baseUrl")}/resetpassword/${token}`);
+        });
 
     viewports.forEach(([width, height]) => {
           cy.viewport(width, height);
-          cy.visit(`${Cypress.config("baseUrl")}/resetpassword/${dummyToken}`);
 
           checkNoHorizontalScroll();
           cy.contains("Reset Password").should("be.visible");
