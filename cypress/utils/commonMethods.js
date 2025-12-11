@@ -106,3 +106,19 @@ export const forgotPasswordRequest = (email) => {
     failOnStatusCode: false,
   });
 };
+
+export const openDynamicFolderAndRun = (folderNames, runName) => {
+  cy.wait(2000);
+  folderNames.forEach((folderName) => {
+    cy.get(".folderName").contains(folderName).should("be.visible").dblclick();
+    cy.wait(2000);
+  });
+
+  // Open the specific run inside the last folder
+  cy.get('[data-testid="run-card-container"]') // Locate the run container
+    .children()
+    .contains(runName) // Match the run name dynamically
+    .should("be.visible") // Ensure the run is visible
+    .click(); // Open the run
+
+};
