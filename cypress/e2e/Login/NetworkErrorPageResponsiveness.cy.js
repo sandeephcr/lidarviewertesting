@@ -11,8 +11,7 @@ beforeEach(() => {
     it("Network_Error_001_Handle_Network_Failure_On_Login", () => {
 
         cy.simulateOffline();
-
-        cy.visit(`${Cypress.config("baseUrl")}/login`);
+        
         LidarViewerElements.getEmail.type(Constants.produserEmail);
         LidarViewerElements.getPassword.type(Constants.ProduserPwd);
         LidarViewerElements.getLoginBtn.click();
