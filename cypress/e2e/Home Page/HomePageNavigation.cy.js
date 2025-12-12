@@ -50,6 +50,27 @@ beforeEach(() => {
 
     });
 
+    it('Home_001_Verify that the search functionality correctly displays runs based on the entered Pole ID that is available in the server.', () => {
+
+    cy.get('.HomeDropDown').first().select('PoleId')
+    cy.get('[data-testid="searchbar-container"]').type('Automation pole') 
+    cy.get('.primary-btn').eq(1).click()
+    cy.wait(2000)
+    cy.get('[data-testid="run-card-container"]').contains('Orbital-21-16482-2')
+});
+
+
+ it('Home_002_Verify that the system displays a clear no data available  message when searching for a pole id that is not available in the server.', () => {
+
+    cy.get('.HomeDropDown').first().select('PoleId')
+    cy.get('[data-testid="searchbar-container"]').type('No Pole') 
+    cy.get('.primary-btn').eq(1).click()
+    cy.wait(2000)
+    HomeLocators.NoRunsAvailableText.contains('No Runs available')
+
+ });
+
+
     it('Home_004_Verify that searching for a Pole ID with leading or trailing spaces returns the correct run name.', () => {
 
         cy.get('.HomeDropDown').first().select('PoleId')
