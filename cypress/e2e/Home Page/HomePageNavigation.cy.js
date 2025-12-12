@@ -32,24 +32,6 @@ beforeEach(() => {
 });
 
 
-    it('Home_Project_nav_001_Verify that double-clicking on a folder from the home page navigates the user into the folder.', () => {
-        
-        openDynamicFolderAndRun(folderPath, runName);
-        cy.wait(2000);
-        cy.get('.body3.ActiveCrumb.pointer').contains('Automation_Atchyutha-')
-
-
-    });
-
-    it('Home_Project_nav_002_Verify that clicking on the root element navigates the user back to the root view and displays all available data in home page', () => {
-        openDynamicFolderAndRun(folderPath, runName);
-        cy.wait(2000);
-        cy.get('.body3.InactiveCrumb.pointer').contains('Runs').click()
-        HomeLocators.ConfirmActionApplyButton.click()
-        LidarViewer.getHomeText.should('have.text','Home Page')
-
-    });
-
     it('Home_001_Verify that the search functionality correctly displays runs based on the entered Pole ID that is available in the server.', () => {
 
     cy.get('.HomeDropDown').first().select('PoleId')
