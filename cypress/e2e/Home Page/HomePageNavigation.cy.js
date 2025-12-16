@@ -222,25 +222,30 @@ it('Home_Project_nav_006_Verifying that the opening of multiple runs', () => {
     })
 });
 
-  it("Home_Project_nav_008_Verify that the deselect of runs ", () => {
-    cy.get(".FileManager.flex-r.justify-between.m-30")
-      .children()
-      .contains("Select")
-      .click();
-    cy.get('[data-testid="run-card-container"]')
-      .children()
-      .contains("AutomationRun8")
-      .click();
+  it.only("Home_Project_nav_008_Verify that the deselect of runs ", () => {
+    
+    const folderPath = ["Shared Space"]
+    folderPath.forEach((folderPaths) => {
+        cy.get(".folderName").contains(folderPaths).should("be.visible").dblclick()
+        cy.wait(2000)
+    });
+    cy.contains('div[role="checkbox"]', 'Select').should('be.visible').click()
+    cy.get('[data-testid="run-card-container"]').filter(':visible')
+    .then($runs => {
+        cy.wrap($runs.eq(0)).click()
+        cy.wrap($runs.eq(1)).click()
+    })
     cy.get(".FileManager.flex-r.justify-between.m-30").contains(
-      "Selected Runs 1"
+      "Selected Runs 2"
     );
-    cy.get('[data-testid="run-card-container"]')
-      .children()
-      .contains("AutomationRun8")
-      .click();
+    cy.get('[data-testid="run-card-container"]').filter(':visible')
+    .then($runs => {
+        cy.wrap($runs.eq(0)).click()
+        cy.wrap($runs.eq(1)).click()
+    })
     cy.get(".FileManager.flex-r.justify-between.m-30").should(
       "not.contain",
-      "Selected Runs 1"
+      "Selected Runs 2"
     );
   });
 });
