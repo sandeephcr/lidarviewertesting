@@ -173,55 +173,54 @@ describe("Home Page Navigation Tests", () => {
     cy.get(".body3.ActiveCrumb.pointer").contains("Automation_Atchyutha-");
   });
 
-  it("Home_Project_nav_002_Verify that clicking on the root element navigates the user back to the root view and displays all available data in home page", () => {
-    openDynamicFolderAndRun(folderPath, runName);
-    cy.wait(2000);
-    cy.get(".body3.InactiveCrumb.pointer").contains("Runs").click();
-    HomeLocators.ConfirmActionApplyButton.click();
-    LidarViewer.getHomeText.should("have.text", "Home Page");
-  });
+ it('Home_Project_nav_002_Verify that clicking on the root element navigates the user back to the root view and displays all available data in home page', () => {
 
-  it("Home_Project_nav_003_Verify that clicking on a folder from search results opens the folder correctly.", () => {
+    folderPath.forEach((folderPaths) => {
+        cy.get(".folderName").contains(folderPaths).should("be.visible").dblclick();
+        cy.wait(2000);
+    });
+
+    cy.get('.body3.InactiveCrumb.pointer').contains('Root').click()
+    LidarViewer.getHomeText.should('have.text','Home Page')
+
+});
+
+it('Home_Project_nav_003_Verify that clicking on a folder from search results opens the folder correctly.', () => {
+   
     const folderPath = ["Shared Space"];
-    openDynamicFolderAndRun(folderPath);
-    cy.get(".FileManager.flex-r.justify-between.m-30")
-      .children()
-      .eq(1)
-      .children()
-      .eq(2)
-      .type("Test");
+    folderPath.forEach((folderPaths) => {
+        cy.get(".folderName").contains(folderPaths).should("be.visible").dblclick();
+        cy.wait(2000);
+    });
+    cy.get('input[placeholder="Type for search"]').should('be.visible').clear().type('Test');
     cy.wait(2000);
+    cy.get('div.primary-btn[alt="search"]').should('be.visible').click();
+    cy.wait(2000);
+    cy.get('.folderName').contains('Test').dblclick()
+});
 
-    cy.get(".FileManager.flex-r.justify-between.m-30")
-      .children()
-      .eq(1)
-      .children()
-      .eq(4)
-      .click();
-    cy.wait(2000);
-    cy.get(".folderName").contains("Test").dblclick();
-  });
+it('Home_Project_nav_006_Verifying that the opening of multiple runs', () => {
+    
+    let firstRunName
+    const folderPath = ["Shared Space"]
+    folderPath.forEach((folderPaths) => {
+        cy.get(".folderName").contains(folderPaths).should("be.visible").dblclick()
+        cy.wait(2000)
+    });
+    cy.wait(2000)
+    cy.contains('div[role="checkbox"]', 'Select').should('be.visible').click()
 
-  it("Home_Project_nav_006_Verifying that the opening of multiple runs", () => {
-    cy.wait(2000);
-    cy.get(".FileManager.flex-r.justify-between.m-30")
-      .children()
-      .contains("Select")
-      .click();
-    cy.get('[data-testid="run-card-container"]')
-      .children()
-      .contains("AutomationRun8")
-      .click();
-    cy.wait(2000);
-    cy.get('[data-testid="run-card-container"]')
-      .contains("AutomationRun7")
-      .click();
-    cy.get(".FileManager.flex-r.justify-between.m-30")
-      .children()
-      .contains("Open")
-      .click();
-    cy.get(".body3.ActiveCrumb.pointer").should("have.text", "AutomationRun8");
-  });
+    cy.get('[data-testid="run-card-container"]').filter(':visible')
+    .then($runs => {
+        firstRunName = $runs.eq(0).find('[data-testid="run-name"]').text().trim()
+        cy.wrap($runs.eq(0)).click()
+        cy.wrap($runs.eq(1)).click()
+    })
+    cy.contains('div.primary-btn', 'Open').should('be.visible').click()
+    cy.get('.body3.ActiveCrumb.pointer').should('be.visible').and(($el) => {
+    expect($el.text().trim()).to.eq(firstRunName)
+    })
+});
 
   it("Home_Project_nav_008_Verify that the deselect of runs ", () => {
     cy.get(".FileManager.flex-r.justify-between.m-30")
