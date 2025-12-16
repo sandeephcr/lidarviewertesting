@@ -199,6 +199,30 @@ it('Home_Project_nav_003_Verify that clicking on a folder from search results op
     cy.get('.folderName').contains('Test').dblclick()
 });
 
+it('Home_Project_nav_004_Verify that the select checkbox is displayed when more than one run is available.', () => {
+    
+    const folderPath = ["Shared Space"]
+    folderPath.forEach((folderPaths) => {
+        cy.get(".folderName").contains(folderPaths).should("be.visible").dblclick()
+        cy.wait(2000)
+    });
+    cy.get('[data-testid="run-card-container"]').filter(':visible').should('have.length.gte', 2)
+
+    cy.contains('div[role="checkbox"]', 'Select').should('be.visible')
+});
+
+it('Home_Project_nav_005_Verify that the open button is displayed when at least one run is available.', () => {
+    
+    const folderPath = ["Shared Space"]
+    folderPath.forEach((folderPaths) => {
+        cy.get(".folderName").contains(folderPaths).should("be.visible").dblclick()
+        cy.wait(2000)
+    });
+    cy.get('[data-testid="run-card-container"]').filter(':visible').should('have.length.gte', 1)
+
+    cy.contains('div.primary-btn', 'Open').should('be.visible')
+});
+
 it('Home_Project_nav_006_Verifying that the opening of multiple runs', () => {
     
     let firstRunName
@@ -222,7 +246,7 @@ it('Home_Project_nav_006_Verifying that the opening of multiple runs', () => {
     })
 });
 
-  it.only("Home_Project_nav_008_Verify that the deselect of runs ", () => {
+  it("Home_Project_nav_008_Verify that the deselect of runs ", () => {
     
     const folderPath = ["Shared Space"]
     folderPath.forEach((folderPaths) => {
