@@ -90,7 +90,7 @@ describe("Home Page Navigation Tests", () => {
     })
   });
 
-  it.only('Home_Project_nav_007_Verify that an alert is displayed when the user attempts to open more than 10 runs ', () => {
+  it('Home_Project_nav_007_Verify that an alert is displayed when the user attempts to open more than 10 runs ', () => {
     
     const folderPath = ["Atc"]
     folderPath.forEach((folderPaths) => {
@@ -109,7 +109,9 @@ describe("Home Page Navigation Tests", () => {
 
     cy.contains('div.primary-btn', 'Open').should('be.visible').click()
     
-    cy.get('.info-message-container').should('be.visible').and('contain.text', 'maximum')
+    cy.on('window:alert', (alertText) => {
+      expect(alertText).to.eq('Maximum number of selected runs cannot be more than 10')
+    })
 
   });
 
