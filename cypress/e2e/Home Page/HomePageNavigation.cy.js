@@ -1,15 +1,8 @@
 import {
-  generateRandomCoordinates,
   Adminlogin,
-  PolePlacement,
-  SavePoleData,
-  ZoomIN,
   openDynamicFolderAndRun,
 } from "../../utils/commonMethods.js";
 import LidarViewer from "../../locators/LidarViewer.js";
-import HomeLocators from "../../locators/HomeLocators.js";
-import PoleLocators from "../../locators/PoleLocators.js";
-import UserManagementLocators from "../../locators/UserManagementLocators.js";
 import Constants from "../../utils/Constants.js";
 
 describe("Home Page Navigation Tests", () => {
@@ -60,7 +53,6 @@ describe("Home Page Navigation Tests", () => {
         cy.wait(2000)
     });
     cy.get('[data-testid="run-card-container"]').filter(':visible').should('have.length.gte', 2)
-
     cy.contains('div[role="checkbox"]', 'Select').should('be.visible')
   });
 
@@ -72,7 +64,6 @@ describe("Home Page Navigation Tests", () => {
         cy.wait(2000)
     });
     cy.get('[data-testid="run-card-container"]').filter(':visible').should('have.length.gte', 1)
-
     cy.contains('div.primary-btn', 'Open').should('be.visible')
   });
 
@@ -97,6 +88,29 @@ describe("Home Page Navigation Tests", () => {
     cy.get('.body3.ActiveCrumb.pointer').should('be.visible').and(($el) => {
     expect($el.text().trim()).to.eq(firstRunName)
     })
+  });
+
+  it.only('Home_Project_nav_007_Verify that an alert is displayed when the user attempts to open more than 10 runs ', () => {
+    
+    const folderPath = ["Atc"]
+    folderPath.forEach((folderPaths) => {
+        cy.get(".folderName").contains(folderPaths).should("be.visible").dblclick()
+        cy.wait(2000)
+    });
+    cy.wait(2000)
+    cy.contains('div[role="checkbox"]', 'Select').should('be.visible').click()
+
+    cy.get('[data-testid="run-card-container"]').filter(':visible').should('have.length.gte', 11)
+      .then($runs => {
+        Cypress._.take($runs.toArray(), 11).forEach(run => {
+        cy.wrap(run).click()
+      })
+    })
+
+    cy.contains('div.primary-btn', 'Open').should('be.visible').click()
+    
+    cy.get('.info-message-container').should('be.visible').and('contain.text', 'maximum')
+
   });
 
   it("Home_Project_nav_008_Verify that the deselect of runs ", () => {
