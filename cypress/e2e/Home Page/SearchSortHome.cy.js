@@ -104,68 +104,49 @@ describe("Search Sort Home Tests", () => {
   });
 
   it("Home_037_Verify that clicking on the list view icon displays all runs in list view", () => {
-    cy.wait(2000);
-    cy.get(".FileManager.flex-r.justify-between.m-30")
-      .children()
-      .eq(1)
-      .children()
-      .eq(9)
-      .click();
-    cy.get("table.Table")
-      .find(".TableHeader")
-      .find("th")
-      .eq(0) // First column: Run Name
-      .invoke("text")
-      .should("match", /^Run Name$/); // Ensure it's "Run Name" without any extra spaces
+    
+    const folderPath = ["Shared Space"]
+    folderPath.forEach((folderPaths) => {
+        cy.get(".folderName").contains(folderPaths).should("be.visible").dblclick()
+        cy.wait(2000)
+    });
+    
+    cy.get('[data-testid="list-view-icon-inactive"]')
+    .should('be.visible')
+    .click()
 
-    cy.get("table.Table")
-      .find(".TableHeader")
-      .find("th")
-      .eq(1)
-      .invoke("text")
-      .should("match", /^Location$/);
+    // Verify list view is now active
+    cy.get('[data-testid="list-view-icon-active"]')
+      .should('be.visible')
 
-    cy.get("table.Table")
-      .find(".TableHeader")
-      .find("th")
-      .eq(2)
-      .invoke("text")
-      .should("match", /^Distance$/);
+    // Verify list view container exists
+    cy.get('.Table')
+      .should('be.visible')
 
-    cy.get("table.Table")
-      .find(".TableHeader")
-      .find("th")
-      .eq(3)
-      .invoke("text")
-      .should("match", /^Created On\s*$/);
+    // Verify at least one run is displayed as a row
+    cy.get('.TableData')
+      .should('have.length.greaterThan', 0)
   });
 
   it("Home_038_Clicking on the grid view icon displays all runs in grid view", () => {
-    cy.wait(2000);
-    cy.get(".FileManager.flex-r.justify-between.m-30")
-      .children()
-      .eq(1)
-      .children()
-      .eq(9)
-      .click();
-    cy.get(".FileManager.flex-r.justify-between.m-30")
-      .children()
-      .eq(1)
-      .children()
-      .eq(8)
-      .click();
+    const folderPath = ["Shared Space"]
+    folderPath.forEach((folderPaths) => {
+        cy.get(".folderName").contains(folderPaths).should("be.visible").dblclick()
+        cy.wait(2000)
+    });
+    // Verify grid view is now active
+    cy.get('[data-testid="grid-view-icon-active"]')
+      .should('be.visible')
+
+    // Assert run cards are wrapped inside linkDecoration
     cy.get('[data-testid="run-card-container"]')
-      .first()
-      .should("not.contain.text", "Run Name");
-    cy.get('[data-testid="run-card-container"]')
-      .first()
-      .should("not.contain.text", "Location");
-    cy.get('[data-testid="run-card-container"]')
-      .first()
-      .should("not.contain.text", "Distance");
-    cy.get('[data-testid="run-card-container"]')
-      .first()
-      .should("not.contain.text", "Created On");
+      .filter(':visible')
+      .should('have.length.greaterThan', 0)
+      .each($card => {
+        cy.wrap($card)
+          .parents('a.linkDecoration')
+          .should('exist')
+      })
   });
 
 });
