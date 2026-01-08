@@ -21,7 +21,7 @@ describe("Search Sort Home Tests", () => {
     Adminlogin(Constants.AdminEmail, Constants.AdminPassword);
   });
 
-  it("Automation pole", () => {
+  it("Automation pole", () => { 
     openDynamicFolderAndRun(folderPath, runName);
     cy.wait(4000);
     PoleLocators.PoleIcon.click();
@@ -64,7 +64,7 @@ describe("Search Sort Home Tests", () => {
 
   it("Home_007_Verify that the search feature correctly displays associated run data for valid latitude and longitude values.", () => {
     cy.get(".HomeDropDown").first().select("LatLng");
-    cy.get('[data-testid="searchbar-container"]').type("34.164884,-84.178951"); // run name - feb2025run
+    cy.get('[data-testid="searchbar-container"]').type("34.164884,-84.178951");
     cy.get(".primary-btn").eq(1).click();
     cy.wait(2000);
     cy.get('[data-testid="run-card-container"]').contains("feb2025run");
