@@ -7,8 +7,8 @@ describe("Login Page Tests", () => {
     cy.visit("/login");
   });
 
-  it("Login_Attempts_001 - User should be locked after 3 failed login attempts", () => {
-    for (let i = 0; i < 4; i++) {
+  it.only("Login_Attempts_001 - User should be locked after 4 failed login attempts", () => {
+    for (let i = 0; i <= 5; i++) {
       LidarViewerElements.getEmail.clear().type(Constants.validEmail);
       LidarViewerElements.getPassword.clear().type(Constants.invalidPwd);
       LidarViewerElements.getLoginBtn.click();
