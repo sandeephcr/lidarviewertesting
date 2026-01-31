@@ -1,5 +1,8 @@
 import LidarViewerElements from "../../locators/LidarViewer.js";
 import Constants from "../../utils/Constants.js";
+import {
+  loginToPortal,
+} from "../../utils/commonMethods.js";
 
 describe("Login Page Tests", () => {
 
@@ -7,14 +10,13 @@ describe("Login Page Tests", () => {
     cy.visit("/login");
   });
 
-  it.only("Login_Attempts_001 - User should be locked after 4 failed login attempts", () => {
+  it("Login_Attempts_001 - User should be locked after 4 failed login attempts", () => {
     for (let i = 0; i <= 5; i++) {
       LidarViewerElements.getEmail.clear().type(Constants.validEmail);
       LidarViewerElements.getPassword.clear().type(Constants.invalidPwd);
       LidarViewerElements.getLoginBtn.click();
       cy.wait(500);
     }
-
     cy.contains("Too many login attempts")
       .should("be.visible");
   });
@@ -49,6 +51,19 @@ describe("Login Page Tests", () => {
     cy.contains("Your account has been locked due to multiple failed recovery attempts")
       .should("be.visible");
   });
+
+  it("Block_001 - Verify user can successfully login after admin", () =>{
+
+    LidarViewerElements.getEmail.type(Constants.AdminEmail);
+    LidarViewerElements.getPassword.clear().type(Constants.AdminPassword);
+    LidarViewerElements.getLoginBtn.click();
+
+  });
+
+  it.only("OTP_001_Verify that login with valid OTP", () => {
+     loginToPortal(Constants.testDesignEngineerEmail, Constants.password)
+     LidarViewerElements.getHomeText.should("have.text", "Home Page");
+   });
 
 
 });
