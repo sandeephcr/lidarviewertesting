@@ -1,0 +1,109 @@
+{
+  "stats": {
+    "suites": 1,
+    "tests": 1,
+    "passes": 0,
+    "pending": 0,
+    "failures": 1,
+    "start": "2025-10-24T09:30:22.104Z",
+    "end": "2025-10-24T09:31:14.449Z",
+    "duration": 52345,
+    "testsRegistered": 1,
+    "passPercent": 0,
+    "pendingPercent": 0,
+    "other": 0,
+    "hasOther": false,
+    "skipped": 0,
+    "hasSkipped": false
+  },
+  "results": [
+    {
+      "uuid": "398b451e-62af-4491-a9d1-8fd753665764",
+      "title": "",
+      "fullFile": "cypress\\e2e\\Login\\Login.cy.js",
+      "file": "cypress\\e2e\\Login\\Login.cy.js",
+      "beforeHooks": [],
+      "afterHooks": [],
+      "tests": [],
+      "suites": [
+        {
+          "uuid": "a340fb20-3242-4ae1-ae02-ada9dc114def",
+          "title": "Login",
+          "fullFile": "",
+          "file": "",
+          "beforeHooks": [],
+          "afterHooks": [],
+          "tests": [
+            {
+              "title": "Login_Client_Login_001_Verify that login with valid client email and valid client password",
+              "fullTitle": "Login Login_Client_Login_001_Verify that login with valid client email and valid client password",
+              "timedOut": null,
+              "duration": 5384,
+              "state": "failed",
+              "speed": null,
+              "pass": false,
+              "fail": true,
+              "pending": false,
+              "context": null,
+              "code": "(0, _commonMethods.loginToPortal)(_Constants.default.testDesignEngineerEmail, _Constants.default.password);\n_LidarViewer.default.getHomeText.should(\"have.text\", \"Home Page\");",
+              "err": {
+                "message": "AssertionError: expected 401 to equal 200",
+                "estack": "AssertionError: expected 401 to equal 200\n    at Context.eval (webpack://lidarviewerautomation/./cypress/utils/commonMethods.js:19:35)\n    at getRet (https://testing.lidartechsolutions.com/__cypress/runner/cypress_runner.js:121066:20)\n    at tryCatcher (https://testing.lidartechsolutions.com/__cypress/runner/cypress_runner.js:1777:23)\n    at Promise.attempt.Promise.try (https://testing.lidartechsolutions.com/__cypress/runner/cypress_runner.js:4285:29)\n    at Context.thenFn (https://testing.lidartechsolutions.com/__cypress/runner/cypress_runner.js:121077:66)\n    at Context.then (https://testing.lidartechsolutions.com/__cypress/runner/cypress_runner.js:121328:21)",
+                "diff": "- 401\n+ 200\n"
+              },
+              "uuid": "8e179d3c-fe4d-4b17-bef5-9fba35179f2e",
+              "parentUUID": "a340fb20-3242-4ae1-ae02-ada9dc114def",
+              "isHook": false,
+              "skipped": false
+            }
+          ],
+          "suites": [],
+          "passes": [],
+          "failures": [
+            "8e179d3c-fe4d-4b17-bef5-9fba35179f2e"
+          ],
+          "pending": [],
+          "skipped": [],
+          "duration": 5384,
+          "root": false,
+          "rootEmpty": false,
+          "_timeout": 2000
+        }
+      ],
+      "passes": [],
+      "failures": [],
+      "pending": [],
+      "skipped": [],
+      "duration": 0,
+      "root": true,
+      "rootEmpty": true,
+      "_timeout": 2000
+    }
+  ],
+  "meta": {
+    "mocha": {
+      "version": "7.2.0"
+    },
+    "mochawesome": {
+      "options": {
+        "quiet": false,
+        "reportFilename": "mochawesome",
+        "saveHtml": true,
+        "saveJson": true,
+        "consoleReporter": "spec",
+        "useInlineDiffs": false,
+        "code": true
+      },
+      "version": "7.1.3"
+    },
+    "marge": {
+      "options": {
+        "reportDir": "cypress/results",
+        "overwrite": false,
+        "html": true,
+        "json": true
+      },
+      "version": "6.2.0"
+    }
+  }
+}
