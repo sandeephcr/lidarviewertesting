@@ -60,7 +60,7 @@ describe("Login Page Tests", () => {
 
   });
 
-  it.only("OTP_001_Verify that login with valid OTP", () => {
+  it("OTP_001_Verify that login with valid OTP", () => {
      loginToPortal(Constants.testDesignEngineerEmail, Constants.password)
      LidarViewerElements.getHomeText.should("have.text", "Home Page");
    });
