@@ -79,28 +79,28 @@ describe("Login", () => {
 
   it("Login_010_Verify that the functionality of case-insensitive in email field", () => {
     cy.wait(2000);
-    login1(Constants.Case_Insensitive_Email, Constants.password);
+    login1(Constants.Case_Insensitive_Email, Constants.AdminPassword);
     cy.url().should('include', '/home');
   LidarViewerElements.getHomeText.should("contain.text", "Home Page");
   });
 
   it("Login_011_Verify that the functionality of lower-case email field", () => {
     cy.wait(2000);
-    login1(Constants.lowerCaseEmail, Constants.password);
+    login1(Constants.lowerCaseEmail, Constants.AdminPassword);
     cy.url().should('include', '/home');
   LidarViewerElements.getHomeText.should("contain.text", "Home Page");
   });
 
   it("Login_012_Verify that the functionality of upper-case email field", () => {
     cy.wait(2000);
-    login1(Constants.upperCaseEmail, Constants.password);
+    login1(Constants.upperCaseEmail, Constants.AdminPassword);
     cy.url().should('include', '/home');
   LidarViewerElements.getHomeText.should("contain.text", "Home Page");
   });
 
   it("Login_013_Verify that the functionality of mixed-case email field", () => {
     cy.wait(2000);
-    login1(Constants.MixedCaseEmail, Constants.password);
+    login1(Constants.MixedCaseEmail, Constants.AdminPassword);
     
     cy.url().should('include', '/home');
   LidarViewerElements.getHomeText.should("contain.text", "Home Page");
@@ -108,7 +108,7 @@ describe("Login", () => {
 
   it("Login_014_Verify that the functionality of non-existing email", () => {
     cy.wait(2000);
-    login1(Constants.notExistingEmail, Constants.password);
+    login1(Constants.notExistingEmail, Constants.AdminPassword);
     cy.get("#root > div > main > div.info-message-container > span.width-100")
       .should("be.visible")
       .should("have.text", "Invalid email format");
