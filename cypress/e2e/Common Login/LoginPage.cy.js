@@ -1,7 +1,6 @@
 import LidarViewerElements from "../../locators/LidarViewer.js";
 import Constants from "../../utils/Constants.js";
 import {
-  Adminlogin,
   loginToPortal,
 } from "../../utils/commonMethods.js";
 import "../../support/commands.js";
@@ -12,48 +11,54 @@ describe("Login Page Tests", () => {
     cy.visit("/login");
   });
 
-  // it("Login_Attempts_001 - User should be locked after 4 failed login attempts", () => {
-  //   for (let i = 0; i <= 5; i++) {
-  //     LidarViewerElements.getEmail.clear().type(Constants.validEmail);
-  //     LidarViewerElements.getPassword.clear().type(Constants.invalidPwd);
-  //     LidarViewerElements.getLoginBtn.click();
-  //     cy.wait(500);
-  //   }
-  //   cy.contains("Too many login attempts")
-  //     .should("be.visible");
+  it("Login_Attempts_001 - User should be locked after 5 failed login attempts", () => {
+    for (let i = 0; i <= 5; i++) {
+      LidarViewerElements.getEmail.clear().type(Constants.validEmail);
+      LidarViewerElements.getPassword.clear().type(Constants.invalidPwd);
+      LidarViewerElements.getLoginBtn.click();
+      cy.wait(500);
+    }
+    cy.contains("Too many login attempts")
+      .should("be.visible");
 
-  // });
+    cy.unblockUser(Constants.validEmail);
+  });
 
-  // it("Login_Attempts_002 - User should be locked after 3 failed OTP attempts", () => {
+  it("Login_Attempts_002 - User should be locked after 5 failed OTP attempts", () => {
 
-  //   // Login with valid email + password to reach OTP page
-  //   LidarViewerElements.getEmail.type(Constants.validEmail);
-  //   LidarViewerElements.getPassword.type(Constants.password);
-  //   LidarViewerElements.getLoginBtn.click();
+    // Login with valid email + password to reach OTP page
+    LidarViewerElements.getEmail.type(Constants.validEmail);
+    LidarViewerElements.getPassword.type(Constants.password);
+    LidarViewerElements.getLoginBtn.click();
 
-  //   for (let i = 0; i < 4; i++) {
-  //     cy.get("input[type='tel']").clear().type("000000"); // invalid OTP
-  //     cy.contains("button", "Verify OTP").click();
-  //     cy.wait(500);
-  //   }
+    for (let i = 0; i <=5; i++) {
+      
+      cy.get("input[type='text']").type("000000");
+      cy.contains("button", "Verify").should("be.visible").click();
+      cy.wait(500);
+      cy.get("input[type='text']").should("be.visible").clear();
+    }
 
-  //   cy.contains("Your account has been locked due to multiple failed OTP attempts")
-  //     .should("be.visible");
-  // });
+    cy.contains(/otp attempts/i).should("be.visible");
 
-  // it("Login_Attempts_003 - User should be locked after 3 failed forgot-password attempts", () => {
 
-  //   LidarViewerElements.forgotPassword.click();
+    cy.unblockUser(Constants.validEmail);
+  });
 
-  //   for (let i = 0; i < 4; i++) {
-  //     LidarViewerElements.emailInForgotPasswordField.clear().type(Constants.notExistingEmail);
-  //     LidarViewerElements.sendRecoverLinkBtn.click();
-  //     cy.wait(500);
-  //   }
+  it("Login_Attempts_003 - User should be locked after 5 failed forgot-password attempts", () => {
 
-  //   cy.contains("Your account has been locked due to multiple failed recovery attempts")
-  //     .should("be.visible");
-  // });
+    LidarViewerElements.forgotPassword.click();
+
+    for (let i = 0; i <=5; i++) {
+      LidarViewerElements.emailInForgotPasswordField.clear().type(Constants.nonExistingEmailForgot);
+      LidarViewerElements.sendRecoverLinkBtn.click();
+      cy.wait(500);
+    }
+
+    cy.contains(/failed/i).should("be.visible");
+
+    cy.unblockUser(Constants.validEmail);
+  });
 
   it("Block_001 - Verify user can successfully login after admin", () =>{
 

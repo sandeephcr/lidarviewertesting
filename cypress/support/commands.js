@@ -60,3 +60,38 @@ Cypress.Commands.add("simulateOnline", () => {
         });
     });
 });
+
+
+Cypress.Commands.add('unblockUser', (email) => {
+    // First login via UI
+    cy.visit('/login');
+  
+    cy.get('input[placeholder="Email Id"]').clear().type("admin@hcrobo.com");
+    cy.get('input[type="password"]').clear().type("Cnsw-1234");
+    cy.get('button[data-testid="login-button"]').click();
+  
+    // Ensure login completed
+    cy.url().should('include', '/home');
+  
+    // Now safely read token
+    cy.window().then((win) => {
+  
+      const loginData = win.localStorage.getItem('login');
+      const parsed = JSON.parse(loginData);
+      const token = parsed.accessToken;
+  
+      // Call unblock API
+      cy.request({
+        method: 'PATCH',
+        url: `/admin/register_user/unblock-user/${email}`,
+        headers: {
+          Authorization: `Bearer ${token}`
+        }
+      }).then((res) => {
+        expect(res.status).to.eq(200);
+      });
+  
+    });
+  
+  });
+  
