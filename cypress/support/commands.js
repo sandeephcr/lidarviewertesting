@@ -95,3 +95,24 @@ Cypress.Commands.add('unblockUser', (email) => {
   
   });
   
+  Cypress.Commands.add('logout', () => {
+
+    cy.intercept('DELETE', '**/api/logout').as('logoutRequest');
+  
+    // Open profile menu
+    cy.contains('.ToolTip-container', 'Profile menu').find('img.icon-btn').click();
+  
+    // Click Logout from dropdown
+    cy.contains('Logout').should('be.visible').click();
+
+    // Confirm in modal
+    cy.contains('Are you sure').should('be.visible');
+
+    cy.get('[data-testid="confirm-button"]').should('be.visible').click();
+  
+    // Wait for backend logout
+    cy.wait('@logoutRequest').its('response.statusCode').should('eq', 200);
+  
+    cy.url().should('include', '/login');
+  
+  });

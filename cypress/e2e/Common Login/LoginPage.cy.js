@@ -60,11 +60,24 @@ describe("Login Page Tests", () => {
     cy.unblockUser(Constants.validEmail);
   });
 
-  it("Block_001 - Verify user can successfully login after admin", () =>{
+  it("Block_001 - Verify user can successfully login after admin unblocks user account", () =>{
 
-    LidarViewerElements.getEmail.type(Constants.AdminEmail);
-    LidarViewerElements.getPassword.clear().type(Constants.AdminPassword);
-    LidarViewerElements.getLoginBtn.click();
+    //Blocking user account
+    for (let i = 0; i <= 5; i++) {
+      LidarViewerElements.getEmail.clear().type(Constants.validEmail);
+      LidarViewerElements.getPassword.clear().type(Constants.invalidPwd);
+      LidarViewerElements.getLoginBtn.click();
+      cy.wait(500);
+    }
+    cy.contains("Too many login attempts")
+      .should("be.visible");
+    // Unblocking user account as admin
+    cy.unblockUser(Constants.validEmail);
+    cy.logout();
+    //Logging in to user account successfully
+    cy.visit('/login');
+    loginToPortal(Constants.validEmail, Constants.password)
+    LidarViewerElements.getHomeText.should("have.text", "Home Page");
 
   });
 
