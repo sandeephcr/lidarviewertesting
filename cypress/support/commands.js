@@ -67,7 +67,7 @@ Cypress.Commands.add('unblockUser', (email) => {
     cy.visit('/login');
   
     cy.get('input[placeholder="Email Id"]').clear().type("admin@hcrobo.com");
-    cy.get('input[type="password"]').clear().type("Cnsw-1234");
+    cy.get('input[type="password"]').clear().type("Cnsw-123");
     cy.get('button[data-testid="login-button"]').click();
   
     // Ensure login completed
