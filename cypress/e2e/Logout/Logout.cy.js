@@ -7,7 +7,7 @@ import {
 import "../../support/commands.js";
 
 
-describe("Login Page Tests", () => {
+describe("Logout Module Tests", () => {
 
     beforeEach(() => {
       cy.visit("/login");
@@ -60,6 +60,25 @@ describe("Login Page Tests", () => {
 
         cy.contains('Folder').should('not.exist');
       });
+
+    it("Logout_004 - Verify that a non-admin user cannot access admin-only pages after admin logout", () => {
+
+        // Login as admin and access administration page
+        Adminlogin(Constants.AdminEmail, Constants.AdminPassword);
+        cy.visit('/siteAdministration');
+        cy.contains(/administration|site administration|admin/i, { matchCase: false }).should('exist');
+        cy.logout();
+
+        cy.url().should('include', '/login');
+        cy.contains('Login', { matchCase: false });
+
+        // Login as Client user (non-admin)
+        loginToPortal(Constants.testDesignEngineerEmail, Constants.password);
+        cy.url().should('not.include', '/login');
+        cy.visit('/siteAdministration', { failOnStatusCode: false });
+
+        cy.contains(/unauthorized|access denied|forbidden|not authorized/i).should('exist');
+    });
 
     it("Logout_005 - Verify that the application redirects the user to the login page after a successful logout", () => {
         Adminlogin(Constants.AdminEmail, Constants.AdminPassword);
