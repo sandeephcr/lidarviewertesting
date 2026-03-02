@@ -108,5 +108,36 @@ class LidarViewerElements {
     return cy.contains("button", "Send");
     }
 
+    get getProfileIcon() {
+        return cy.contains('.relative.ToolTip-container', 'Profile menu');
+      }
+
+    get getViewProfileOption() {
+        return cy.contains('span', 'View Profile').parent();
+      }
+    
+    get getEditProfileHeader() {
+        return cy.contains('div', 'Edit Profile');
+      }
+    
+    get getChangePasswordBtn() {
+        return cy.contains('span', 'Change Password').parent();
+    }
+
+    get getOldPasswordField() {
+        return cy.get('input[placeholder="Old Password"]');
+    }
+    
+    get getNewPasswordField() {
+        return cy.get('input[placeholder="New Password"]');
+    }
+    
+    get getConfirmNewPasswordField() {
+        return cy.get('input[placeholder="Confirm New Password"]');
+    }
+    
+    get getUpdatePasswordBtn() {
+        return cy.contains('button', 'Update Password');
+    }
 }
 export default new LidarViewerElements
