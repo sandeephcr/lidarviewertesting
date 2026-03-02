@@ -107,7 +107,7 @@ describe("Logout Module Tests", () => {
         cy.contains('Login', { matchCase: false });
     });
 
-    it("Logout_007 - Verify that access token is invalidated after logout and cannot be used to access secured resources", () => {
+    it("Logout_007_1 - Verify that access token is invalidated after logout and cannot be used to access secured resources", () => {
         // 1. Capture the access token issued upon login
         Adminlogin(Constants.AdminEmail, Constants.AdminPassword);
 
@@ -168,5 +168,51 @@ describe("Logout Module Tests", () => {
             });
         });
     });
+
+    it.only("Logout_007 - Verify that access token is invalidated after logout and cannot be used to access secured resources", () => {
+
+        Adminlogin(Constants.AdminEmail, Constants.AdminPassword);
+      
+        let token;
+      
+        // Wait until token exists
+        cy.window()
+          .its('localStorage.login')
+          .should('exist')
+          .then((loginValue) => {
+            const parsed = JSON.parse(loginValue);
+            token = parsed?.accessToken;
+            expect(token).to.exist;
+          });
+      
+        // ✅ 1. Token should work BEFORE logout
+        cy.then(() => {
+          return cy.request({
+            method: 'GET',
+            url: '/admin/runsFolderStructure',
+            headers: {
+              Authorization: `Bearer ${token}`,
+            },
+          });
+        }).its('status').should('eq', 200);
+      
+        // ✅ 2. Logout
+        cy.logout();
+      
+        // ✅ 3. Token should FAIL AFTER logout
+        cy.then(() => {
+          return cy.request({
+            method: 'GET',
+            url: '/admin/runsFolderStructure',
+            headers: {
+              Authorization: `Bearer ${token}`,
+            },
+            failOnStatusCode: false,
+          });
+        }).then((response) => {
+          expect([401, 403]).to.include(response.status);
+        });
+      
+      });
 
 });
