@@ -1,6 +1,7 @@
 import LidarViewerElements from "../../locators/LidarViewer.js";
 import Constants from "../../utils/Constants.js";
 import {
+  Adminlogin,
   loginToPortal,
 } from "../../utils/commonMethods.js";
 import "../../support/commands.js";
@@ -86,50 +87,72 @@ describe("Login Page Tests", () => {
      LidarViewerElements.getHomeText.should("have.text", "Home Page");
    });
 
-it.only("Profile_001 - Verify user able to update password from view profile dialog", () => {
-  // Step 1: Login to user account
-  loginToPortal(Constants.validEmail, Constants.password);
-  LidarViewerElements.getHomeText.should("have.text", "Home Page");
+  it("Profile_001 - Verify user able to update password from view profile dialog", () => {
+    // Step 1: Login to user account
+    loginToPortal(Constants.validEmail, Constants.password);
+    LidarViewerElements.getHomeText.should("have.text", "Home Page");
 
-  // Step 2: Open profile/view profile dialog
-  LidarViewerElements.getProfileIcon.click();
-  LidarViewerElements.getViewProfileOption.click();
-  LidarViewerElements.getEditProfileHeader.should('be.visible');
-  LidarViewerElements.getChangePasswordBtn.click();
+    // Step 2: Open profile/view profile dialog
+    LidarViewerElements.getProfileIcon.click();
+    LidarViewerElements.getViewProfileOption.click();
+    LidarViewerElements.getEditProfileHeader.should('be.visible');
+    LidarViewerElements.getChangePasswordBtn.click();
 
-  // Step 4: Fill out change password fields
-  const timestamp = Date.now().toString().slice(-5);
-const newPwd = `Tp_${timestamp}!A1`;
-  LidarViewerElements.getOldPasswordField.clear().type(Constants.password);
-  LidarViewerElements.getNewPasswordField.clear().type(newPwd);
-  LidarViewerElements.getConfirmNewPasswordField.clear().type(newPwd);
-  LidarViewerElements.getUpdatePasswordBtn.click();
+    // Step 4: Fill out change password fields
+    const timestamp = Date.now().toString().slice(-5);
+    const newPwd = `Tp_${timestamp}!A1`;
+    LidarViewerElements.getOldPasswordField.clear().type(Constants.password);
+    LidarViewerElements.getNewPasswordField.clear().type(newPwd);
+    LidarViewerElements.getConfirmNewPasswordField.clear().type(newPwd);
+    LidarViewerElements.getUpdatePasswordBtn.click();
 
 
-  // Step 6: Expect a success message and redirect/logout if app requires
-  cy.contains("Password updated successfully", { timeout: 10000 }).should("be.visible");
+    // Step 6: Expect a success message and redirect/logout if app requires
+    cy.contains("Password updated successfully", { timeout: 10000 }).should("be.visible");
 
-  // Step 7: Log out after password change
-  cy.logout();
+    cy.get('body').click(0, 0);
 
-  // Step 8: Login again with new password to verify
-  loginToPortal(Constants.validEmail, newPwd);
-  LidarViewerElements.getHomeText.should("have.text", "Home Page");
+    // Step 7: Log out after password change
+    cy.logout();
 
-  // Step 8: Reset password back to original
-  LidarViewerElements.getProfileIcon.click();
-  LidarViewerElements.getViewProfileOption.click();
-  LidarViewerElements.getChangePasswordBtn.click();
+    // Step 8: Login again with new password to verify
+    loginToPortal(Constants.validEmail, newPwd);
+    LidarViewerElements.getHomeText.should("have.text", "Home Page");
 
-  LidarViewerElements.getOldPasswordField.clear().type(newPwd);
-  LidarViewerElements.getNewPasswordField.clear().type(Constants.password);
-  LidarViewerElements.getConfirmNewPasswordField.clear().type(Constants.password);
-  LidarViewerElements.getUpdatePasswordBtn.click();
+    // Step 8: Reset password back to original
+    LidarViewerElements.getProfileIcon.click();
+    LidarViewerElements.getViewProfileOption.click();
+    LidarViewerElements.getChangePasswordBtn.click();
 
-  cy.contains("Password updated successfully", { timeout: 10000 }).should("be.visible");
+    LidarViewerElements.getOldPasswordField.clear().type(newPwd);
+    LidarViewerElements.getNewPasswordField.clear().type(Constants.password);
+    LidarViewerElements.getConfirmNewPasswordField.clear().type(Constants.password);
+    LidarViewerElements.getUpdatePasswordBtn.click();
 
-  // Final logout to keep test isolated
-  cy.logout();
-});
+    cy.contains("Password updated successfully", { timeout: 10000 }).should("be.visible");
+    cy.get('body').click(0, 0);
+
+    // Final logout to keep test isolated
+    cy.logout();
+
+  });
+
+  it("Profile_002 - Verify View Profile option is visible to all user accounts", () => {
+
+    // ----- Admin User -----
+    Adminlogin(Constants.AdminEmail, Constants.AdminPassword);
+    LidarViewerElements.getProfileIcon.click();
+    LidarViewerElements.getViewProfileOption.should("be.visible");
+    cy.get('body').click(0, 0);
+    cy.logout();
+
+    // ----- Non-Admin User -----
+    loginToPortal(Constants.testDesignEngineerEmail, Constants.password);
+    LidarViewerElements.getProfileIcon.click();
+    LidarViewerElements.getViewProfileOption.should("be.visible");
+    cy.get('body').click(0, 0);
+    cy.logout();
+
+  });
 
 });
