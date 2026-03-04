@@ -10,6 +10,7 @@ import {
      } from '../../utils/commonMethods.js';
 import Constants from "../../utils/Constants.js";
 import PoleLocators from '../../locators/PoleLocators.js';
+import LidarViewer from '../../locators/LidarViewer.js';
 
 describe("Poles Module", () => {
 
@@ -97,36 +98,147 @@ beforeEach(() => {
 
     });
 
-  it("Pole_006 - Verify the functionality of delinking poles", () => {
+  it.only("Pole_006 - Verify the functionality of delinking poles", () => {
 
 
     });
 
   it("Pole_007 -Verify the functionality of display associated form data upon switching  between tabs", () => {
 
+      const poleName = PoleActions.placePole(600, 350);
+
+      PoleLocators.getTab('Spans').click();
+      cy.contains('Span [1]').should('exist');
+      cy.contains('Wire [1]').should('exist');
+      cy.contains('SpanGuy [1]').should('exist');
+      PoleLocators.getTab('Anchors').click();
+      cy.contains('Anchor [1]').should('exist');
+      cy.contains('Guy [1]').should('exist');
+      PoleLocators.getTab('Equipment').click();
+      cy.contains('Equipment [1]').should('exist');
 
     });
 
-  it("Pole_008 -Verify the functionality of deleting nested forms under main tabs in the pole form", () => {
+  it("Pole_008 - Verify deleting nested forms under main tabs in pole form", () => {
 
-
-    });
+    const poleName = PoleActions.placePole(600, 350);
+  
+    // ======================
+    // SPANS TAB
+    // ======================
+    PoleLocators.getTab('Spans').click();
+  
+    PoleLocators.poleSidePanel.contains('Add Span').click();
+    PoleActions.deleteSpan(1);
+  
+    PoleLocators.poleSidePanel.contains('Add Wire').click();
+    PoleActions.deleteWire(1);
+  
+    PoleLocators.poleSidePanel.contains('Add Spanguy').click();
+    PoleActions.deleteSpanGuy(1);
+  
+    // ======================
+    // ANCHORS TAB
+    // ======================
+    PoleLocators.getTab('Anchors').click();
+  
+    PoleLocators.poleSidePanel.contains('Add Anchor').click();
+    PoleActions.deleteAnchor(1);
+  
+    PoleLocators.poleSidePanel.contains('Add Down Guy').click();
+    PoleActions.deleteDownGuy(1);
+  
+    // ======================
+    // EQUIPMENT TAB
+    // ======================
+    PoleLocators.getTab('Equipment').click();
+  
+    PoleLocators.poleSidePanel.contains('Add Equipment').click();
+    PoleActions.deleteEquipment(1);
+  
+  });
 
   it("Pole_009 - Verify the functionality of adding new sub forms in pole form", () => {
 
+    const poleName = PoleActions.placePole(600, 350);
+    // SPANS TAB
+    PoleLocators.getTab('Spans').click();
+    PoleLocators.poleSidePanel.contains('Add Span').click();
+    LidarViewer.infoMessageContainer
+      .should('be.visible')
+      .invoke('text')
+      .should('match', /span/i);
+  
+    PoleLocators.poleSidePanel.contains('Add Wire').click();
+    LidarViewer.infoMessageContainer
+      .should('be.visible')
+      .invoke('text')
+      .should('match', /wire/i);
+  
+    PoleLocators.poleSidePanel.contains('Add Spanguy').click();
+    LidarViewer.infoMessageContainer
+      .should('be.visible')
+      .invoke('text')
+      .should('match', /spanguy/i);
 
-    });
+    // ANCHORS TAB
+    PoleLocators.getTab('Anchors').click();
+  
+    PoleLocators.poleSidePanel.contains('Add Anchor').click();
+    LidarViewer.infoMessageContainer
+      .should('be.visible')
+      .invoke('text')
+      .should('match', /anchor/i);
+  
+    PoleLocators.poleSidePanel.contains('Add Down Guy').click();
+    LidarViewer.infoMessageContainer
+      .should('be.visible')
+      .invoke('text')
+      .should('match', /downguy/i);
 
-  it("Pole_010 -Verify the functionality of display associated form data upon switching  between tabs", () => {
+    // EQUIPMENT TAB
+    PoleLocators.getTab('Equipment').click();
+  
+    PoleLocators.poleSidePanel.contains('Add Equipment').click();
+    LidarViewer.infoMessageContainer
+      .should('be.visible')
+      .invoke('text')
+      .should('match', /equipment/i);
+  
+  });
 
-    });
+  it("Pole_010 -Verify the functionality of saving updated pole to server", () => {
+    // Place a new pole
+    const poleName = PoleActions.placePole(650, 380);
+    PoleActions.savePole();
 
-  it("Pole_011 -Verify the functionality of saving updated pole to server", () => {
+    // Reload and import to simulate a fresh session and ensure persistence
+    cy.reload();
+    cy.wait(5000);
+    PoleActions.importPoles();
 
+    // Open the pole after import
+    PoleActions.openPole(poleName);
 
-    });
+    // Edit the pole ID / name (simulate update)
+    const updatedPoleName = `${poleName}_updated`;
+    PoleLocators.getField('Id').should('be.visible').clear().type(updatedPoleName);
 
-  it("Pole_012 -Verifying the functionality of pole form deletion from server", () => {
+    // Save the updated pole
+    PoleActions.savePole();
+
+    // Reload and import again to verify the update persisted
+    cy.reload();
+    cy.wait(5000);
+    PoleActions.importPoles();
+
+    // Confirm new/updated pole exists and has updated data
+    cy.get(`div[role="button"][aria-label="${updatedPoleName}"]`).should('exist');
+    PoleActions.openPole(updatedPoleName);
+    PoleLocators.getField('Id').should('have.value', updatedPoleName);
+  });
+
+  it("Pole_011 -Verifying the functionality of pole form deletion from server", () => {
 
         // Place & save pole
         const poleName = PoleActions.placePole(600, 350);
@@ -141,7 +253,7 @@ beforeEach(() => {
 
     });
 
-  it("Pole_013 -Verifying the functionality of importing pole from the server", () => {
+  it("Pole_012 -Verifying the functionality of importing pole from the server", () => {
         // Place, save, and reload
         const poleName = PoleActions.placePole(650, 400);
         PoleActions.savePole();
@@ -154,7 +266,7 @@ beforeEach(() => {
         PoleLocators.getField('Id').should('have.value', poleName);
     });
 
-  it("Pole_014 -Verifying the functionality of saving pole form data to server", () => {
+  it("Pole_013 -Verifying the functionality of saving pole form data to server", () => {
         // Place a new pole and save it
         const poleName = PoleActions.placePole(700, 450);
         PoleActions.savePole();

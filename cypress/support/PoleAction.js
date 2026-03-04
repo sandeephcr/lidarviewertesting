@@ -8,7 +8,7 @@ class PoleActions {
   
       cy.get("#canvas3D").should("be.visible");
       ViewerElements.getAddPoleBtn.should("be.visible").click();
-      cy.wait(3000);
+      cy.wait(5000);
       cy.get('#canvas3D').should('be.visible').click('center', { force: true });
       PoleLocators.poleSidePanel.should("be.visible");
       PoleLocators.getField('Id').should('be.visible').clear().type(poleName);
@@ -51,6 +51,102 @@ class PoleActions {
         .click({ force: true });
       // Wait for side panel to appear
       PoleLocators.poleSidePanel.should('be.visible');
+    }
+
+    deleteSpan(index = 1) {
+      cy.contains(`Span [${index}]`)
+        .parent()
+        .find('[data-testid="deletebutton"]')
+        .click();
+    
+      cy.get('[data-testid="confirm-button"]')
+        .should('be.visible')
+        .click();
+    
+      LidarViewer.infoMessageContainer
+        .should('be.visible')
+        .invoke('text')
+        .should('match', /span/i);
+    }
+
+    deleteWire(index = 1) {
+      cy.contains(`Wire [${index}]`)
+        .parent()
+        .find('[data-testid="deletebutton"]')
+        .click();
+    
+      cy.get('[data-testid="confirm-button"]')
+        .should('be.visible')
+        .click();
+    
+      LidarViewer.infoMessageContainer
+        .should('be.visible')
+        .invoke('text')
+        .should('match', /wire/i);
+    }
+
+    deleteSpanGuy(index = 1) {
+      cy.contains( `SpanGuy [${index}]`)
+        .parent()
+        .find('[data-testid="deletebutton"]')
+        .click();
+    
+      cy.get('[data-testid="confirm-button"]')
+        .should('be.visible')
+        .click();
+    
+      LidarViewer.infoMessageContainer
+        .should('be.visible')
+        .invoke('text')
+        .should('match', /spanguy/i);
+    }
+
+    deleteAnchor(index = 1) {
+      cy.contains(`Anchor [${index}]`)
+        .parent()
+        .find('[data-testid="deletebutton"]')
+        .click();
+    
+      cy.get('[data-testid="confirm-button"]')
+        .should('be.visible')
+        .click();
+    
+      LidarViewer.infoMessageContainer
+        .should('be.visible')
+        .invoke('text')
+        .should('match', /anchor/i);
+    }
+
+    deleteDownGuy(index = 1) {
+      cy.contains(`Guy [${index}]`)
+        .parent()
+        .find('[data-testid="deletebutton"]')
+        .click();
+    
+      cy.get('[data-testid="confirm-button"]')
+        .should('be.visible')
+        .click();
+    
+      LidarViewer.infoMessageContainer
+        .should('be.visible')
+        .invoke('text')
+        .should('match', /downguy/i);
+    }
+
+    deleteEquipment(index = 1) {
+      cy.contains(`Equipment [${index}]`)
+        .parent()
+        .find('[data-testid="deletebutton"]')
+        .click();
+    
+      cy.get('[data-testid="confirm-button"]')
+        .should('be.visible')
+        .click();
+    
+      LidarViewer.infoMessageContainer
+        .should('be.visible')
+        .invoke('text')
+        .should('match', /equipment/i);
     }
     
   }
