@@ -86,6 +86,87 @@ beforeEach(() => {
     PoleActions.openPole(poleName);
     PoleLocators.getField('Id').should('have.value', poleName);
     });
+  
+  it("Pole_004 - Verify the functionality of copy feature in pole", () => {
 
 
+    });
+
+  it("Pole_005 - Verify the functionality of moving the existing pole location", () => {
+
+
+    });
+
+  it("Pole_006 - Verify the functionality of delinking poles", () => {
+
+
+    });
+
+  it("Pole_007 -Verify the functionality of display associated form data upon switching  between tabs", () => {
+
+
+    });
+
+  it("Pole_008 -Verify the functionality of deleting nested forms under main tabs in the pole form", () => {
+
+
+    });
+
+  it("Pole_009 - Verify the functionality of adding new sub forms in pole form", () => {
+
+
+    });
+
+  it("Pole_010 -Verify the functionality of display associated form data upon switching  between tabs", () => {
+
+    });
+
+  it("Pole_011 -Verify the functionality of saving updated pole to server", () => {
+
+
+    });
+
+  it("Pole_012 -Verifying the functionality of pole form deletion from server", () => {
+
+        // Place & save pole
+        const poleName = PoleActions.placePole(600, 350);
+        PoleActions.savePole();
+        cy.reload();
+        cy.wait(5000);
+        PoleActions.importPoles();
+        PoleActions.openPole(poleName);
+        PoleActions.deletePole(poleName);
+        cy.get(`div[role="button"][aria-label="${poleName}"]`).should('not.exist');
+        cy.contains(poleName).should('not.exist');
+
+    });
+
+  it("Pole_013 -Verifying the functionality of importing pole from the server", () => {
+        // Place, save, and reload
+        const poleName = PoleActions.placePole(650, 400);
+        PoleActions.savePole();
+        cy.reload();
+        cy.wait(5000);
+        // Import poles from server and verify new pole is present
+        PoleActions.importPoles();
+        cy.get(`div[role="button"][aria-label="${poleName}"]`).should('exist');
+        PoleActions.openPole(poleName);
+        PoleLocators.getField('Id').should('have.value', poleName);
+    });
+
+  it("Pole_014 -Verifying the functionality of saving pole form data to server", () => {
+        // Place a new pole and save it
+        const poleName = PoleActions.placePole(700, 450);
+        PoleActions.savePole();
+
+        // Reload and re-import to verify persistence
+        cy.reload();
+        cy.wait(5000);
+        PoleActions.importPoles();
+
+        // Verify the pole exists and form data is correct
+        cy.get(`div[role="button"][aria-label="${poleName}"]`).should('exist');
+        PoleActions.openPole(poleName);
+        PoleLocators.getField('Id').should('have.value', poleName);
+    });
 });
