@@ -148,6 +148,20 @@ class PoleActions {
         .invoke('text')
         .should('match', /equipment/i);
     }
+
+    copyForm(formName, index = 1) {
+
+      PoleLocators.poleSidePanel
+        .contains(`${formName} [${index}]`)
+        .parent()
+        .find('[data-testid="copybutton"]')
+        .click();
+    
+      LidarViewer.infoMessageContainer
+        .should('be.visible')
+        .invoke('text')
+        .should('match', /copied/i);
+    }
     
   }
   
