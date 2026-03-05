@@ -93,18 +93,12 @@ beforeEach(() => {
 
     });
 
-  it("Pole_005 - Verify the functionality of moving the existing pole location", () => {
+  it.only("Pole_005 - Verify the functionality of delinking poles", () => {
 
 
     });
 
-  it.only("Pole_006 - Verify the functionality of delinking poles", () => {
-
-
-    });
-
-  it("Pole_007 -Verify the functionality of display associated form data upon switching  between tabs", () => {
-
+  it("Pole_006 -Verify the functionality of display associated form data upon switching  between tabs", () => {
       const poleName = PoleActions.placePole(600, 350);
 
       PoleLocators.getTab('Spans').click();
@@ -119,8 +113,7 @@ beforeEach(() => {
 
     });
 
-  it("Pole_008 - Verify deleting nested forms under main tabs in pole form", () => {
-
+  it("Pole_007 - Verify deleting nested forms under main tabs in pole form", () => {
     const poleName = PoleActions.placePole(600, 350);
   
     // ======================
@@ -158,8 +151,7 @@ beforeEach(() => {
   
   });
 
-  it("Pole_009 - Verify the functionality of adding new sub forms in pole form", () => {
-
+  it("Pole_008 - Verify the functionality of adding new sub forms in pole form", () => {
     const poleName = PoleActions.placePole(600, 350);
     // SPANS TAB
     PoleLocators.getTab('Spans').click();
@@ -207,8 +199,8 @@ beforeEach(() => {
   
   });
 
-  it("Pole_010 -Verify the functionality of saving updated pole to server", () => {
-    // Place a new pole
+  it("Pole_009 -Verify the functionality of saving updated pole to server", () => {
+    
     const poleName = PoleActions.placePole(650, 380);
     PoleActions.savePole();
 
@@ -238,8 +230,7 @@ beforeEach(() => {
     PoleLocators.getField('Id').should('have.value', updatedPoleName);
   });
 
-  it("Pole_011 -Verifying the functionality of pole form deletion from server", () => {
-
+  it("Pole_010 -Verifying the functionality of pole form deletion from server", () => {
         // Place & save pole
         const poleName = PoleActions.placePole(600, 350);
         PoleActions.savePole();
@@ -253,8 +244,7 @@ beforeEach(() => {
 
     });
 
-  it("Pole_012 -Verifying the functionality of importing pole from the server", () => {
-        // Place, save, and reload
+  it("Pole_011 -Verifying the functionality of importing pole from the server", () => {
         const poleName = PoleActions.placePole(650, 400);
         PoleActions.savePole();
         cy.reload();
@@ -266,7 +256,7 @@ beforeEach(() => {
         PoleLocators.getField('Id').should('have.value', poleName);
     });
 
-  it("Pole_013 -Verifying the functionality of saving pole form data to server", () => {
+  it("Pole_012 -Verifying the functionality of saving pole form data to server", () => {
         // Place a new pole and save it
         const poleName = PoleActions.placePole(700, 450);
         PoleActions.savePole();
@@ -281,4 +271,5 @@ beforeEach(() => {
         PoleActions.openPole(poleName);
         PoleLocators.getField('Id').should('have.value', poleName);
     });
+
 });
