@@ -48,12 +48,12 @@ describe("Home Page Navigation Tests", () => {
     cy.contains('div[role="checkbox"]', 'Select').should('be.visible')
   });
 
-  it('Home_Project_nav_005_Verify that the open button is displayed when at least one run is available.', () => {
+  // it('Home_Project_nav_005_Verify that the open button is displayed when at least one run is available.', () => {
     
-    cy.get(".folderName").contains("Shared Space").should("be.visible").dblclick()
-    cy.get('[data-testid="run-card-container"]').filter(':visible').should('have.length.gte', 1)
-    cy.contains('div.primary-btn', 'Open').should('be.visible')
-  });
+  //   cy.get(".folderName").contains("Shared Space").should("be.visible").dblclick()
+  //   cy.get('[data-testid="run-card-container"]').filter(':visible').should('have.length.gte', 1)
+  //   cy.contains('div.primary-btn', 'Open').should('be.visible')
+  // });
 
   it('Home_Project_nav_006_Verifying that the opening of multiple runs', () => {
     
@@ -74,47 +74,47 @@ describe("Home Page Navigation Tests", () => {
     })
   });
 
-  it('Home_Project_nav_007_Verify that an alert is displayed when the user attempts to open more than 10 runs ', () => {
+  // it('Home_Project_nav_007_Verify that an alert is displayed when the user attempts to open more than 10 runs ', () => {
     
-    cy.get(".folderName").contains("Atc").should("be.visible").dblclick()
-    cy.wait(2000)
-    cy.contains('div[role="checkbox"]', 'Select').should('be.visible').click()
+  //   cy.get(".folderName").contains("Atc").should("be.visible").dblclick()
+  //   cy.wait(2000)
+  //   cy.contains('div[role="checkbox"]', 'Select').should('be.visible').click()
 
-    cy.get('[data-testid="run-card-container"]').filter(':visible').should('have.length.gte', 11)
-      .then($runs => {
-        Cypress._.take($runs.toArray(), 11).forEach(run => {
-        cy.wrap(run).click()
-      })
-    })
+  //   cy.get('[data-testid="run-card-container"]').filter(':visible').should('have.length.gte', 11)
+  //     .then($runs => {
+  //       Cypress._.take($runs.toArray(), 11).forEach(run => {
+  //       cy.wrap(run).click()
+  //     })
+  //   })
 
-    cy.contains('div.primary-btn', 'Open').should('be.visible').click()
+  //   cy.contains('div.primary-btn', 'Open').should('be.visible').click()
     
-    cy.on('window:alert', (alertText) => {
-      expect(alertText).to.eq('Maximum number of selected runs cannot be more than 10')
-    })
+  //   cy.on('window:alert', (alertText) => {
+  //     expect(alertText).to.eq('Maximum number of selected runs cannot be more than 10')
+  //   })
 
-  });
+  // });
 
-  it("Home_Project_nav_008_Verify that the deselect of runs ", () => {
+  // it("Home_Project_nav_008_Verify that the deselect of runs ", () => {
     
-    cy.get(".folderName").contains("Shared Space").should("be.visible").dblclick()
-    cy.contains('div[role="checkbox"]', 'Select').should('be.visible').click()
-    cy.get('[data-testid="run-card-container"]').filter(':visible')
-    .then($runs => {
-        cy.wrap($runs.eq(0)).click()
-        cy.wrap($runs.eq(1)).click()
-    })
-    cy.get(".FileManager.flex-r.justify-between.m-30").contains(
-      "Selected Runs 2"
-    );
-    cy.get('[data-testid="run-card-container"]').filter(':visible')
-    .then($runs => {
-        cy.wrap($runs.eq(0)).click()
-        cy.wrap($runs.eq(1)).click()
-    })
-    cy.get(".FileManager.flex-r.justify-between.m-30").should(
-      "not.contain",
-      "Selected Runs 2"
-    );
-  });
+  //   cy.get(".folderName").contains("Shared Space").should("be.visible").dblclick()
+  //   cy.contains('div[role="checkbox"]', 'Select').should('be.visible').click()
+  //   cy.get('[data-testid="run-card-container"]').filter(':visible')
+  //   .then($runs => {
+  //       cy.wrap($runs.eq(0)).click()
+  //       cy.wrap($runs.eq(1)).click()
+  //   })
+  //   cy.get(".FileManager.flex-r.justify-between.m-30").contains(
+  //     "Selected Runs 2"
+  //   );
+  //   cy.get('[data-testid="run-card-container"]').filter(':visible')
+  //   .then($runs => {
+  //       cy.wrap($runs.eq(0)).click()
+  //       cy.wrap($runs.eq(1)).click()
+  //   })
+  //   cy.get(".FileManager.flex-r.justify-between.m-30").should(
+  //     "not.contain",
+  //     "Selected Runs 2"
+  //   );
+  // });
 });

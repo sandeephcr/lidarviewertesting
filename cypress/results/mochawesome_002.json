@@ -1,0 +1,143 @@
+{
+  "stats": {
+    "suites": 1,
+    "tests": 3,
+    "passes": 3,
+    "pending": 0,
+    "failures": 0,
+    "start": "2026-03-06T11:09:39.416Z",
+    "end": "2026-03-06T11:09:55.740Z",
+    "duration": 16324,
+    "testsRegistered": 3,
+    "passPercent": 100,
+    "pendingPercent": 0,
+    "other": 0,
+    "hasOther": false,
+    "skipped": 0,
+    "hasSkipped": false
+  },
+  "results": [
+    {
+      "uuid": "9f139872-2673-4fe8-9b58-7cd9b2d43520",
+      "title": "",
+      "fullFile": "cypress\\e2e\\Home Page\\SearchSortHome.cy.js",
+      "file": "cypress\\e2e\\Home Page\\SearchSortHome.cy.js",
+      "beforeHooks": [],
+      "afterHooks": [],
+      "tests": [],
+      "suites": [
+        {
+          "uuid": "30b0222e-6676-416d-b2c8-0bd0adb3a093",
+          "title": "Search Sort Home Tests",
+          "fullFile": "",
+          "file": "",
+          "beforeHooks": [],
+          "afterHooks": [],
+          "tests": [
+            {
+              "title": "Home_036_Verify the display of the back button after performing  a search.",
+              "fullTitle": "Search Sort Home Tests Home_036_Verify the display of the back button after performing  a search.",
+              "timedOut": null,
+              "duration": 7829,
+              "state": "passed",
+              "speed": "medium",
+              "pass": true,
+              "fail": false,
+              "pending": false,
+              "context": null,
+              "code": "cy.get('input[placeholder=\"Type for search\"]').should('be.visible').clear().type('Test');\ncy.get('div.primary-btn[alt=\"search\"]').should('be.visible').click();\ncy.get('button.padding-5').should('be.visible').click();\ncy.get('.folderName').contains('Shared Space').should('be.visible');\ncy.get('input[placeholder=\"Type for search\"]').should('be.visible');",
+              "err": {},
+              "uuid": "c4ff5f92-2901-44ab-8ef0-a1d9be83f836",
+              "parentUUID": "30b0222e-6676-416d-b2c8-0bd0adb3a093",
+              "isHook": false,
+              "skipped": false
+            },
+            {
+              "title": "Home_037_Verify that clicking on the list view icon displays all runs in list view",
+              "fullTitle": "Search Sort Home Tests Home_037_Verify that clicking on the list view icon displays all runs in list view",
+              "timedOut": null,
+              "duration": 4202,
+              "state": "passed",
+              "speed": "fast",
+              "pass": true,
+              "fail": false,
+              "pending": false,
+              "context": null,
+              "code": "cy.get(\".folderName\").contains(\"Shared Space\").should(\"be.visible\").dblclick();\ncy.get('[data-testid=\"list-view-icon-inactive\"]').should('be.visible').click();\ncy.get('[data-testid=\"list-view-icon-active\"]').should('be.visible');\ncy.get('.Table').should('be.visible');\ncy.get('.TableData').should('have.length.greaterThan', 0);",
+              "err": {},
+              "uuid": "e043dd4c-b1fe-4e8d-a169-291d5cf1e4eb",
+              "parentUUID": "30b0222e-6676-416d-b2c8-0bd0adb3a093",
+              "isHook": false,
+              "skipped": false
+            },
+            {
+              "title": "Home_038_Clicking on the grid view icon displays all runs in grid view",
+              "fullTitle": "Search Sort Home Tests Home_038_Clicking on the grid view icon displays all runs in grid view",
+              "timedOut": null,
+              "duration": 4104,
+              "state": "passed",
+              "speed": "fast",
+              "pass": true,
+              "fail": false,
+              "pending": false,
+              "context": null,
+              "code": "cy.get(\".folderName\").contains(\"Shared Space\").should(\"be.visible\").dblclick();\ncy.get('[data-testid=\"grid-view-icon-active\"]').should('be.visible');\ncy.get('[data-testid=\"run-card-container\"]').filter(':visible').should('have.length.greaterThan', 0).each($card => {\n  cy.wrap($card).parents('a.linkDecoration').should('exist');\n});",
+              "err": {},
+              "uuid": "45f78fbf-3dcc-4e53-9227-910c074fbd86",
+              "parentUUID": "30b0222e-6676-416d-b2c8-0bd0adb3a093",
+              "isHook": false,
+              "skipped": false
+            }
+          ],
+          "suites": [],
+          "passes": [
+            "c4ff5f92-2901-44ab-8ef0-a1d9be83f836",
+            "e043dd4c-b1fe-4e8d-a169-291d5cf1e4eb",
+            "45f78fbf-3dcc-4e53-9227-910c074fbd86"
+          ],
+          "failures": [],
+          "pending": [],
+          "skipped": [],
+          "duration": 16135,
+          "root": false,
+          "rootEmpty": false,
+          "_timeout": 2000
+        }
+      ],
+      "passes": [],
+      "failures": [],
+      "pending": [],
+      "skipped": [],
+      "duration": 0,
+      "root": true,
+      "rootEmpty": true,
+      "_timeout": 2000
+    }
+  ],
+  "meta": {
+    "mocha": {
+      "version": "7.2.0"
+    },
+    "mochawesome": {
+      "options": {
+        "quiet": false,
+        "reportFilename": "mochawesome",
+        "saveHtml": true,
+        "saveJson": true,
+        "consoleReporter": "spec",
+        "useInlineDiffs": false,
+        "code": true
+      },
+      "version": "7.1.3"
+    },
+    "marge": {
+      "options": {
+        "reportDir": "cypress/results",
+        "overwrite": false,
+        "html": true,
+        "json": true
+      },
+      "version": "6.2.0"
+    }
+  }
+}

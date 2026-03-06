@@ -1,0 +1,162 @@
+{
+  "stats": {
+    "suites": 1,
+    "tests": 4,
+    "passes": 4,
+    "pending": 0,
+    "failures": 0,
+    "start": "2026-03-06T11:20:21.181Z",
+    "end": "2026-03-06T11:21:47.668Z",
+    "duration": 86487,
+    "testsRegistered": 4,
+    "passPercent": 100,
+    "pendingPercent": 0,
+    "other": 0,
+    "hasOther": false,
+    "skipped": 0,
+    "hasSkipped": false
+  },
+  "results": [
+    {
+      "uuid": "832ac3e8-7992-44be-991f-87a63458b5d2",
+      "title": "",
+      "fullFile": "cypress\\e2e\\Common Login\\LoginPage.cy.js",
+      "file": "cypress\\e2e\\Common Login\\LoginPage.cy.js",
+      "beforeHooks": [],
+      "afterHooks": [],
+      "tests": [],
+      "suites": [
+        {
+          "uuid": "593d9760-caf0-4b6d-bb02-2c40b409dd90",
+          "title": "Login Page Tests",
+          "fullFile": "",
+          "file": "",
+          "beforeHooks": [],
+          "afterHooks": [],
+          "tests": [
+            {
+              "title": "Block_001 - Verify user can successfully login after admin unblocks user account",
+              "fullTitle": "Login Page Tests Block_001 - Verify user can successfully login after admin unblocks user account",
+              "timedOut": null,
+              "duration": 29851,
+              "state": "passed",
+              "speed": "slow",
+              "pass": true,
+              "fail": false,
+              "pending": false,
+              "context": null,
+              "code": "//Blocking user account\nfor (let i = 0; i <= 5; i++) {\n  _LidarViewer.default.getEmail.clear().type(_Constants.default.validEmail);\n  _LidarViewer.default.getPassword.clear().type(_Constants.default.invalidPwd);\n  _LidarViewer.default.getLoginBtn.click();\n  cy.wait(500);\n}\ncy.contains(\"Too many login attempts\").should(\"be.visible\");\n// Unblocking user account as admin\ncy.unblockUser(_Constants.default.validEmail);\ncy.logout();\n//Logging in to user account successfully\ncy.visit('/login');\n(0, _commonMethods.loginToPortal)(_Constants.default.validEmail, _Constants.default.password);\n_LidarViewer.default.getHomeText.should(\"have.text\", \"Home Page\");",
+              "err": {},
+              "uuid": "94a6fb69-28e5-42da-aa14-3bafe9330c8a",
+              "parentUUID": "593d9760-caf0-4b6d-bb02-2c40b409dd90",
+              "isHook": false,
+              "skipped": false
+            },
+            {
+              "title": "OTP_001_Verify that login with valid OTP",
+              "fullTitle": "Login Page Tests OTP_001_Verify that login with valid OTP",
+              "timedOut": null,
+              "duration": 9220,
+              "state": "passed",
+              "speed": "medium",
+              "pass": true,
+              "fail": false,
+              "pending": false,
+              "context": null,
+              "code": "(0, _commonMethods.loginToPortal)(_Constants.default.testDesignEngineerEmail, _Constants.default.password);\n_LidarViewer.default.getHomeText.should(\"have.text\", \"Home Page\");",
+              "err": {},
+              "uuid": "955fcd85-f54d-429f-b3e7-e351e2be44be",
+              "parentUUID": "593d9760-caf0-4b6d-bb02-2c40b409dd90",
+              "isHook": false,
+              "skipped": false
+            },
+            {
+              "title": "Profile_001 - Verify user able to update password from view profile dialog",
+              "fullTitle": "Login Page Tests Profile_001 - Verify user able to update password from view profile dialog",
+              "timedOut": null,
+              "duration": 29050,
+              "state": "passed",
+              "speed": "slow",
+              "pass": true,
+              "fail": false,
+              "pending": false,
+              "context": null,
+              "code": "// Step 1: Login to user account\n(0, _commonMethods.loginToPortal)(_Constants.default.validEmail, _Constants.default.password);\n_LidarViewer.default.getHomeText.should(\"have.text\", \"Home Page\");\n// Step 2: Open profile/view profile dialog\n_LidarViewer.default.getProfileIcon.click();\n_LidarViewer.default.getViewProfileOption.click();\n_LidarViewer.default.getEditProfileHeader.should('be.visible');\n_LidarViewer.default.getChangePasswordBtn.click();\n// Step 4: Fill out change password fields\nconst timestamp = Date.now().toString().slice(-5);\nconst newPwd = `Tp_${timestamp}!A1`;\n_LidarViewer.default.getOldPasswordField.clear().type(_Constants.default.password);\n_LidarViewer.default.getNewPasswordField.clear().type(newPwd);\n_LidarViewer.default.getConfirmNewPasswordField.clear().type(newPwd);\n_LidarViewer.default.getUpdatePasswordBtn.click();\n// Step 6: Expect a success message and redirect/logout if app requires\ncy.contains(\"Password updated successfully\", {\n  timeout: 10000\n}).should(\"be.visible\");\ncy.get('body').click(0, 0);\n// Step 7: Log out after password change\ncy.logout();\n// Step 8: Login again with new password to verify\n(0, _commonMethods.loginToPortal)(_Constants.default.validEmail, newPwd);\n_LidarViewer.default.getHomeText.should(\"have.text\", \"Home Page\");\n// Step 8: Reset password back to original\n_LidarViewer.default.getProfileIcon.click();\n_LidarViewer.default.getViewProfileOption.click();\n_LidarViewer.default.getChangePasswordBtn.click();\n_LidarViewer.default.getOldPasswordField.clear().type(newPwd);\n_LidarViewer.default.getNewPasswordField.clear().type(_Constants.default.password);\n_LidarViewer.default.getConfirmNewPasswordField.clear().type(_Constants.default.password);\n_LidarViewer.default.getUpdatePasswordBtn.click();\ncy.contains(\"Password updated successfully\", {\n  timeout: 10000\n}).should(\"be.visible\");\ncy.get('body').click(0, 0);\n// Final logout to keep test isolated\ncy.logout();",
+              "err": {},
+              "uuid": "b96dfe5b-b5c1-4a30-ae41-fbeef58edd1f",
+              "parentUUID": "593d9760-caf0-4b6d-bb02-2c40b409dd90",
+              "isHook": false,
+              "skipped": false
+            },
+            {
+              "title": "Profile_002 - Verify View Profile option is visible to all user accounts",
+              "fullTitle": "Login Page Tests Profile_002 - Verify View Profile option is visible to all user accounts",
+              "timedOut": null,
+              "duration": 18186,
+              "state": "passed",
+              "speed": "slow",
+              "pass": true,
+              "fail": false,
+              "pending": false,
+              "context": null,
+              "code": "// ----- Admin User -----\n(0, _commonMethods.Adminlogin)(_Constants.default.AdminEmail, _Constants.default.AdminPassword);\n_LidarViewer.default.getProfileIcon.click();\n_LidarViewer.default.getViewProfileOption.should(\"be.visible\");\ncy.get('body').click(0, 0);\ncy.logout();\n// ----- Non-Admin User -----\n(0, _commonMethods.loginToPortal)(_Constants.default.testDesignEngineerEmail, _Constants.default.password);\n_LidarViewer.default.getProfileIcon.click();\n_LidarViewer.default.getViewProfileOption.should(\"be.visible\");\ncy.get('body').click(0, 0);\ncy.logout();",
+              "err": {},
+              "uuid": "07860b8a-165d-47fb-a966-0e9626e085a9",
+              "parentUUID": "593d9760-caf0-4b6d-bb02-2c40b409dd90",
+              "isHook": false,
+              "skipped": false
+            }
+          ],
+          "suites": [],
+          "passes": [
+            "94a6fb69-28e5-42da-aa14-3bafe9330c8a",
+            "955fcd85-f54d-429f-b3e7-e351e2be44be",
+            "b96dfe5b-b5c1-4a30-ae41-fbeef58edd1f",
+            "07860b8a-165d-47fb-a966-0e9626e085a9"
+          ],
+          "failures": [],
+          "pending": [],
+          "skipped": [],
+          "duration": 86307,
+          "root": false,
+          "rootEmpty": false,
+          "_timeout": 2000
+        }
+      ],
+      "passes": [],
+      "failures": [],
+      "pending": [],
+      "skipped": [],
+      "duration": 0,
+      "root": true,
+      "rootEmpty": true,
+      "_timeout": 2000
+    }
+  ],
+  "meta": {
+    "mocha": {
+      "version": "7.2.0"
+    },
+    "mochawesome": {
+      "options": {
+        "quiet": false,
+        "reportFilename": "mochawesome",
+        "saveHtml": true,
+        "saveJson": true,
+        "consoleReporter": "spec",
+        "useInlineDiffs": false,
+        "code": true
+      },
+      "version": "7.1.3"
+    },
+    "marge": {
+      "options": {
+        "reportDir": "cypress/results",
+        "overwrite": false,
+        "html": true,
+        "json": true
+      },
+      "version": "6.2.0"
+    }
+  }
+}
