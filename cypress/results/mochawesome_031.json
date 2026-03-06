@@ -1,0 +1,105 @@
+{
+  "stats": {
+    "suites": 1,
+    "tests": 1,
+    "passes": 1,
+    "pending": 0,
+    "failures": 0,
+    "start": "2026-03-06T11:51:35.438Z",
+    "end": "2026-03-06T11:51:43.043Z",
+    "duration": 7605,
+    "testsRegistered": 1,
+    "passPercent": 100,
+    "pendingPercent": 0,
+    "other": 0,
+    "hasOther": false,
+    "skipped": 0,
+    "hasSkipped": false
+  },
+  "results": [
+    {
+      "uuid": "dfc1f449-e170-4414-83f9-73998598ad2e",
+      "title": "",
+      "fullFile": "cypress\\e2e\\Login\\Login.cy.js",
+      "file": "cypress\\e2e\\Login\\Login.cy.js",
+      "beforeHooks": [],
+      "afterHooks": [],
+      "tests": [],
+      "suites": [
+        {
+          "uuid": "e497e81c-02d6-45ef-8f46-a00ec778f9b1",
+          "title": "Login",
+          "fullFile": "",
+          "file": "",
+          "beforeHooks": [],
+          "afterHooks": [],
+          "tests": [
+            {
+              "title": "Login_003_Verify that login with invalid email and valid password",
+              "fullTitle": "Login Login_003_Verify that login with invalid email and valid password",
+              "timedOut": null,
+              "duration": 7575,
+              "state": "passed",
+              "speed": "medium",
+              "pass": true,
+              "fail": false,
+              "pending": false,
+              "context": null,
+              "code": "cy.wait(2000);\n(0, _commonMethods.login1)(_Constants.default.inValidEmail, _Constants.default.password);\ncy.on(\"window:alert\", str => {\n  expect(str).to.include(\"Invalid email or password\");\n});",
+              "err": {},
+              "uuid": "78ca91af-f5e3-4c44-806c-84e226bdfdc4",
+              "parentUUID": "e497e81c-02d6-45ef-8f46-a00ec778f9b1",
+              "isHook": false,
+              "skipped": false
+            }
+          ],
+          "suites": [],
+          "passes": [
+            "78ca91af-f5e3-4c44-806c-84e226bdfdc4"
+          ],
+          "failures": [],
+          "pending": [],
+          "skipped": [],
+          "duration": 7575,
+          "root": false,
+          "rootEmpty": false,
+          "_timeout": 2000
+        }
+      ],
+      "passes": [],
+      "failures": [],
+      "pending": [],
+      "skipped": [],
+      "duration": 0,
+      "root": true,
+      "rootEmpty": true,
+      "_timeout": 2000
+    }
+  ],
+  "meta": {
+    "mocha": {
+      "version": "7.2.0"
+    },
+    "mochawesome": {
+      "options": {
+        "quiet": false,
+        "reportFilename": "mochawesome",
+        "saveHtml": true,
+        "saveJson": true,
+        "consoleReporter": "spec",
+        "useInlineDiffs": false,
+        "code": true
+      },
+      "version": "7.1.3"
+    },
+    "marge": {
+      "options": {
+        "reportDir": "cypress/results",
+        "overwrite": false,
+        "html": true,
+        "json": true
+      },
+      "version": "6.2.0"
+    }
+  }
+}
