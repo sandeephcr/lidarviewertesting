@@ -91,10 +91,7 @@ beforeEach(() => {
   it("Pole_004 - Verify the functionality of copy feature in pole", () => {
 
     const poleName = PoleActions.placePole(600, 350);
-  
-    // ======================
     // SPANS TAB
-    // ======================
     PoleLocators.getTab('Spans').click();
   
     PoleActions.copyForm("Span", 1);
@@ -105,11 +102,9 @@ beforeEach(() => {
   
     PoleActions.copyForm("SpanGuy", 1);
     PoleLocators.poleSidePanel.contains('SpanGuy [2]').should('exist');
-  
-  
-    // ======================
+
     // ANCHORS TAB
-    // ======================
+  
     PoleLocators.getTab('Anchors').click();
   
     PoleActions.copyForm("Anchor", 1);
@@ -117,17 +112,15 @@ beforeEach(() => {
   
     PoleActions.copyForm("Guy", 1);
     PoleLocators.poleSidePanel.contains('Guy [2]').should('exist');
-  
-  
-    // ======================
+
     // EQUIPMENT TAB
-    // ======================
+
     PoleLocators.getTab('Equipment').click();
   
     PoleActions.copyForm("Equipment", 1);
     PoleLocators.poleSidePanel.contains('Equipment [2]').should('exist');
   
-  });
+    });
 
   it("Pole_005 -Verify the functionality of display associated form data upon switching  between tabs", () => {
       const poleName = PoleActions.placePole(600, 350);
@@ -180,7 +173,7 @@ beforeEach(() => {
     PoleLocators.poleSidePanel.contains('Add Equipment').click();
     PoleActions.deleteEquipment(1);
   
-  });
+    });
 
   it("Pole_007 - Verify the functionality of adding new sub forms in pole form", () => {
     const poleName = PoleActions.placePole(600, 350);
@@ -228,7 +221,7 @@ beforeEach(() => {
       .invoke('text')
       .should('match', /equipment/i);
   
-  });
+    });
 
   it("Pole_008 -Verify the functionality of saving updated pole to server", () => {
     
@@ -259,7 +252,7 @@ beforeEach(() => {
     cy.get(`div[role="button"][aria-label="${updatedPoleName}"]`).should('exist');
     PoleActions.openPole(updatedPoleName);
     PoleLocators.getField('Id').should('have.value', updatedPoleName);
-  });
+    });
 
   it("Pole_009 -Verifying the functionality of pole form deletion from server", () => {
         // Place & save pole

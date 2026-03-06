@@ -25,6 +25,15 @@ class ViewerElements {
     get getMeasurementsBtn() {
       return cy.contains('.ToolTip-container', 'Measurements');
     }
+    // Measurements details toggle
+    get getMeasurementDetailsBtn() {
+      return cy.get('.NavBarToggleIconButton').contains('Details');
+    }
+
+    // Clear measurements button
+    get getClearMeasurementsBtn() {
+      return cy.get('.NavBarToggleIconButton').contains('Clear');
+    }
   
     get getCalloutsBtn() {
       return cy.contains('.ToolTip-container', 'Callouts');
