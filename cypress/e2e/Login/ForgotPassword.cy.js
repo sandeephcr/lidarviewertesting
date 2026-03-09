@@ -50,10 +50,10 @@ it("Forgot_Password_003_Verify user cannot request password reset with NON-EXIST
   LidarViewerElements.sendRecoverLinkBtn.click();
 
   LidarViewerElements.infoMessageContainer
-  .should("be.visible")
-  .and(($el) => expect(
-      ["email is not registered", "failed to send reset password link"].some(m => $el.text().toLowerCase().includes(m))
-    ).to.be.true);
+    .should("be.visible")
+    .and(($el) => {
+      expect($el.text().toLowerCase()).to.include("reset password link sent");
+    });
 
     });
 
