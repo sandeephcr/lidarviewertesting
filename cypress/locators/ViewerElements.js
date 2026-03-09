@@ -280,7 +280,7 @@ get getExportDialog() {
     }
     
     get getPointMeasurement() {
-        return cy.contains('.ToolTip-container', 'Point Measurement');
+        return cy.contains('.ToolTip-container', /^Point Measurement$/);
     }
     
     get getPolylineMeasurement() {
@@ -304,7 +304,7 @@ get getExportDialog() {
     }
     
     get getAddPointBtn() {
-        return cy.contains('.ToolTip-container', 'Add Point');
+        return cy.contains('.ToolTip-container', /^Add Point$/);
     }
   
 }
