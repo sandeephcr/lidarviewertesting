@@ -31,8 +31,9 @@ describe("Forgot Password Tests", () => {
 
 it("Forgot_Password_002_Verify user cannot request password reset with INVALID email format", () => {
 
+    const invalidMail=`hcr${Date.now()}`;
     LidarViewerElements.emailInForgotPasswordField
-      .type(Constants.invalidFormatEmail);
+      .type(invalidMail);
 
     LidarViewerElements.sendRecoverLinkBtn.click();
 
@@ -44,8 +45,9 @@ it("Forgot_Password_002_Verify user cannot request password reset with INVALID e
 
 it("Forgot_Password_003_Verify user cannot request password reset with NON-EXISTING email", () => {
   
+  const invalidMail=`hcr${Date.now()}@hcrobo.com`;
   LidarViewerElements.emailInForgotPasswordField
-    .type(Constants.nonExistingEmailForgot);
+    .type(invalidMail);
 
   LidarViewerElements.sendRecoverLinkBtn.click();
 
