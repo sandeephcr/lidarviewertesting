@@ -1,0 +1,247 @@
+{
+  "stats": {
+    "suites": 1,
+    "tests": 8,
+    "passes": 6,
+    "pending": 0,
+    "failures": 2,
+    "start": "2026-03-09T11:58:09.228Z",
+    "end": "2026-03-09T12:07:08.576Z",
+    "duration": 539348,
+    "testsRegistered": 8,
+    "passPercent": 75,
+    "pendingPercent": 0,
+    "other": 0,
+    "hasOther": false,
+    "skipped": 0,
+    "hasSkipped": false
+  },
+  "results": [
+    {
+      "uuid": "77aa0f30-59e9-4c9a-a4ff-fe27ae4848ad",
+      "title": "",
+      "fullFile": "cypress\\e2e\\Callouts\\Callouts.cy.js",
+      "file": "cypress\\e2e\\Callouts\\Callouts.cy.js",
+      "beforeHooks": [],
+      "afterHooks": [],
+      "tests": [],
+      "suites": [
+        {
+          "uuid": "eadd03a4-468b-42c3-aabe-2b9991453cd5",
+          "title": "Callouts Module",
+          "fullFile": "",
+          "file": "",
+          "beforeHooks": [],
+          "afterHooks": [],
+          "tests": [
+            {
+              "title": "Callouts_001 - Verify the recent placed callout should highlight in the callout list",
+              "fullTitle": "Callouts Module Callouts_001 - Verify the recent placed callout should highlight in the callout list",
+              "timedOut": null,
+              "duration": 38244,
+              "state": "passed",
+              "speed": "slow",
+              "pass": true,
+              "fail": false,
+              "pending": false,
+              "context": null,
+              "code": "_CalloutsAction.default.placeCallout(500, 800);\n_CalloutsAction.default.placeCallout(500, 700).then(calloutName2 => {\n  // Verify latest callout is highlighted\n  _CalloutsLocators.default.getCalloutsContainer.contains('span', calloutName2).parents('.CalloutCard').should('have.class', 'latestCallout');\n});",
+              "err": {},
+              "uuid": "d45ec813-a036-40be-807c-5f3f75c573d2",
+              "parentUUID": "eadd03a4-468b-42c3-aabe-2b9991453cd5",
+              "isHook": false,
+              "skipped": false
+            },
+            {
+              "title": "Callouts_002 - Verify saving updated callout data to server",
+              "fullTitle": "Callouts Module Callouts_002 - Verify saving updated callout data to server",
+              "timedOut": null,
+              "duration": 57263,
+              "state": "failed",
+              "speed": null,
+              "pass": false,
+              "fail": true,
+              "pending": false,
+              "context": null,
+              "code": "// Step 0: Place new callout and wrap as alias\n_CalloutsAction.default.placeCallout(500, 800).then(initialCalloutName => {\n  const updatedText = `UpdatedCallout_${Date.now()}`;\n  _CalloutsAction.default.saveCalloutsToServer();\n  cy.reload();\n  cy.wait(5000);\n  _CalloutsAction.default.importCalloutsFromServer();\n  // Step 3: Wait for the callout to appear before updating\n  _CalloutsLocators.default.getCalloutsContainer.contains('span', initialCalloutName, {\n    timeout: 10000\n  }).should('be.visible').then(() => {\n    // Now safely update\n    _CalloutsAction.default.updateCallout(initialCalloutName, updatedText);\n  });\n  // Step 4: Save updated callouts\n  _CalloutsAction.default.saveCalloutsToServer();\n  // Step 5: Verify the updated callout text exists\n  _CalloutsLocators.default.getCalloutsContainer.contains('span', updatedText, {\n    timeout: 10000\n  }).should('exist');\n});",
+              "err": {
+                "message": "AssertionError: Timed out retrying after 30000ms: Expected to find content: 'Edit Dialog' within the selector: '.ModalHeader' but never did.",
+                "estack": "AssertionError: Timed out retrying after 30000ms: Expected to find content: 'Edit Dialog' within the selector: '.ModalHeader' but never did.\n    at CalloutsActions.placeCallout (webpack://lidarviewerautomation/./cypress/support/CalloutsAction.js:19:7)\n    at Context.eval (webpack://lidarviewerautomation/./cypress/e2e/Callouts/Callouts.cy.js:79:23)",
+                "diff": null
+              },
+              "uuid": "a283f06a-4a3b-4a94-986c-2a36b6871e86",
+              "parentUUID": "eadd03a4-468b-42c3-aabe-2b9991453cd5",
+              "isHook": false,
+              "skipped": false
+            },
+            {
+              "title": "Callouts_003 - Verify saving unchanged callout data to server does not trigger update",
+              "fullTitle": "Callouts Module Callouts_003 - Verify saving unchanged callout data to server does not trigger update",
+              "timedOut": null,
+              "duration": 48342,
+              "state": "passed",
+              "speed": "slow",
+              "pass": true,
+              "fail": false,
+              "pending": false,
+              "context": null,
+              "code": "// Step 0: Place a new callout and save it to server first\n_CalloutsAction.default.placeCallout(500, 800).then(calloutName => {\n  _CalloutsAction.default.saveCalloutsToServer();\n  // Step 1: Reload or re-import callouts from server to ensure fresh state\n  cy.reload();\n  cy.wait(5000);\n  _CalloutsAction.default.importCalloutsFromServer();\n  _ViewerElements.default.getMoreOptionsBtn.click();\n  _ViewerElements.default.getSaveOption.click();\n  _ViewerElements.default.getSaveDialog.should('be.visible');\n  _ViewerElements.default.getCalloutsCheckbox.click();\n  _ViewerElements.default.getSaveConfirmBtn.click();\n  _LidarViewer.default.infoMessageContainer.should('be.visible').invoke('text').should('match', /no updated/i);\n});",
+              "err": {},
+              "uuid": "1b747252-5848-4974-850e-7013d250bf74",
+              "parentUUID": "eadd03a4-468b-42c3-aabe-2b9991453cd5",
+              "isHook": false,
+              "skipped": false
+            },
+            {
+              "title": "Callouts_004 - Verify the functionality of clearing all callout data",
+              "fullTitle": "Callouts Module Callouts_004 - Verify the functionality of clearing all callout data",
+              "timedOut": null,
+              "duration": 36336,
+              "state": "passed",
+              "speed": "slow",
+              "pass": true,
+              "fail": false,
+              "pending": false,
+              "context": null,
+              "code": "// Step 0: Place a few callouts so there’s something to clear\n_CalloutsAction.default.placeCallout(500, 800);\n_CalloutsAction.default.placeCallout(600, 700);\n// Step 2: Click the \"Clear\" button in the callouts menu\n_CalloutsLocators.default.getClearCalloutsBtn.should('be.visible').click();\ncy.get('[data-testid=\"confirm-button\"]').contains('Apply').should('be.visible').click();\n// Step 3: Confirm all callouts are removed\n_LidarViewer.default.infoMessageContainer.should('be.visible').invoke('text').should('match', /callouts.*cleared/i);\n_CalloutsLocators.default.getCalloutsContainer.find('.CalloutCard').should('have.length', 0);",
+              "err": {},
+              "uuid": "788f6eeb-f739-40d8-9abc-b86a1ee7a467",
+              "parentUUID": "eadd03a4-468b-42c3-aabe-2b9991453cd5",
+              "isHook": false,
+              "skipped": false
+            },
+            {
+              "title": "Callouts_005 - Verify the functionality of deleting a callout",
+              "fullTitle": "Callouts Module Callouts_005 - Verify the functionality of deleting a callout",
+              "timedOut": null,
+              "duration": 31314,
+              "state": "passed",
+              "speed": "slow",
+              "pass": true,
+              "fail": false,
+              "pending": false,
+              "context": null,
+              "code": "// Step 0: Place a new callout\n_CalloutsAction.default.placeCallout(500, 800).then(calloutName => {\n  _CalloutsAction.default.deleteCallout(calloutName);\n  _CalloutsLocators.default.getCalloutsContainer.contains('span', calloutName).should('not.exist');\n});",
+              "err": {},
+              "uuid": "036a0ab3-268b-46df-af51-d7fca09d9f2d",
+              "parentUUID": "eadd03a4-468b-42c3-aabe-2b9991453cd5",
+              "isHook": false,
+              "skipped": false
+            },
+            {
+              "title": "Callouts_006 - Verify the functionality of importing callout from the server",
+              "fullTitle": "Callouts Module Callouts_006 - Verify the functionality of importing callout from the server",
+              "timedOut": null,
+              "duration": 54875,
+              "state": "failed",
+              "speed": null,
+              "pass": false,
+              "fail": true,
+              "pending": false,
+              "context": null,
+              "code": "// Step 1: Place a callout\n_CalloutsAction.default.placeCallout(400, 800).then(calloutName => {\n  // Step 2: Save callouts to server\n  _CalloutsAction.default.saveCalloutsToServer();\n  cy.reload();\n  cy.wait(5000);\n  _CalloutsAction.default.importCalloutsFromServer();\n  _CalloutsLocators.default.getCalloutsContainer.contains('span', calloutName).should('exist');\n});",
+              "err": {
+                "message": "AssertionError: Timed out retrying after 30000ms: Expected to find content: 'Edit Dialog' within the selector: '.ModalHeader' but never did.",
+                "estack": "AssertionError: Timed out retrying after 30000ms: Expected to find content: 'Edit Dialog' within the selector: '.ModalHeader' but never did.\n    at CalloutsActions.placeCallout (webpack://lidarviewerautomation/./cypress/support/CalloutsAction.js:19:7)\n    at Context.eval (webpack://lidarviewerautomation/./cypress/e2e/Callouts/Callouts.cy.js:170:23)",
+                "diff": null
+              },
+              "uuid": "07f76791-83cd-4632-be4d-92f87a0a289d",
+              "parentUUID": "eadd03a4-468b-42c3-aabe-2b9991453cd5",
+              "isHook": false,
+              "skipped": false
+            },
+            {
+              "title": "Callouts_007 - Verify the functionality of saving callout to server",
+              "fullTitle": "Callouts Module Callouts_007 - Verify the functionality of saving callout to server",
+              "timedOut": null,
+              "duration": 29316,
+              "state": "passed",
+              "speed": "slow",
+              "pass": true,
+              "fail": false,
+              "pending": false,
+              "context": null,
+              "code": "// Step 1: Place a callout\n_CalloutsAction.default.placeCallout(300, 650).then(calloutName => {\n  // Step 2: Save callouts to server\n  _CalloutsAction.default.saveCalloutsToServer();\n});",
+              "err": {},
+              "uuid": "4faffcc6-c70c-4532-bf8b-24c1b6877722",
+              "parentUUID": "eadd03a4-468b-42c3-aabe-2b9991453cd5",
+              "isHook": false,
+              "skipped": false
+            },
+            {
+              "title": "Callouts_008 - Verify the functionality of saving callout to local machine",
+              "fullTitle": "Callouts Module Callouts_008 - Verify the functionality of saving callout to local machine",
+              "timedOut": null,
+              "duration": 24573,
+              "state": "passed",
+              "speed": "slow",
+              "pass": true,
+              "fail": false,
+              "pending": false,
+              "context": null,
+              "code": "// Step 1: Place a callout\n_CalloutsAction.default.placeCallout(350, 700).then(calloutName => {\n  // Step 2: Save callouts to local machine\n  _CalloutsAction.default.saveCalloutsToLocalMachine();\n  cy.exec('dir cypress\\\\downloads').then(result => {\n    expect(result.stdout).to.include('callouts');\n    cy.exec('del cypress\\\\downloads\\\\*callouts*.lwv');\n  });\n});",
+              "err": {},
+              "uuid": "2fa3488a-348a-4e87-bc65-6e68c9173560",
+              "parentUUID": "eadd03a4-468b-42c3-aabe-2b9991453cd5",
+              "isHook": false,
+              "skipped": false
+            }
+          ],
+          "suites": [],
+          "passes": [
+            "d45ec813-a036-40be-807c-5f3f75c573d2",
+            "1b747252-5848-4974-850e-7013d250bf74",
+            "788f6eeb-f739-40d8-9abc-b86a1ee7a467",
+            "036a0ab3-268b-46df-af51-d7fca09d9f2d",
+            "4faffcc6-c70c-4532-bf8b-24c1b6877722",
+            "2fa3488a-348a-4e87-bc65-6e68c9173560"
+          ],
+          "failures": [
+            "a283f06a-4a3b-4a94-986c-2a36b6871e86",
+            "07f76791-83cd-4632-be4d-92f87a0a289d"
+          ],
+          "pending": [],
+          "skipped": [],
+          "duration": 320263,
+          "root": false,
+          "rootEmpty": false,
+          "_timeout": 2000
+        }
+      ],
+      "passes": [],
+      "failures": [],
+      "pending": [],
+      "skipped": [],
+      "duration": 0,
+      "root": true,
+      "rootEmpty": true,
+      "_timeout": 2000
+    }
+  ],
+  "meta": {
+    "mocha": {
+      "version": "7.2.0"
+    },
+    "mochawesome": {
+      "options": {
+        "quiet": false,
+        "reportFilename": "mochawesome",
+        "saveHtml": true,
+        "saveJson": true,
+        "consoleReporter": "spec",
+        "useInlineDiffs": false,
+        "code": true
+      },
+      "version": "7.1.3"
+    },
+    "marge": {
+      "options": {
+        "reportDir": "cypress/results",
+        "overwrite": false,
+        "html": true,
+        "json": true
+      },
+      "version": "6.2.0"
+    }
+  }
+}

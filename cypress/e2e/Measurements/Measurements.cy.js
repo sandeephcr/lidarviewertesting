@@ -102,7 +102,6 @@ beforeEach(() => {
     // 1. Perform a horizontal measurement
     MeasurementActions.placeHorizontalMeasurement(500, 800, 700, 850);
   
-  
       MeasurementActions.getLatestMeasurementId().then((measurementId) => {
   
         MeasurementActions.deleteMeasurementById(measurementId);

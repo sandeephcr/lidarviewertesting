@@ -12,7 +12,7 @@ class MeasurementActions{
           .should('be.visible')
           .click();
       
-        cy.wait(3000); // viewer needs a moment
+        cy.wait(5000); // viewer needs a moment
       
         // First point
         cy.get('#canvas3D')
@@ -70,7 +70,7 @@ class MeasurementActions{
           .should('be.visible')
           .click();
       
-        cy.wait(3000); // viewer needs a moment
+        cy.wait(5000); // viewer needs a moment
       
         // First point
         cy.get('#canvas3D')
@@ -90,7 +90,7 @@ class MeasurementActions{
           .should('be.visible')
           .click();
       
-        cy.wait(3000);
+        cy.wait(5000);
       
         // Click three points to create the angle
         cy.get('#canvas3D').should('be.visible').click(x1, y1, { force: true });
@@ -106,7 +106,7 @@ class MeasurementActions{
           .should('be.visible')
           .click();
       
-        cy.wait(3000); // viewer needs a moment
+        cy.wait(5000); // viewer needs a moment
       
         // Click three points to create the angle
         cy.get('#canvas3D').should('be.visible').click(x1, y1, { force: true });
@@ -125,7 +125,7 @@ class MeasurementActions{
           .should('be.visible')
           .click();
       
-        cy.wait(3000); // give viewer a moment
+        cy.wait(5000); // give viewer a moment
       
         // Click all points
         points.forEach(point => {
@@ -183,7 +183,7 @@ class MeasurementActions{
           .should('be.visible')
           .click();
       
-        cy.wait(3000); // viewer needs a moment
+        cy.wait(5000); // viewer needs a moment
       
         // Click once to place the measurement
         cy.get('#canvas3D')
@@ -233,6 +233,149 @@ class MeasurementActions{
           .should('be.visible')
           .invoke('text')
           .should('match', /measurement.*saved/i);
+      }
+
+      exportMeasurementsToKML() {
+
+        // Open More Options
+        ViewerElements.getMoreOptionsBtn
+          .should('be.visible')
+          .click();
+      
+        // Click Export option
+        ViewerElements.getExportOption
+          .should('be.visible')
+          .click();
+      
+        // Wait for Export dialog
+        ViewerElements.getExportDialog
+          .should('be.visible');
+      
+        // Select Measurements feature
+        ViewerElements.getExportFeatureDropdown
+          .select('Measurements');
+      
+        // Select Units (Feet default, but selecting explicitly is safer)
+        ViewerElements.getExportUnitsDropdown
+          .select('Feet');
+      
+        // Select KML format
+        ViewerElements.getExportTypeDropdown
+          .select('.kml');
+      
+        // Click Export
+        ViewerElements.getExportConfirmBtn
+          .should('be.visible')
+          .click();
+      
+        // Verify export message
+        LidarViewer.infoMessageContainer
+          .should('be.visible')
+          .invoke('text')
+          .should('match', /exported/i);
+      
+      }
+
+      exportMeasurementsToGeoJson() {
+
+        // Open More Options
+        ViewerElements.getMoreOptionsBtn
+          .should('be.visible')
+          .click();
+      
+        // Click Export option
+        ViewerElements.getExportOption
+          .should('be.visible')
+          .click();
+      
+        // Wait for Export dialog
+        ViewerElements.getExportDialog
+          .should('be.visible');
+      
+        // Select Measurements feature
+        ViewerElements.getExportFeatureDropdown
+          .select('Measurements');
+      
+        // Select Units (Feet default, but selecting explicitly is safer)
+        ViewerElements.getExportUnitsDropdown
+          .select('Feet');
+      
+        // Select KML format
+        ViewerElements.getExportTypeDropdown
+          .select('.geojson');
+      
+        // Click Export
+        ViewerElements.getExportConfirmBtn
+          .should('be.visible')
+          .click();
+      
+        // Verify export message
+        LidarViewer.infoMessageContainer
+          .should('be.visible')
+          .invoke('text')
+          .should('match', /exported/i);
+      
+      }
+
+      placeVerticalMeasurement(x1 = 500, y1 = 300, x2 = 600, y2 = 350) {
+
+        // Select measurement tool
+        ViewerElements.getVerticalMeasurement
+          .should('be.visible')
+          .click();
+      
+        cy.wait(6000); // viewer needs a moment
+      
+        // First point
+        cy.get('#canvas3D')
+          .should('be.visible')
+          .click(x1, y1, { force: true });
+      
+        // Second point
+        cy.get('#canvas3D')
+          .click(x2, y2, { force: true });
+      
+      }
+
+      exportMeasurementsToShape() {
+
+        // Open More Options
+        ViewerElements.getMoreOptionsBtn
+          .should('be.visible')
+          .click();
+      
+        // Click Export option
+        ViewerElements.getExportOption
+          .should('be.visible')
+          .click();
+      
+        // Wait for Export dialog
+        ViewerElements.getExportDialog
+          .should('be.visible');
+      
+        // Select Measurements feature
+        ViewerElements.getExportFeatureDropdown
+          .select('Measurements');
+      
+        // Select Units (Feet default, but selecting explicitly is safer)
+        ViewerElements.getExportUnitsDropdown
+          .select('Feet');
+      
+        // Select KML format
+        ViewerElements.getExportTypeDropdown
+          .select('.shp');
+      
+        // Click Export
+        ViewerElements.getExportConfirmBtn
+          .should('be.visible')
+          .click();
+      
+        // Verify export message
+        LidarViewer.infoMessageContainer
+          .should('be.visible')
+          .invoke('text')
+          .should('match', /exported/i);
+      
       }
 }
 

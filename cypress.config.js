@@ -5,6 +5,7 @@ module.exports = defineConfig({
   viewportWidth: 1920,
   viewportHeight: 1080,
   defaultCommandTimeout: 30000,
+  defaultCommandDelay: 500,
   e2e: {
     baseUrl: 'https://testing.lidartechsolutions.com', 
     video: false,

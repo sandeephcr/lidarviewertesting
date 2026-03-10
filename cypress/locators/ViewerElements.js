@@ -306,6 +306,7 @@ get getExportDialog() {
     get getAddPointBtn() {
         return cy.contains('.ToolTip-container', /^Add Point$/);
     }
+
   
 }
   
