@@ -17,15 +17,15 @@ class UserManagementLocators {
     }
 
     get getAddUserIcon() {
-        return cy.get('#root > div > main > div.flex-c.width-100vw.height-100vh.no-overflow > div.width-100.no-overflow.padding-20.no-wrap > div > div.flex-c.flex-grow.padding-20.round-corner-6.no-wrap > div > div.flex-c.mw-100.mh-100.max-content.padding-20.round-corner-6.gap-30 > div > div > div.relative.ToolTip-container')
+        return cy.get('.ToolTip-container a[href*="/registration"]');    
     }
 
     get getUserNameInAddUser() {
-        return cy.get('#root > div > main > div.flex-c.width-100vw.height-100vh.no-overflow.relative > form > div.absolute.flex-c.align-center.gap-10.shawdow-light.padding-30.round-corner-6.RegistartionForm > div:nth-child(4) > div.flex-r.no-wrap.width-100.IconTextEntry.relative > input')
+        return cy.get('input[placeholder="Username"]');
     }
 
     get getUserEmailInAddUser() {
-        return cy.get('#root > div > main > div.flex-c.width-100vw.height-100vh.no-overflow.relative > form > div.absolute.flex-c.align-center.gap-10.shawdow-light.padding-30.round-corner-6.RegistartionForm > div:nth-child(5) > div.flex-r.no-wrap.width-100.IconTextEntry.relative > input')
+        return cy.get('input[placeholder="Email"]');
     }
 
     get getUserPasswordInAddUser() {

@@ -179,5 +179,106 @@ class LidarViewerElements {
       get getRegenerateCancelBtn() {
         return cy.get('[data-testid="cancel-button"]');
       }
+
+      get getAdministrationOption() {
+        return cy.contains('span.body2.bold', 'Administration').parent('a');
+    }
+
+    get getDashboardOption() {
+        return cy.contains('.AdminOptionHeader', 'Dashboard');
+    }
+
+    get getUserManagementOption() {
+        return cy.contains('.AdminOptionHeader', 'User Management');
+    }
+
+    get getRunManagementOption() {
+        return cy.contains('.AdminOptionHeader', 'Run Management');
+    }
+
+    get getConcurrentUsersOption() {
+        return cy.contains('.AdminOptionHeader', 'Concurrent Users');
+    }
+
+    get getAlertsOption() {
+        return cy.contains('.AdminOptionHeader', 'Alerts');
+    }
+    // Page Header
+    get getManageUsersHeader() {
+        return cy.contains('.overlay-heading', 'Manage Users');
+    }
+
+    // Search bar container
+    get getSearchInput() {
+        return cy.get('input[placeholder="Type for search"]');
+    }
+
+    // Sort icon for the list
+    get getSortIcon() {
+        return cy.get('[data-testid="sort-icon"]');
+    }
+
+    // Add User button (SVG link)
+    get getAddUserButton() {
+        return cy.get('.ToolTip-container a[href*="/registration"]');
+    }
+
+    // Tooltip for Add User button (optional)
+    get getAddUserTooltip() {
+        return cy.get('.ToolTip-HC').contains('User Registration');
+    }
+    // Page Header
+    get getHeader() {
+        return cy.contains('.heading2', 'User Registration');
+    }
+
+    // Username input
+    get getUsernameInput() {
+        return cy.get('input[placeholder="Username"]');
+    }
+
+    // Email input
+    get getEmailInput() {
+        return cy.get('input[placeholder="Email"]');
+    }
+
+    getDesignationDropdown() {
+        return cy.get('select');  // since there is only one select for Designation
+    }
+
+    // Sites multi-select dropdown
+    get getSitesDropdown() {
+        return cy.get('.rmsc .dropdown-container');
+    }
+
+    // Enter Password input
+    get getPasswordInput() {
+        return cy.get('input[placeholder="Password"]');
+    }
+
+    // Confirm Password input
+    get getConfirmPasswordInput() {
+        return cy.get('input[placeholder="Confirm Password"]');
+    }
+
+    // Mail Required checkbox
+    get getMailRequiredCheckbox() {
+        return cy.get('.CheckBox');
+    }
+
+    // Import from Excel button
+    get getImportFromExcel() {
+        return cy.contains('span', 'Import from Excel');
+    }
+
+    // Register button
+    get getRegisterButton() {
+        return cy.get('[data-testid="register"]');
+    }
+
+    // Password rules text (optional, for validation)
+    get getPasswordRules() {
+        return cy.get('.flex-c.text-xs div');
+    }
 }
 export default new LidarViewerElements

@@ -137,7 +137,7 @@ describe("Home Page Navigation Tests", () => {
       .should('contain', '2');
 
   });
-  it.only('Home_Project_nav_009_Verify that clicking on the previous button navigates to the previous page', () => {
+  it('Home_Project_nav_009_Verify that clicking on the previous button navigates to the previous page', () => {
 
     // Open folder
     cy.get(".folderName")

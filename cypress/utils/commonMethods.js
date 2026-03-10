@@ -149,11 +149,7 @@ export const navigateToUserManagement = () => {
 //Add User
 
 export const addUser = (uname, email, password, confirmPassword) => {
-  cy.wait(2000);
-  login(Constants.validEmail, Constants.password);
-  LidarViewerElements.getHomeText.should("have.text", "Home Page");
-  navigateToUserManagement();
-  cy.wait(2000);
+  
   UserManagementLocators.getAddUserIcon.click();
   UserManagementLocators.getUserNameInAddUser.type(uname);
   UserManagementLocators.getUserEmailInAddUser.type(email);

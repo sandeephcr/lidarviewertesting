@@ -111,7 +111,7 @@ describe("Search Sort Home Tests", () => {
   //   );
   // });
 
-  it.only("Home_007_Verify that the search feature correctly displays associated run data for valid latitude and longitude values.", () => {
+  it("Home_007_Verify that the search feature correctly displays associated run data for valid latitude and longitude values.", () => {
 
     let latlng;
     // Search Run
