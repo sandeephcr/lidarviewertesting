@@ -34,6 +34,19 @@ module.exports = defineConfig({
         console.log(`Total tests executed: ${results.totalTests}`);
         console.log(`Tests failed: ${results.failures}`);
       });
+      // Allow clipboard access (prevents permission popup)
+    on("before:browser:launch", (browser, launchOptions) => {
+
+      if (browser.name === "chrome") {
+        launchOptions.args.push(
+          "--unsafely-treat-insecure-origin-as-secure=https://testing.lidartechsolutions.com",
+          "--allow-running-insecure-content",
+          "--disable-features=BlockInsecurePrivateNetworkRequests"
+        );
+      }
+
+      return launchOptions;
+    });
 
       return config;        
     },

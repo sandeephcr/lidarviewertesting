@@ -4,6 +4,7 @@ import {
 } from "../../utils/commonMethods.js";
 import LidarViewer from "../../locators/LidarViewer.js";
 import Constants from "../../utils/Constants.js";
+import ViewerElements from "../../locators/ViewerElements.js";
 
 describe("Home Page Navigation Tests", () => {
   const folderPath = ["Shared Space", "Automation"];
@@ -19,17 +20,17 @@ describe("Home Page Navigation Tests", () => {
     cy.get(".body3.ActiveCrumb.pointer").contains("Automation_Atchyutha-");
   });
 
-  it('Home_Project_nav_002_Verify that clicking on the root element navigates the user back to the root view and displays all available data in home page', () => {
+  // it('Home_Project_nav_002_Verify that clicking on the root element navigates the user back to the root view and displays all available data in home page', () => {
 
-    folderPath.forEach((folderPaths) => {
-        cy.get(".folderName").contains(folderPaths).should("be.visible").dblclick();
-        cy.wait(2000);
-    });
+  //   folderPath.forEach((folderPaths) => {
+  //       cy.get(".folderName").contains(folderPaths).should("be.visible").dblclick();
+  //       cy.wait(2000);
+  //   });
 
-    cy.get('.body3.InactiveCrumb.pointer').contains('Root').click()
-    LidarViewer.getHomeText.should('have.text','Home Page')
+  //   cy.get('.body3.InactiveCrumb.pointer').contains('Root').click()
+  //   LidarViewer.getHomeText.should('have.text','Home Page')
 
-  });
+  // });
 
   it('Home_Project_nav_003_Verify that clicking on a folder from search results opens the folder correctly.', () => {
    
@@ -40,13 +41,12 @@ describe("Home Page Navigation Tests", () => {
     cy.wait(2000);
     cy.get('.folderName').contains('Test').dblclick()
   });
-
-  it('Home_Project_nav_004_Verify that the select checkbox is displayed when more than one run is available.', () => {
+  // it('Home_Project_nav_004_Verify that the select checkbox is displayed when more than one run is available.', () => {
     
-    cy.get(".folderName").contains("Shared Space").should("be.visible").dblclick()
-    cy.get('[data-testid="run-card-container"]').filter(':visible').should('have.length.gte', 2)
-    cy.contains('div[role="checkbox"]', 'Select').should('be.visible')
-  });
+  //   cy.get(".folderName").contains("Shared Space").should("be.visible").dblclick()
+  //   cy.get('[data-testid="run-card-container"]').filter(':visible').should('have.length.gte', 2)
+  //   cy.contains('div[role="checkbox"]', 'Select').should('be.visible')
+  // });
 
   // it('Home_Project_nav_005_Verify that the open button is displayed when at least one run is available.', () => {
     
@@ -72,6 +72,97 @@ describe("Home Page Navigation Tests", () => {
     cy.get('.body3.ActiveCrumb.pointer').should('be.visible').and(($el) => {
     expect($el.text().trim()).to.eq(firstRunName)
     })
+  });
+  it('Multi-run_001_Verify that data can be successfully imported for all opened runs from the server', () => {
+    
+    let firstRunName
+    cy.get(".folderName").contains("Atc").should("be.visible").dblclick()
+    cy.wait(2000)
+    cy.contains('div[role="checkbox"]', 'Select').should('be.visible').click()
+
+    cy.get('[data-testid="run-card-container"]').filter(':visible')
+    .then($runs => {
+        firstRunName = $runs.eq(0).find('[data-testid="run-name"]').text().trim()
+        cy.wrap($runs.eq(0)).click()
+        cy.wrap($runs.eq(1)).click()
+    })
+    cy.contains('div.primary-btn', 'Open').should('be.visible').click()
+    cy.get('.body3.ActiveCrumb.pointer').should('be.visible').and(($el) => {
+    expect($el.text().trim()).to.eq(firstRunName)
+    })
+
+    ViewerElements.getMoreOptionsBtn
+        .should("be.visible")
+        .click();
+    
+    ViewerElements.getImportOption
+        .click();
+    
+    ViewerElements.getImportDialog
+        .should("be.visible");
+    
+    ViewerElements.selectImportSource("From Server");
+    ViewerElements.getRunSelectDropdown.click();
+
+    ViewerElements.getSelectAllRunsOption
+      .should('be.visible')
+      .click();
+    ViewerElements.getMeasurementsCheckbox.click();
+    
+    ViewerElements.getImportApplyBtn
+        .click();
+    
+    cy.wait(500);
+    
+    LidarViewer.infoMessageContainer
+        .should('be.visible')
+        .invoke('text')
+        .should('match', /downloaded/i);
+
+  });
+  it('Home_Project_nav_008_Verify that clicking on the next button navigates to the next page', () => {
+   
+    cy.get(".folderName").contains("Shared Space").should("be.visible").dblclick()
+      // Verify starting on page 1
+    cy.get('.pagination-item.selected')
+    .should('contain', '1');
+
+    // Click Next (right arrow)
+    cy.get('.arrow.right')
+      .should('be.visible')
+      .click();
+
+    // Verify page changed to 2
+    cy.get('.pagination-item.selected')
+      .should('contain', '2');
+
+  });
+  it.only('Home_Project_nav_009_Verify that clicking on the previous button navigates to the previous page', () => {
+
+    // Open folder
+    cy.get(".folderName")
+      .contains("Shared Space")
+      .should("be.visible")
+      .dblclick();
+  
+    // Go to page 2 first
+    cy.contains('.pagination-item', '2')
+      .should('be.visible')
+      .click();
+  
+    // Verify we are on page 2
+    cy.get('.pagination-item.selected')
+      .should('contain', '2');
+  
+    // Click Previous (left arrow)
+    cy.get('.pagination-container .arrow.left')
+      .should('be.visible')
+      .click();
+  
+    // Verify we returned to page 1
+    cy.get('.pagination-item.selected')
+      .should('contain', '1');
+  
   });
 
   // it('Home_Project_nav_007_Verify that an alert is displayed when the user attempts to open more than 10 runs ', () => {

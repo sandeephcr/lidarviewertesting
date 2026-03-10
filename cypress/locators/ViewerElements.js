@@ -306,8 +306,85 @@ get getExportDialog() {
     get getAddPointBtn() {
         return cy.contains('.ToolTip-container', /^Add Point$/);
     }
+// Comapct Map View menu
+    get getMapLayerFilterBtn() {
+      return cy.contains('.ToolTip-container', 'Map layer filter');
+    }
+    
+    get getZoomToCurrentMarkerBtn() {
+      return cy.contains('.ToolTip-container', 'Zoom to current marker');
+    }
+    
+    get getZoomToRunMarkersBtn() {
+      return cy.contains('.ToolTip-container', 'Zoom to run markers');
+    }
+    
+    get getEventImportBtn() {
+      return cy.contains('.ToolTip-container', 'Event Import');
+    }
+  // Filter Menu
 
+  get getRunMarkersToggle() {
+    return cy.get('#runMarkers');
+  }
   
+  get getPolesToggle() {
+    return cy.get('#poles');
+  }
+  
+  get getSpansToggle() {
+    return cy.get('#spans');
+  }
+  
+  get getMeasurementsToggle() {
+    return cy.get('#measurements');
+  }
+  
+  get getPointFeaturesToggle() {
+    return cy.get('#pointFeatures');
+  }
+  
+  get getKMLToggle() {
+    return cy.get('#kml');
+  }
+  
+  get getEventsToggle() {
+    return cy.get('#events');
+  }
+
+  // run markers
+  get getRunMarkerButtons() {
+    return cy.get('div[role="button"][tabindex="-1"]');
+  }
+
+  // Multi run import
+  get getRunSelectContainer() {
+    return cy.contains('span', 'Run Select').parent();
+  }
+  
+  get getRunSelectDropdown() {
+    return cy.contains('span', 'Run Select')
+      .parent()
+      .find('.dropdown-container');
+  }
+  
+  get getRunSelectArrow() {
+    return cy.contains('span', 'Run Select')
+      .parent()
+      .find('.dropdown-heading-dropdown-arrow');
+  }
+  
+  get getRunSelectPlaceholder() {
+    return cy.contains('span', 'Run Select')
+      .parent()
+      .find('.dropdown-heading-value');
+  }
+  getRunOption(runName) {
+    return cy.contains('.dropdown-item', runName);
+  }
+  get getSelectAllRunsOption() {
+    return cy.contains('label', 'Select All');
+  }
 }
   
 export default new ViewerElements();

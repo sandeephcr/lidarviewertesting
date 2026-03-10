@@ -139,5 +139,45 @@ class LidarViewerElements {
     get getUpdatePasswordBtn() {
         return cy.contains('button', 'Update Password');
     }
+
+    get getApiKeySection() {
+        return cy.contains('.tokenTitle', 'API Key');
+      }
+      
+      get getApiKeyValue() {
+        return cy.get('.tokenText');
+      }
+      
+      get getApiKeyCopyBtn() {
+        return cy.get('[data-testid="copybutton"]');
+      }
+      
+      get getApiKeyBlockBtn() {
+        return cy.get('.tokenBlockButton');
+      }
+      
+      get getApiKeyRegenerateBtn() {
+        return cy.get('.regenBtn');
+      }
+
+      get getEditProfileCloseBtn() {
+        return cy.contains('.ModalHeader', 'Edit Profile')
+                 .find('svg');
+      }
+      get getRegenerateApiModal() {
+        return cy.contains('.ModalHeader', 'Regenerate API Key');
+      }
+      
+      get getTokenDurationField() {
+        return cy.get('.tokenDaysInput .inputField');
+      }
+      
+      get getRegenerateConfirmBtn() {
+        return cy.get('[data-testid="confirm-button"]');
+      }
+      
+      get getRegenerateCancelBtn() {
+        return cy.get('[data-testid="cancel-button"]');
+      }
 }
 export default new LidarViewerElements
