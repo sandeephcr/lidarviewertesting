@@ -1,0 +1,124 @@
+{
+  "stats": {
+    "suites": 1,
+    "tests": 2,
+    "passes": 2,
+    "pending": 0,
+    "failures": 0,
+    "start": "2026-03-11T10:42:44.668Z",
+    "end": "2026-03-11T10:43:19.359Z",
+    "duration": 34691,
+    "testsRegistered": 2,
+    "passPercent": 100,
+    "pendingPercent": 0,
+    "other": 0,
+    "hasOther": false,
+    "skipped": 0,
+    "hasSkipped": false
+  },
+  "results": [
+    {
+      "uuid": "536007fe-def3-4dbf-8e3b-339b81a24c75",
+      "title": "",
+      "fullFile": "cypress\\e2e\\API Key\\APIKey.cy.js",
+      "file": "cypress\\e2e\\API Key\\APIKey.cy.js",
+      "beforeHooks": [],
+      "afterHooks": [],
+      "tests": [],
+      "suites": [
+        {
+          "uuid": "7e72a5f3-1d77-40be-93fb-ec59354169f3",
+          "title": "API Key Generation Tests",
+          "fullFile": "",
+          "file": "",
+          "beforeHooks": [],
+          "afterHooks": [],
+          "tests": [
+            {
+              "title": "APIKey_001_Verify API Key section is visible only for Admin users",
+              "fullTitle": "API Key Generation Tests APIKey_001_Verify API Key section is visible only for Admin users",
+              "timedOut": null,
+              "duration": 26229,
+              "state": "passed",
+              "speed": "slow",
+              "pass": true,
+              "fail": false,
+              "pending": false,
+              "context": null,
+              "code": "(0, _commonMethods.Adminlogin)(_Constants.default.AdminEmail, _Constants.default.AdminPassword);\n_LidarViewer.default.getProfileIcon.click();\n_LidarViewer.default.getViewProfileOption.click();\n_LidarViewer.default.getEditProfileHeader.should('be.visible');\n_LidarViewer.default.getApiKeySection.should('be.visible');\n_LidarViewer.default.getEditProfileCloseBtn.should('be.visible').click();\n// Click Logout from dropdown\ncy.contains('Logout').should('be.visible').click();\n// Confirm in modal\ncy.contains('Are you sure').should('be.visible');\ncy.get('[data-testid=\"confirm-button\"]').should('be.visible').click();\n(0, _commonMethods.loginToPortal)(_Constants.default.testDesignEngineerEmail, _Constants.default.password);\n_LidarViewer.default.getProfileIcon.click();\n_LidarViewer.default.getViewProfileOption.click();\n_LidarViewer.default.getEditProfileHeader.should('be.visible');\n_LidarViewer.default.getApiKeySection.should('not.exist');",
+              "err": {},
+              "uuid": "318b16af-9120-4b1d-bb83-6938fa425725",
+              "parentUUID": "7e72a5f3-1d77-40be-93fb-ec59354169f3",
+              "isHook": false,
+              "skipped": false
+            },
+            {
+              "title": "APIKey_002_Verify API Key is generated for valid request",
+              "fullTitle": "API Key Generation Tests APIKey_002_Verify API Key is generated for valid request",
+              "timedOut": null,
+              "duration": 8369,
+              "state": "passed",
+              "speed": "medium",
+              "pass": true,
+              "fail": false,
+              "pending": false,
+              "context": null,
+              "code": "(0, _commonMethods.Adminlogin)(_Constants.default.AdminEmail, _Constants.default.AdminPassword);\n// Open profile\n_LidarViewer.default.getProfileIcon.click();\n_LidarViewer.default.getViewProfileOption.click();\n_LidarViewer.default.getEditProfileHeader.should('be.visible');\n// Open API Key section\n_LidarViewer.default.getApiKeySection.click();\n// Store old token\n_LidarViewer.default.getApiKeyValue.invoke('text').then(oldToken => {\n  // Click regenerate\n  _LidarViewer.default.getApiKeyRegenerateBtn.click();\n  // Verify modal appears\n  _LidarViewer.default.getRegenerateApiModal.should('be.visible');\n  // Set duration (optional)\n  _LidarViewer.default.getTokenDurationField.clear().type('5');\n  // Confirm regenerate\n  _LidarViewer.default.getRegenerateConfirmBtn.click();\n  // Verify new token generated\n  _LidarViewer.default.getApiKeyValue.should('be.visible').invoke('text').should('not.eq', oldToken);\n});\n// Verify expiry text appears\ncy.contains('Token expires on').should('be.visible');\n// Verify success notification\n_LidarViewer.default.infoMessageContainer.should('be.visible');",
+              "err": {},
+              "uuid": "837c1dd5-7b4a-4ecb-b400-17696e1195ee",
+              "parentUUID": "7e72a5f3-1d77-40be-93fb-ec59354169f3",
+              "isHook": false,
+              "skipped": false
+            }
+          ],
+          "suites": [],
+          "passes": [
+            "318b16af-9120-4b1d-bb83-6938fa425725",
+            "837c1dd5-7b4a-4ecb-b400-17696e1195ee"
+          ],
+          "failures": [],
+          "pending": [],
+          "skipped": [],
+          "duration": 34598,
+          "root": false,
+          "rootEmpty": false,
+          "_timeout": 2000
+        }
+      ],
+      "passes": [],
+      "failures": [],
+      "pending": [],
+      "skipped": [],
+      "duration": 0,
+      "root": true,
+      "rootEmpty": true,
+      "_timeout": 2000
+    }
+  ],
+  "meta": {
+    "mocha": {
+      "version": "7.2.0"
+    },
+    "mochawesome": {
+      "options": {
+        "quiet": false,
+        "reportFilename": "mochawesome",
+        "saveHtml": true,
+        "saveJson": true,
+        "consoleReporter": "spec",
+        "useInlineDiffs": false,
+        "code": true
+      },
+      "version": "7.1.3"
+    },
+    "marge": {
+      "options": {
+        "reportDir": "cypress/results",
+        "overwrite": false,
+        "html": true,
+        "json": true
+      },
+      "version": "6.2.0"
+    }
+  }
+}

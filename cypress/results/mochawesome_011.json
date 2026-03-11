@@ -1,0 +1,162 @@
+{
+  "stats": {
+    "suites": 1,
+    "tests": 4,
+    "passes": 4,
+    "pending": 0,
+    "failures": 0,
+    "start": "2026-03-11T10:57:53.415Z",
+    "end": "2026-03-11T10:58:14.673Z",
+    "duration": 21258,
+    "testsRegistered": 4,
+    "passPercent": 100,
+    "pendingPercent": 0,
+    "other": 0,
+    "hasOther": false,
+    "skipped": 0,
+    "hasSkipped": false
+  },
+  "results": [
+    {
+      "uuid": "a37ee9cd-6cb2-4433-b59b-7681ae31c572",
+      "title": "",
+      "fullFile": "cypress\\e2e\\Login\\ForgotPassword.cy.js",
+      "file": "cypress\\e2e\\Login\\ForgotPassword.cy.js",
+      "beforeHooks": [],
+      "afterHooks": [],
+      "tests": [],
+      "suites": [
+        {
+          "uuid": "f1956b4d-3269-40ad-8bfd-914001c3e0ba",
+          "title": "Forgot Password Tests",
+          "fullFile": "",
+          "file": "",
+          "beforeHooks": [],
+          "afterHooks": [],
+          "tests": [
+            {
+              "title": "Forgot_Password_001_Verify user can request password reset link with valid email",
+              "fullTitle": "Forgot Password Tests Forgot_Password_001_Verify user can request password reset link with valid email",
+              "timedOut": null,
+              "duration": 10098,
+              "state": "passed",
+              "speed": "slow",
+              "pass": true,
+              "fail": false,
+              "pending": false,
+              "context": null,
+              "code": "cy.intercept(\"POST\", \"/api/forgotPassword/*\", {\n  statusCode: 200,\n  body: {\n    msg: \"Email sent successfully\",\n    resetToken: \"mock-token\"\n  }\n}).as(\"forgotReq\");\n_LidarViewer.default.emailInForgotPasswordField.type(_Constants.default.validForgotEmail);\n_LidarViewer.default.sendRecoverLinkBtn.click();\ncy.wait(\"@forgotReq\").then(interception => {\n  expect(interception.response.statusCode).to.eq(200);\n  expect(interception.response.body.msg).to.eq(\"Email sent successfully\");\n  expect(interception.response.body.resetToken).to.exist;\n});",
+              "err": {},
+              "uuid": "1cdc7bc4-7294-4092-8556-d082baf2219e",
+              "parentUUID": "f1956b4d-3269-40ad-8bfd-914001c3e0ba",
+              "isHook": false,
+              "skipped": false
+            },
+            {
+              "title": "Forgot_Password_002_Verify user cannot request password reset with INVALID email format",
+              "fullTitle": "Forgot Password Tests Forgot_Password_002_Verify user cannot request password reset with INVALID email format",
+              "timedOut": null,
+              "duration": 4327,
+              "state": "passed",
+              "speed": "fast",
+              "pass": true,
+              "fail": false,
+              "pending": false,
+              "context": null,
+              "code": "const invalidMail = `hcr${Date.now()}`;\n_LidarViewer.default.emailInForgotPasswordField.type(invalidMail);\n_LidarViewer.default.sendRecoverLinkBtn.click();\n_LidarViewer.default.infoMessageContainer.should(\"be.visible\").and(\"have.text\", \"Invalid email format\");",
+              "err": {},
+              "uuid": "16dd8ddc-b39c-4657-9d16-9fb207c8da5f",
+              "parentUUID": "f1956b4d-3269-40ad-8bfd-914001c3e0ba",
+              "isHook": false,
+              "skipped": false
+            },
+            {
+              "title": "Forgot_Password_003_Verify user cannot request password reset with NON-EXISTING email",
+              "fullTitle": "Forgot Password Tests Forgot_Password_003_Verify user cannot request password reset with NON-EXISTING email",
+              "timedOut": null,
+              "duration": 1321,
+              "state": "passed",
+              "speed": "fast",
+              "pass": true,
+              "fail": false,
+              "pending": false,
+              "context": null,
+              "code": "const invalidMail = `hcr${Date.now()}@hcrobo.com`;\n_LidarViewer.default.emailInForgotPasswordField.type(invalidMail);\n_LidarViewer.default.sendRecoverLinkBtn.click();\n_LidarViewer.default.infoMessageContainer.should(\"be.visible\").and($el => {\n  expect($el.text().toLowerCase()).to.include(\"reset password link sent\");\n});",
+              "err": {},
+              "uuid": "6ce08bf4-4dd6-46de-8b72-068a10bbea9f",
+              "parentUUID": "f1956b4d-3269-40ad-8bfd-914001c3e0ba",
+              "isHook": false,
+              "skipped": false
+            },
+            {
+              "title": "Forgot_Password_004_Verify submitting EMPTY email field",
+              "fullTitle": "Forgot Password Tests Forgot_Password_004_Verify submitting EMPTY email field",
+              "timedOut": null,
+              "duration": 5359,
+              "state": "passed",
+              "speed": "medium",
+              "pass": true,
+              "fail": false,
+              "pending": false,
+              "context": null,
+              "code": "_LidarViewer.default.sendRecoverLinkBtn.click();\n_LidarViewer.default.infoMessageContainer.should(\"be.visible\").should(\"contain.text\", \"Email can't be empty.\");",
+              "err": {},
+              "uuid": "62bcd521-c497-4695-be0f-4ce081760bca",
+              "parentUUID": "f1956b4d-3269-40ad-8bfd-914001c3e0ba",
+              "isHook": false,
+              "skipped": false
+            }
+          ],
+          "suites": [],
+          "passes": [
+            "1cdc7bc4-7294-4092-8556-d082baf2219e",
+            "16dd8ddc-b39c-4657-9d16-9fb207c8da5f",
+            "6ce08bf4-4dd6-46de-8b72-068a10bbea9f",
+            "62bcd521-c497-4695-be0f-4ce081760bca"
+          ],
+          "failures": [],
+          "pending": [],
+          "skipped": [],
+          "duration": 21105,
+          "root": false,
+          "rootEmpty": false,
+          "_timeout": 2000
+        }
+      ],
+      "passes": [],
+      "failures": [],
+      "pending": [],
+      "skipped": [],
+      "duration": 0,
+      "root": true,
+      "rootEmpty": true,
+      "_timeout": 2000
+    }
+  ],
+  "meta": {
+    "mocha": {
+      "version": "7.2.0"
+    },
+    "mochawesome": {
+      "options": {
+        "quiet": false,
+        "reportFilename": "mochawesome",
+        "saveHtml": true,
+        "saveJson": true,
+        "consoleReporter": "spec",
+        "useInlineDiffs": false,
+        "code": true
+      },
+      "version": "7.1.3"
+    },
+    "marge": {
+      "options": {
+        "reportDir": "cypress/results",
+        "overwrite": false,
+        "html": true,
+        "json": true
+      },
+      "version": "6.2.0"
+    }
+  }
+}

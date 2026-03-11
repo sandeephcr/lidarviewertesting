@@ -539,7 +539,6 @@ get getExportDialog() {
     return cy.get('#tw-panel-class-filters2 tbody tr').eq(1).find('input[type="checkbox"]');
   }
 
-  
 }
   
 export default new ViewerElements();

@@ -1,0 +1,124 @@
+{
+  "stats": {
+    "suites": 1,
+    "tests": 2,
+    "passes": 2,
+    "pending": 0,
+    "failures": 0,
+    "start": "2026-03-11T10:43:20.532Z",
+    "end": "2026-03-11T10:44:02.064Z",
+    "duration": 41532,
+    "testsRegistered": 2,
+    "passPercent": 100,
+    "pendingPercent": 0,
+    "other": 0,
+    "hasOther": false,
+    "skipped": 0,
+    "hasSkipped": false
+  },
+  "results": [
+    {
+      "uuid": "03e62636-acc1-4e4e-925d-ab278dcff7a5",
+      "title": "",
+      "fullFile": "cypress\\e2e\\Compact Map View\\CompactMapView.cy.js",
+      "file": "cypress\\e2e\\Compact Map View\\CompactMapView.cy.js",
+      "beforeHooks": [],
+      "afterHooks": [],
+      "tests": [],
+      "suites": [
+        {
+          "uuid": "c09b34aa-62cd-4e46-ba81-0fc4df1adbf2",
+          "title": "Compact Map View Module",
+          "fullFile": "",
+          "file": "",
+          "beforeHooks": [],
+          "afterHooks": [],
+          "tests": [
+            {
+              "title": "CompactMenu_001 - Verify run markers disappear from map view when toggled off",
+              "fullTitle": "Compact Map View Module CompactMenu_001 - Verify run markers disappear from map view when toggled off",
+              "timedOut": null,
+              "duration": 20471,
+              "state": "passed",
+              "speed": "slow",
+              "pass": true,
+              "fail": false,
+              "pending": false,
+              "context": null,
+              "code": "// Ensure markers are visible first\n_ViewerElements.default.getRunMarkerButtons.should('have.length.greaterThan', 0);\n// Open Map Layer Filter\n_ViewerElements.default.getMapLayerFilterBtn.click();\n// Turn Run Markers OFF\n_ViewerElements.default.getRunMarkersToggle.uncheck({\n  force: true\n});\n// Verify markers disappear\n_ViewerElements.default.getRunMarkerButtons.should('have.length', 0);",
+              "err": {},
+              "uuid": "8cf0cdd5-4e1b-484c-a91b-6e1fa34002bc",
+              "parentUUID": "c09b34aa-62cd-4e46-ba81-0fc4df1adbf2",
+              "isHook": false,
+              "skipped": false
+            },
+            {
+              "title": "CompactMenu_002 - Verify run markers display on map view when toggled on",
+              "fullTitle": "Compact Map View Module CompactMenu_002 - Verify run markers display on map view when toggled on",
+              "timedOut": null,
+              "duration": 20813,
+              "state": "passed",
+              "speed": "slow",
+              "pass": true,
+              "fail": false,
+              "pending": false,
+              "context": null,
+              "code": "_ViewerElements.default.getMapLayerFilterBtn.click();\n_ViewerElements.default.getRunMarkersToggle.uncheck({\n  force: true\n});\n_ViewerElements.default.getRunMarkerButtons.should('have.length', 0);\n_ViewerElements.default.getRunMarkersToggle.check({\n  force: true\n});\n_ViewerElements.default.getRunMarkerButtons.should('have.length.greaterThan', 0);",
+              "err": {},
+              "uuid": "ab0e8a48-26d9-4aa7-9fdd-377075a52294",
+              "parentUUID": "c09b34aa-62cd-4e46-ba81-0fc4df1adbf2",
+              "isHook": false,
+              "skipped": false
+            }
+          ],
+          "suites": [],
+          "passes": [
+            "8cf0cdd5-4e1b-484c-a91b-6e1fa34002bc",
+            "ab0e8a48-26d9-4aa7-9fdd-377075a52294"
+          ],
+          "failures": [],
+          "pending": [],
+          "skipped": [],
+          "duration": 41284,
+          "root": false,
+          "rootEmpty": false,
+          "_timeout": 2000
+        }
+      ],
+      "passes": [],
+      "failures": [],
+      "pending": [],
+      "skipped": [],
+      "duration": 0,
+      "root": true,
+      "rootEmpty": true,
+      "_timeout": 2000
+    }
+  ],
+  "meta": {
+    "mocha": {
+      "version": "7.2.0"
+    },
+    "mochawesome": {
+      "options": {
+        "quiet": false,
+        "reportFilename": "mochawesome",
+        "saveHtml": true,
+        "saveJson": true,
+        "consoleReporter": "spec",
+        "useInlineDiffs": false,
+        "code": true
+      },
+      "version": "7.1.3"
+    },
+    "marge": {
+      "options": {
+        "reportDir": "cypress/results",
+        "overwrite": false,
+        "html": true,
+        "json": true
+      },
+      "version": "6.2.0"
+    }
+  }
+}

@@ -390,5 +390,73 @@ class LidarViewerElements {
     get getPasswordRules() {
         return this.getEditUserModal.find('.flex-c.text-xs div'); // returns list of all rule divs
     }
+
+       // Modal container
+   get getUserPermissionsModal() {
+    return cy.contains('.ModalLarge', 'User Permissions');
+  }
+
+  // Close button (X)
+  get getCloseButton() {
+    return this.getUserPermissionsModal
+      .find('[data-testid="closeButton"]');
+  }
+
+  // Search input inside modal
+  get getSearchInput() {
+    return this.getUserPermissionsModal
+      .find('input[placeholder="Search"]');
+  }
+
+  // Folders section container
+  get getFoldersSection() {
+    return this.getUserPermissionsModal
+      .find('.scrollContainer');
+  }
+
+  // Folder row by name
+  folderRow(folderName) {
+    return this.getFoldersSection
+      .contains('.userEllipses', folderName)
+      .closest('.rowContainer');
+  }
+
+  // Read permission checkbox for a folder
+  readCheckbox(folderName) {
+    return this.folderRow(folderName)
+    .find('button.buttonStyle')
+    .filter(':contains("read")');
+  }
+// Write permission checkbox for a folder
+writeCheckbox(folderName) {
+    return this.folderRow(folderName)
+      .contains('button', /^write$/i)
+  }
+
+  // Update button
+  get getUpdateButton() {
+    return this.getUserPermissionsModal
+      .find('[data-testid="confirm-button"]');
+  }
+
+  // Cancel button
+  get getCancelButton() {
+    return this.getUserPermissionsModal
+      .find('[data-testid="cancel-button"]');
+  }
+
+  // Dropdown toggle button (plus icon)
+    getDropdownToggleButton(folderName) {
+    return this.folderRow(folderName).find('button#dropdown-autoclose-true.custom-toggle.btn.btn-primary');
+  }
+  selectDropdownOption(folderName, optionText) {
+    // Click toggle first to open dropdown
+    this.getDropdownToggleButton(folderName).click();
+
+    // Then select the option
+    cy.get('div.dropdown-menu.show')
+      .contains('a.dropdown-item', optionText)
+      .click();
+}
 }
 export default new LidarViewerElements
