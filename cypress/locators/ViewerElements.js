@@ -521,6 +521,23 @@ get getExportDialog() {
   get getExportConfirmButton() {
     return cy.get('[data-testid="confirm-button"]');
   }
+// Multi Sensor
+  get getPcdFilterButton() {
+    return cy.contains('.ToolTip-container', 'PCD filters');
+  }
+  // Filter popup
+  get getLidarFilterTable() {
+    return cy.get('#tw-panel-class-filters2 table');
+  }
+
+  // Unit checkboxes
+  get getUnit1Checkbox() {
+    return cy.get('#tw-panel-class-filters2 tbody tr').eq(0).find('input[type="checkbox"]');
+  }
+
+  get getUnit2Checkbox() {
+    return cy.get('#tw-panel-class-filters2 tbody tr').eq(1).find('input[type="checkbox"]');
+  }
 
   
 }
