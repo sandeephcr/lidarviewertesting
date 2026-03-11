@@ -385,6 +385,144 @@ get getExportDialog() {
   get getSelectAllRunsOption() {
     return cy.contains('label', 'Select All');
   }
+
+  // ===============================
+  // Concurrent Users Module
+  // ===============================
+
+  // Page container
+  get getConcurrentUsersContainer() {
+    return cy.get('.concurrent_user_container');
+  }
+
+  // ===============================
+  // Active User Count Section
+  // ===============================
+
+  get getActiveUsersCard() {
+    return cy.contains('.cards', 'Active User Count');
+  }
+
+  get getActiveUsersExportButton() {
+    return cy.contains('.cards', 'Active User Count')
+      .find('button.primary-btn');
+  }
+
+  get getTotalActiveUsersText() {
+    return cy.contains('.cards', 'Active User Count')
+      .find('.ActiveUsersCountContainer__header');
+  }
+
+  get getServerUserCards() {
+    return cy.contains('.cards', 'Active User Count')
+      .find('[data-testid="user-card"]');
+  }
+
+  // ===============================
+  // Live User Trend Section
+  // ===============================
+
+  get getLiveUserTrendCard() {
+    return cy.contains('.cards', 'Live User Trend');
+  }
+
+  get getLiveUserTrendDropdown() {
+    return cy.contains('.cards', 'Live User Trend')
+      .find('select.concurrentdropdown');
+  }
+
+  get getLiveUserTrendChart() {
+    return cy.contains('.cards', 'Live User Trend')
+      .find('canvas');
+  }
+
+  // ===============================
+  // User Metrics Trend Section
+  // ===============================
+
+  get getUserMetricsTrendCard() {
+    return cy.contains('.cards', 'User Metrics Trend');
+  }
+
+  get getUserMetricsRangeDropdown() {
+    return cy.contains('.cards', 'User Metrics Trend')
+      .find('.umt-range');
+  }
+
+  get getUserMetricsMetricDropdown() {
+    return cy.contains('.cards', 'User Metrics Trend')
+      .find('.umt-metric');
+  }
+
+  get getUserMetricsSiteDropdown() {
+    return cy.contains('.cards', 'User Metrics Trend')
+      .find('.umt-site-dropdown select');
+  }
+
+  get getUserMetricsChart() {
+    return cy.contains('.cards', 'User Metrics Trend')
+      .find('canvas');
+  }
+
+  // ===============================
+  // Concurrent Users Export Modal
+  // ===============================
+
+  get getConcurrentUsersExportModal() {
+    return cy.contains('span', 'Export Concurrent Users Data')
+      .parents('.ModalSmall');
+  }
+
+  get getConcurrentUsersExportModalCloseButton() {
+    return cy.contains('span', 'Export Concurrent Users Data')
+      .parents('.ModalSmall')
+      .find('[data-testid="closeButton"]');
+  }
+
+  // Preset buttons
+  get getExportPresetTodayButton() {
+    return cy.contains('.cu-btn', 'Today');
+  }
+
+  get getExportPresetLast7DaysButton() {
+    return cy.contains('.cu-btn', 'Last 7 Days');
+  }
+
+  get getExportPresetLast30DaysButton() {
+    return cy.contains('.cu-btn', 'Last 30 Days');
+  }
+
+  get getExportPresetLast90DaysButton() {
+    return cy.contains('.cu-btn', 'Last 90 Days');
+  }
+
+  // Date inputs
+  get getExportFromDateInput() {
+    return cy.contains('label', 'From Date')
+      .parent()
+      .find('input[type="date"]');
+  }
+
+  get getExportToDateInput() {
+    return cy.contains('label', 'To Date')
+      .parent()
+      .find('input[type="date"]');
+  }
+
+  // Action buttons
+  get getExportClearButton() {
+    return cy.contains('.cu-btn', 'Clear');
+  }
+
+  get getExportCancelButton() {
+    return cy.get('[data-testid="cancel-button"]');
+  }
+
+  get getExportConfirmButton() {
+    return cy.get('[data-testid="confirm-button"]');
+  }
+
+  
 }
   
 export default new ViewerElements();

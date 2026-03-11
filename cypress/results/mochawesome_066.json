@@ -1,0 +1,186 @@
+{
+  "stats": {
+    "suites": 1,
+    "tests": 5,
+    "passes": 4,
+    "pending": 0,
+    "failures": 1,
+    "start": "2026-03-11T02:44:04.895Z",
+    "end": "2026-03-11T02:47:25.859Z",
+    "duration": 200964,
+    "testsRegistered": 5,
+    "passPercent": 80,
+    "pendingPercent": 0,
+    "other": 0,
+    "hasOther": false,
+    "skipped": 0,
+    "hasSkipped": false
+  },
+  "results": [
+    {
+      "uuid": "28d1eef6-607c-413b-8b2c-a2d595c368ea",
+      "title": "",
+      "fullFile": "cypress\\e2e\\Home Page\\SearchSortHome.cy.js",
+      "file": "cypress\\e2e\\Home Page\\SearchSortHome.cy.js",
+      "beforeHooks": [],
+      "afterHooks": [],
+      "tests": [],
+      "suites": [
+        {
+          "uuid": "be5ed7f5-8194-4d87-87ea-355763eaab1b",
+          "title": "Search Sort Home Tests",
+          "fullFile": "",
+          "file": "",
+          "beforeHooks": [],
+          "afterHooks": [],
+          "tests": [
+            {
+              "title": "Home_001_Verify that the search functionality correctly displays runs based on the entered Pole ID that is available in the server.",
+              "fullTitle": "Search Sort Home Tests Home_001_Verify that the search functionality correctly displays runs based on the entered Pole ID that is available in the server.",
+              "timedOut": null,
+              "duration": 47087,
+              "state": "passed",
+              "speed": "slow",
+              "pass": true,
+              "fail": false,
+              "pending": false,
+              "context": null,
+              "code": "// Search Run\ncy.get('input[placeholder=\"Type for search\"]').should(\"be.visible\").clear().type(\"Test-Oct30-3\");\ncy.get('div.primary-btn[alt=\"search\"]').should(\"be.visible\").click();\n// Open Run\ncy.contains(\".runCardHomeName\", \"Test-Oct30-3\").should(\"be.visible\").click();\n// Wait for default viewer load\ncy.get(\"#canvas3D\", {\n  timeout: 20000\n}).should(\"be.visible\");\n// Navigate to image 60\ncy.url().then(url => {\n  const updatedUrl = url.replace(/\\/\\d+\\?/, '/60?');\n  cy.visit(updatedUrl);\n});\n// Wait again after re-visit\ncy.get(\"#canvas3D\", {\n  timeout: 20000\n}).should(\"be.visible\");\n// Enable PCD + Camera\n_ViewerElements.default.getPcdCameraViewBtn.should(\"be.visible\").click();\ncy.wait(5000);\n// Place and save pole\nconst poleName = _PoleAction.default.placePole(600, 350);\n_PoleAction.default.savePole();\ncy.visit(Cypress.config(\"baseUrl\"));\ncy.get(\".HomeDropDown\").first().select(\"PoleId\");\ncy.get('[data-testid=\"searchbar-container\"]').type(poleName);\ncy.get('div.primary-btn[alt=\"search\"]').should(\"be.visible\").click();\ncy.wait(2000);\ncy.contains(\".runCardHomeName\", \"Test-Oct30-3\").should(\"be.visible\");",
+              "err": {},
+              "uuid": "c7bf4877-4134-4951-a0b4-2fc8c0ffb953",
+              "parentUUID": "be5ed7f5-8194-4d87-87ea-355763eaab1b",
+              "isHook": false,
+              "skipped": false
+            },
+            {
+              "title": "Home_007_Verify that the search feature correctly displays associated run data for valid latitude and longitude values.",
+              "fullTitle": "Search Sort Home Tests Home_007_Verify that the search feature correctly displays associated run data for valid latitude and longitude values.",
+              "timedOut": null,
+              "duration": 38854,
+              "state": "failed",
+              "speed": null,
+              "pass": false,
+              "fail": true,
+              "pending": false,
+              "context": null,
+              "code": "let latlng;\n// Search Run\ncy.get('input[placeholder=\"Type for search\"]').should(\"be.visible\").clear().type(\"Test-Oct30-3\");\ncy.get('div.primary-btn[alt=\"search\"]').should(\"be.visible\").click();\n// Open run\ncy.contains(\".runCardHomeName\", \"Test-Oct30-3\").should(\"be.visible\").click();\n// Navigate to image 60\ncy.url().then(url => {\n  const updatedUrl = url.replace(/\\/\\d+\\?/, '/60?');\n  cy.visit(updatedUrl);\n});\n// Wait again after re-visit\ncy.get(\"#canvas3D\", {\n  timeout: 20000\n}).should(\"be.visible\");\n// Enable PCD + Camera\n_ViewerElements.default.getPcdCameraViewBtn.should(\"be.visible\").click();\ncy.wait(5000);\n// Activate GPS info tool\n_ViewerElements.default.getGpsInfoBtn.should(\"be.visible\").click();\ncy.wait(5000);\n// Click on canvas to copy LatLng\ncy.get(\"#canvas3D\").click(500, 600, {\n  force: true\n});\ncy.window().then(win => win.navigator.clipboard.readText()).then(text => {\n  latlng = text.trim();\n  cy.visit(Cypress.config(\"baseUrl\"));\n  cy.get(\".HomeDropDown\").first().select(\"LatLng\");\n  cy.get('[data-testid=\"searchbar-container\"]').type(latlng);\n  cy.get('div.primary-btn[alt=\"search\"]').click();\n  cy.contains(\".runCardHomeName\", \"Test-Oct30-3\").should(\"be.visible\");\n});",
+              "err": {
+                "message": "CypressError: `cy.type()` cannot accept an empty string. You need to actually type something.\n\nhttps://on.cypress.io/type",
+                "estack": "CypressError: `cy.type()` cannot accept an empty string. You need to actually type something.\n\nhttps://on.cypress.io/type\n    at Context.type (https://testing.lidartechsolutions.com/__cypress/runner/cypress_runner.js:116885:68)\n    at wrapped (https://testing.lidartechsolutions.com/__cypress/runner/cypress_runner.js:141671:19)\n    at <unknown> (https://testing.lidartechsolutions.com/__cypress/runner/cypress_runner.js:147616:15)\n    at tryCatcher (https://testing.lidartechsolutions.com/__cypress/runner/cypress_runner.js:1777:23)\n    at Promise._settlePromiseFromHandler (https://testing.lidartechsolutions.com/__cypress/runner/cypress_runner.js:1489:31)\n    at Promise._settlePromise (https://testing.lidartechsolutions.com/__cypress/runner/cypress_runner.js:1546:18)\n    at Promise._settlePromiseCtx (https://testing.lidartechsolutions.com/__cypress/runner/cypress_runner.js:1583:10)\n    at _drainQueueStep (https://testing.lidartechsolutions.com/__cypress/runner/cypress_runner.js:2381:12)\n    at _drainQueue (https://testing.lidartechsolutions.com/__cypress/runner/cypress_runner.js:2370:9)\n    at Async._drainQueues (https://testing.lidartechsolutions.com/__cypress/runner/cypress_runner.js:2386:5)\n    at Async.drainQueues (https://testing.lidartechsolutions.com/__cypress/runner/cypress_runner.js:2256:14)",
+                "diff": null
+              },
+              "uuid": "e61277cd-42b8-48c2-8c3b-d9330e15e0bf",
+              "parentUUID": "be5ed7f5-8194-4d87-87ea-355763eaab1b",
+              "isHook": false,
+              "skipped": false
+            },
+            {
+              "title": "Home_036_Verify the display of the back button after performing  a search.",
+              "fullTitle": "Search Sort Home Tests Home_036_Verify the display of the back button after performing  a search.",
+              "timedOut": null,
+              "duration": 7840,
+              "state": "passed",
+              "speed": "medium",
+              "pass": true,
+              "fail": false,
+              "pending": false,
+              "context": null,
+              "code": "cy.get('input[placeholder=\"Type for search\"]').should('be.visible').clear().type('Test');\ncy.get('div.primary-btn[alt=\"search\"]').should('be.visible').click();\ncy.get('button.padding-5').should('be.visible').click();\ncy.get('.folderName').contains('Shared Space').should('be.visible');\ncy.get('input[placeholder=\"Type for search\"]').should('be.visible');",
+              "err": {},
+              "uuid": "94df8d01-1054-4107-87f1-832fc104d230",
+              "parentUUID": "be5ed7f5-8194-4d87-87ea-355763eaab1b",
+              "isHook": false,
+              "skipped": false
+            },
+            {
+              "title": "Home_037_Verify that clicking on the list view icon displays all runs in list view",
+              "fullTitle": "Search Sort Home Tests Home_037_Verify that clicking on the list view icon displays all runs in list view",
+              "timedOut": null,
+              "duration": 6568,
+              "state": "passed",
+              "speed": "medium",
+              "pass": true,
+              "fail": false,
+              "pending": false,
+              "context": null,
+              "code": "cy.get(\".folderName\").contains(\"Shared Space\").should(\"be.visible\").dblclick();\ncy.get('[data-testid=\"list-view-icon-inactive\"]').should('be.visible').click();\ncy.get('[data-testid=\"list-view-icon-active\"]').should('be.visible');\ncy.get('.Table').should('be.visible');\ncy.get('.TableData').should('have.length.greaterThan', 0);",
+              "err": {},
+              "uuid": "3a15d2d9-20f1-495e-b23a-9cbcfd29bb48",
+              "parentUUID": "be5ed7f5-8194-4d87-87ea-355763eaab1b",
+              "isHook": false,
+              "skipped": false
+            },
+            {
+              "title": "Home_038_Clicking on the grid view icon displays all runs in grid view",
+              "fullTitle": "Search Sort Home Tests Home_038_Clicking on the grid view icon displays all runs in grid view",
+              "timedOut": null,
+              "duration": 6918,
+              "state": "passed",
+              "speed": "medium",
+              "pass": true,
+              "fail": false,
+              "pending": false,
+              "context": null,
+              "code": "cy.get(\".folderName\").contains(\"Shared Space\").should(\"be.visible\").dblclick();\ncy.get('[data-testid=\"grid-view-icon-active\"]').should('be.visible');\ncy.get('[data-testid=\"run-card-container\"]').filter(':visible').should('have.length.greaterThan', 0).each($card => {\n  cy.wrap($card).parents('a.linkDecoration').should('exist');\n});",
+              "err": {},
+              "uuid": "fc836873-4ede-4448-b6ed-e5bdcb91d66c",
+              "parentUUID": "be5ed7f5-8194-4d87-87ea-355763eaab1b",
+              "isHook": false,
+              "skipped": false
+            }
+          ],
+          "suites": [],
+          "passes": [
+            "c7bf4877-4134-4951-a0b4-2fc8c0ffb953",
+            "94df8d01-1054-4107-87f1-832fc104d230",
+            "3a15d2d9-20f1-495e-b23a-9cbcfd29bb48",
+            "fc836873-4ede-4448-b6ed-e5bdcb91d66c"
+          ],
+          "failures": [
+            "e61277cd-42b8-48c2-8c3b-d9330e15e0bf"
+          ],
+          "pending": [],
+          "skipped": [],
+          "duration": 107267,
+          "root": false,
+          "rootEmpty": false,
+          "_timeout": 2000
+        }
+      ],
+      "passes": [],
+      "failures": [],
+      "pending": [],
+      "skipped": [],
+      "duration": 0,
+      "root": true,
+      "rootEmpty": true,
+      "_timeout": 2000
+    }
+  ],
+  "meta": {
+    "mocha": {
+      "version": "7.2.0"
+    },
+    "mochawesome": {
+      "options": {
+        "quiet": false,
+        "reportFilename": "mochawesome",
+        "saveHtml": true,
+        "saveJson": true,
+        "consoleReporter": "spec",
+        "useInlineDiffs": false,
+        "code": true
+      },
+      "version": "7.1.3"
+    },
+    "marge": {
+      "options": {
+        "reportDir": "cypress/results",
+        "overwrite": false,
+        "html": true,
+        "json": true
+      },
+      "version": "6.2.0"
+    }
+  }
+}

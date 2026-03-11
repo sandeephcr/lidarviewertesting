@@ -280,5 +280,115 @@ class LidarViewerElements {
     get getPasswordRules() {
         return cy.get('.flex-c.text-xs div');
     }
+
+    // Table container
+    get getUserTable() {
+        return cy.get('div.userTable table');
+    }
+
+    // Table rows
+    get getUserRows() {
+        return cy.get('div.userTable table tbody tr.TData');
+    }
+
+    // Grab first row (example)
+    get getFirstUserRow() {
+        return this.getUserRows.first();
+    }
+
+    // Grab username/email cell in a row
+    getUsernameCell(row) {
+        return row.find('td:nth-child(3) span.body1'); // 3rd column = Username
+    }
+
+    getEmailCell(row) {
+        return row.find('td:nth-child(2) span.body1'); // 2nd column = Email
+    }
+
+    getRoleCell(row) {
+        return row.find('td:nth-child(4) span.body1'); // 4th column = Role
+    }
+
+    // Action buttons in a row
+    getEditButton(row) {
+        return row.find('td:last-child svg').first(); // First svg in Actions column = Edit
+    }
+
+    getPermissionsButton(row) {
+        return row.find('td:last-child .ToolTip-container:contains("User Permissions")');
+    }
+
+    getDisableButton(row) {
+        return row.find('td:last-child .ToolTip-container:contains("Disable")');
+    }
+    getEnableButton(row) {
+        return row.find('td:last-child svg[style*="var(--status-green)"]').closest('.ToolTip-container');
+    }
+
+    // Search input at top
+    get getUserSearchInput() {
+        return cy.get('.SearchSortFilter .search-input');
+    }
+
+    // Edit User Details Modal
+    get getEditUserModal() {
+        return cy.get('div.ModalHeaderContainer').closest('div[style*="max-height: 520px"]');
+    }
+
+    get getEditModalHeader() {
+        return this.getEditUserModal.find('span.heading2').contains('Edit User Details');
+    }
+
+    get getEditModalCloseButton() {
+        return this.getEditUserModal.find('[data-testid="closeButton"]');
+    }
+
+    // Inputs
+    get getEditUsernameInput() {
+        return this.getEditUserModal.find('input[placeholder="Username"]');
+    }
+
+    get getEditEmailInput() {
+        return this.getEditUserModal.find('input[placeholder="Email"]');
+    }
+
+    get getEditRoleDropdown() {
+        return this.getEditUserModal.find('select');
+    }
+
+    get getEditSitesDropdown() {
+        return this.getEditUserModal.find('.rmsc .dropdown-container');
+    }
+
+    get getClearSitesButton() {
+        return this.getEditUserModal.find('.clear-selected-button');
+    }
+
+    // Change Password toggle
+    get getChangePasswordToggle() {
+        return this.getEditUserModal.contains('span', 'Change Password');
+    }
+
+    // Update button
+    get getUpdateButton() {
+        return this.getEditUserModal.find('button').contains('Update');
+    }
+
+    // Change Password Section
+    get getNewPasswordInputUM() {
+        return this.getEditUserModal.find('input[placeholder="Password"]');
+    }
+
+    get getConfirmPasswordInputUM() {
+        return this.getEditUserModal.find('input[placeholder="Confirm Password"]');
+    }
+
+    get getSavePasswordButton() {
+        return this.getEditUserModal.contains('button', 'Save Password');
+    }
+
+    get getPasswordRules() {
+        return this.getEditUserModal.find('.flex-c.text-xs div'); // returns list of all rule divs
+    }
 }
 export default new LidarViewerElements

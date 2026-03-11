@@ -1,0 +1,205 @@
+{
+  "stats": {
+    "suites": 1,
+    "tests": 6,
+    "passes": 5,
+    "pending": 0,
+    "failures": 1,
+    "start": "2026-03-11T02:40:47.262Z",
+    "end": "2026-03-11T02:44:03.540Z",
+    "duration": 196278,
+    "testsRegistered": 6,
+    "passPercent": 83.33333333333334,
+    "pendingPercent": 0,
+    "other": 0,
+    "hasOther": false,
+    "skipped": 0,
+    "hasSkipped": false
+  },
+  "results": [
+    {
+      "uuid": "bc584c67-b8c8-40db-8ffa-fb56d81d7f77",
+      "title": "",
+      "fullFile": "cypress\\e2e\\Home Page\\HomePageNavigation.cy.js",
+      "file": "cypress\\e2e\\Home Page\\HomePageNavigation.cy.js",
+      "beforeHooks": [],
+      "afterHooks": [],
+      "tests": [],
+      "suites": [
+        {
+          "uuid": "358d0616-da9a-4737-9d93-dfbf776bb804",
+          "title": "Home Page Navigation Tests",
+          "fullFile": "",
+          "file": "",
+          "beforeHooks": [],
+          "afterHooks": [],
+          "tests": [
+            {
+              "title": "Home_Project_nav_001_Verify that double-clicking on a folder from the home page navigates the user into the folder.",
+              "fullTitle": "Home Page Navigation Tests Home_Project_nav_001_Verify that double-clicking on a folder from the home page navigates the user into the folder.",
+              "timedOut": null,
+              "duration": 18675,
+              "state": "passed",
+              "speed": "slow",
+              "pass": true,
+              "fail": false,
+              "pending": false,
+              "context": null,
+              "code": "(0, _commonMethods.openDynamicFolderAndRun)(folderPath, runName);\ncy.wait(2000);\ncy.get(\".body3.ActiveCrumb.pointer\").contains(\"Automation_Atchyutha-\");",
+              "err": {},
+              "uuid": "d2b9556d-eae4-43ab-b5c5-46b3f72a7516",
+              "parentUUID": "358d0616-da9a-4737-9d93-dfbf776bb804",
+              "isHook": false,
+              "skipped": false
+            },
+            {
+              "title": "Home_Project_nav_003_Verify that clicking on a folder from search results opens the folder correctly.",
+              "fullTitle": "Home Page Navigation Tests Home_Project_nav_003_Verify that clicking on a folder from search results opens the folder correctly.",
+              "timedOut": null,
+              "duration": 11174,
+              "state": "passed",
+              "speed": "slow",
+              "pass": true,
+              "fail": false,
+              "pending": false,
+              "context": null,
+              "code": "cy.get(\".folderName\").contains(\"Shared Space\").should(\"be.visible\").dblclick();\ncy.get('input[placeholder=\"Type for search\"]').should('be.visible').clear().type('Test');\ncy.wait(2000);\ncy.get('div.primary-btn[alt=\"search\"]').should('be.visible').click();\ncy.wait(2000);\ncy.get('.folderName').contains('Test').dblclick();",
+              "err": {},
+              "uuid": "66b79911-3221-42b9-92b4-9af26250f7b0",
+              "parentUUID": "358d0616-da9a-4737-9d93-dfbf776bb804",
+              "isHook": false,
+              "skipped": false
+            },
+            {
+              "title": "Home_Project_nav_006_Verifying that the opening of multiple runs",
+              "fullTitle": "Home Page Navigation Tests Home_Project_nav_006_Verifying that the opening of multiple runs",
+              "timedOut": null,
+              "duration": 11588,
+              "state": "passed",
+              "speed": "slow",
+              "pass": true,
+              "fail": false,
+              "pending": false,
+              "context": null,
+              "code": "let firstRunName;\ncy.get(\".folderName\").contains(\"Shared Space\").should(\"be.visible\").dblclick();\ncy.wait(2000);\ncy.contains('div[role=\"checkbox\"]', 'Select').should('be.visible').click();\ncy.get('[data-testid=\"run-card-container\"]').filter(':visible').then($runs => {\n  firstRunName = $runs.eq(0).find('[data-testid=\"run-name\"]').text().trim();\n  cy.wrap($runs.eq(0)).click();\n  cy.wrap($runs.eq(1)).click();\n});\ncy.contains('div.primary-btn', 'Open').should('be.visible').click();\ncy.get('.body3.ActiveCrumb.pointer').should('be.visible').and($el => {\n  expect($el.text().trim()).to.eq(firstRunName);\n});",
+              "err": {},
+              "uuid": "31caf7f1-612d-48e9-a9e3-81c04418f4f6",
+              "parentUUID": "358d0616-da9a-4737-9d93-dfbf776bb804",
+              "isHook": false,
+              "skipped": false
+            },
+            {
+              "title": "Multi-run_001_Verify that data can be successfully imported for all opened runs from the server",
+              "fullTitle": "Home Page Navigation Tests Multi-run_001_Verify that data can be successfully imported for all opened runs from the server",
+              "timedOut": null,
+              "duration": 42354,
+              "state": "failed",
+              "speed": null,
+              "pass": false,
+              "fail": true,
+              "pending": false,
+              "context": null,
+              "code": "let firstRunName;\ncy.get(\".folderName\").contains(\"Atc\").should(\"be.visible\").dblclick();\ncy.wait(2000);\ncy.contains('div[role=\"checkbox\"]', 'Select').should('be.visible').click();\ncy.get('[data-testid=\"run-card-container\"]').filter(':visible').then($runs => {\n  firstRunName = $runs.eq(0).find('[data-testid=\"run-name\"]').text().trim();\n  cy.wrap($runs.eq(0)).click();\n  cy.wrap($runs.eq(1)).click();\n});\ncy.contains('div.primary-btn', 'Open').should('be.visible').click();\ncy.get('.body3.ActiveCrumb.pointer').should('be.visible').and($el => {\n  expect($el.text().trim()).to.eq(firstRunName);\n});\n_ViewerElements.default.getMoreOptionsBtn.should(\"be.visible\").click();\n_ViewerElements.default.getImportOption.click();\n_ViewerElements.default.getImportDialog.should(\"be.visible\");\n_ViewerElements.default.selectImportSource(\"From Server\");\n_ViewerElements.default.getRunSelectDropdown.click();\n_ViewerElements.default.getSelectAllRunsOption.should('be.visible').click();\n_ViewerElements.default.getMeasurementsCheckbox.click();\n_ViewerElements.default.getImportApplyBtn.click();\ncy.wait(500);\n_LidarViewer.default.infoMessageContainer.should('be.visible').invoke('text').should('match', /downloaded/i);",
+              "err": {
+                "message": "CypressError: Timed out retrying after 30050ms: `cy.click()` failed because this element:\n\n`<div role=\"checkbox\" class=\"flex-r gap-10\">...</div>`\n\nis being covered by another element:\n\n`<div class=\"item-renderer \">...</div>`\n\nFix this problem, or use {force: true} to disable error checking.\n\nhttps://on.cypress.io/element-cannot-be-interacted-with",
+                "estack": "CypressError: Timed out retrying after 30050ms: `cy.click()` failed because this element:\n\n`<div role=\"checkbox\" class=\"flex-r gap-10\">...</div>`\n\nis being covered by another element:\n\n`<div class=\"item-renderer \">...</div>`\n\nFix this problem, or use {force: true} to disable error checking.\n\nhttps://on.cypress.io/element-cannot-be-interacted-with\n    at ensureIsDescendent (https://testing.lidartechsolutions.com/__cypress/runner/cypress_runner.js:114504:68)\n    at ensureDescendents (https://testing.lidartechsolutions.com/__cypress/runner/cypress_runner.js:114555:5)\n    at ensureDescendentsAndScroll (https://testing.lidartechsolutions.com/__cypress/runner/cypress_runner.js:114561:14)\n    at ensureElIsNotCovered (https://testing.lidartechsolutions.com/__cypress/runner/cypress_runner.js:114692:5)\n    at runAllChecks (https://testing.lidartechsolutions.com/__cypress/runner/cypress_runner.js:114891:52)\n    at retryActionability (https://testing.lidartechsolutions.com/__cypress/runner/cypress_runner.js:114928:16)\n    at tryCatcher (https://testing.lidartechsolutions.com/__cypress/runner/cypress_runner.js:1777:23)\n    at Promise.attempt.Promise.try (https://testing.lidartechsolutions.com/__cypress/runner/cypress_runner.js:4285:29)\n    at whenStable (https://testing.lidartechsolutions.com/__cypress/runner/cypress_runner.js:147344:68)\n    at <unknown> (https://testing.lidartechsolutions.com/__cypress/runner/cypress_runner.js:147285:14)\n    at tryCatcher (https://testing.lidartechsolutions.com/__cypress/runner/cypress_runner.js:1777:23)\n    at Promise._settlePromiseFromHandler (https://testing.lidartechsolutions.com/__cypress/runner/cypress_runner.js:1489:31)\n    at Promise._settlePromise (https://testing.lidartechsolutions.com/__cypress/runner/cypress_runner.js:1546:18)\n    at Promise._settlePromise0 (https://testing.lidartechsolutions.com/__cypress/runner/cypress_runner.js:1591:10)\n    at Promise._settlePromises (https://testing.lidartechsolutions.com/__cypress/runner/cypress_runner.js:1671:18)\n    at Promise._fulfill (https://testing.lidartechsolutions.com/__cypress/runner/cypress_runner.js:1615:18)\n    at <unknown> (https://testing.lidartechsolutions.com/__cypress/runner/cypress_runner.js:5420:46)",
+                "diff": null
+              },
+              "uuid": "9c360f92-2717-4a7b-9583-1f050acecc88",
+              "parentUUID": "358d0616-da9a-4737-9d93-dfbf776bb804",
+              "isHook": false,
+              "skipped": false
+            },
+            {
+              "title": "Home_Project_nav_008_Verify that clicking on the next button navigates to the next page",
+              "fullTitle": "Home Page Navigation Tests Home_Project_nav_008_Verify that clicking on the next button navigates to the next page",
+              "timedOut": null,
+              "duration": 9216,
+              "state": "passed",
+              "speed": "medium",
+              "pass": true,
+              "fail": false,
+              "pending": false,
+              "context": null,
+              "code": "cy.get(\".folderName\").contains(\"Shared Space\").should(\"be.visible\").dblclick();\n// Verify starting on page 1\ncy.get('.pagination-item.selected').should('contain', '1');\n// Click Next (right arrow)\ncy.get('.arrow.right').should('be.visible').click();\n// Verify page changed to 2\ncy.get('.pagination-item.selected').should('contain', '2');",
+              "err": {},
+              "uuid": "b385aeaf-8b87-4b18-b2d4-771175a79069",
+              "parentUUID": "358d0616-da9a-4737-9d93-dfbf776bb804",
+              "isHook": false,
+              "skipped": false
+            },
+            {
+              "title": "Home_Project_nav_009_Verify that clicking on the previous button navigates to the previous page",
+              "fullTitle": "Home Page Navigation Tests Home_Project_nav_009_Verify that clicking on the previous button navigates to the previous page",
+              "timedOut": null,
+              "duration": 9636,
+              "state": "passed",
+              "speed": "medium",
+              "pass": true,
+              "fail": false,
+              "pending": false,
+              "context": null,
+              "code": "// Open folder\ncy.get(\".folderName\").contains(\"Shared Space\").should(\"be.visible\").dblclick();\n// Go to page 2 first\ncy.contains('.pagination-item', '2').should('be.visible').click();\n// Verify we are on page 2\ncy.get('.pagination-item.selected').should('contain', '2');\n// Click Previous (left arrow)\ncy.get('.pagination-container .arrow.left').should('be.visible').click();\n// Verify we returned to page 1\ncy.get('.pagination-item.selected').should('contain', '1');",
+              "err": {},
+              "uuid": "f5ef24db-97c3-4bae-8aad-7e54b01bfbf4",
+              "parentUUID": "358d0616-da9a-4737-9d93-dfbf776bb804",
+              "isHook": false,
+              "skipped": false
+            }
+          ],
+          "suites": [],
+          "passes": [
+            "d2b9556d-eae4-43ab-b5c5-46b3f72a7516",
+            "66b79911-3221-42b9-92b4-9af26250f7b0",
+            "31caf7f1-612d-48e9-a9e3-81c04418f4f6",
+            "b385aeaf-8b87-4b18-b2d4-771175a79069",
+            "f5ef24db-97c3-4bae-8aad-7e54b01bfbf4"
+          ],
+          "failures": [
+            "9c360f92-2717-4a7b-9583-1f050acecc88"
+          ],
+          "pending": [],
+          "skipped": [],
+          "duration": 102643,
+          "root": false,
+          "rootEmpty": false,
+          "_timeout": 2000
+        }
+      ],
+      "passes": [],
+      "failures": [],
+      "pending": [],
+      "skipped": [],
+      "duration": 0,
+      "root": true,
+      "rootEmpty": true,
+      "_timeout": 2000
+    }
+  ],
+  "meta": {
+    "mocha": {
+      "version": "7.2.0"
+    },
+    "mochawesome": {
+      "options": {
+        "quiet": false,
+        "reportFilename": "mochawesome",
+        "saveHtml": true,
+        "saveJson": true,
+        "consoleReporter": "spec",
+        "useInlineDiffs": false,
+        "code": true
+      },
+      "version": "7.1.3"
+    },
+    "marge": {
+      "options": {
+        "reportDir": "cypress/results",
+        "overwrite": false,
+        "html": true,
+        "json": true
+      },
+      "version": "6.2.0"
+    }
+  }
+}
