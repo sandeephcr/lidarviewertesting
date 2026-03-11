@@ -100,7 +100,10 @@ describe("Callouts Module", () => {
           CalloutsLocators.getCalloutsContainer
             .contains('span', updatedText, { timeout: 10000 })
             .should('exist');
+            
+            CalloutsAction.deleteCallout(updatedText);
         });
+
     });
 
     it("Callouts_003 - Verify saving unchanged callout data to server does not trigger update", () => {
