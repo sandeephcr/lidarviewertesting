@@ -25,6 +25,11 @@
 // Cypress.Commands.overwrite('visit', (originalFn, url, options) => { ... })import 'cypress-plugin-snapshots/commands';
 // import 'cypress-plugin-snapshots/commands';
 
+// cypress/support/commands.js
+import { addMatchImageSnapshotCommand } from '@simonsmith/cypress-image-snapshot/command'  // ← change here
+
+addMatchImageSnapshotCommand()
+
 Cypress.Commands.add("simulateOffline", () => {
     cy.then(() => {
         return Cypress.automation("remote:debugger:protocol", {
