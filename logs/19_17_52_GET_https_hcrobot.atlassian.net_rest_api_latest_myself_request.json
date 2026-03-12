@@ -1,7 +1,0 @@
-{
-  "headers": {
-    "Accept": "application/json, text/plain, */*",
-    "Authorization": "Basic c2FuZGVlcC52ZWRhbUBoY3JvYm8uY29tOkFUQVRUM3hGZkdGMGhEbFVoZG5jYXFUNk9OMHpkamV2VFFLU3JvcThBVXFJZk9qY0FDbHFoQWJBdVFYTHVJUTRhNnF0QTRjYXVNMC1mQ0tkMHpUYW5lT1BRajZJSWRDMkFhSldGbnNpSGlwZUxqM3VzczRlRGhBTFEzTDFhaGFETXFxd1hhQjBocXFXd21kXzRfUWNTTkNaV0ZsVWtrTmZIam16N0ZuaDhPdHN2NWJ2R1RpdEprST0yQjBCNUZBQw=="
-  },
-  "url": "https://hcrobot.atlassian.net/rest/api/latest/myself"
-}
