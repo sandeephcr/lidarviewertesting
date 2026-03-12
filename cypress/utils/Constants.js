@@ -1,9 +1,12 @@
+import UserManagementLocators from "../locators/UserManagementLocators";
+
 let randomString = `cypress${Math.floor(10000 + Math.random() * 90000)}`;
 
 export default {
   textureText: "texture-text",
   fontSize: "texture-font_size",
-  validEmail: "atchyutha.padarthi@hcrobo.com",
+  validEmail1: "atchyutha.padarthi@hcrobo.com",
+  validEmail: "testdesignengineer@hcrobo.com",
   inValidEmail: "admini@hcrobo.com",
   testDesignEngineerEmail: "testdesignengineer@hcrobo.com",
   password: "Cnsw-123",
@@ -65,4 +68,7 @@ export default {
   nonExistingEmailForgot: "notExisting@hcrobo.com",
   validForgotEmail: "atchyutha.padarthi@hcrobo.com",
   resetPasswordEmail:"loadtester2@hcr.com",
+  UserManagementTestUser:"cqyuiorzvv@wnbaldwy.com",
+  UserManagementTestPassword:"Cnsw-123",
+
 };

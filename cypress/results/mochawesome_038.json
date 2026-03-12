@@ -1,0 +1,143 @@
+{
+  "stats": {
+    "suites": 1,
+    "tests": 3,
+    "passes": 3,
+    "pending": 0,
+    "failures": 0,
+    "start": "2026-03-12T07:59:12.118Z",
+    "end": "2026-03-12T08:00:06.227Z",
+    "duration": 54109,
+    "testsRegistered": 3,
+    "passPercent": 100,
+    "pendingPercent": 0,
+    "other": 0,
+    "hasOther": false,
+    "skipped": 0,
+    "hasSkipped": false
+  },
+  "results": [
+    {
+      "uuid": "85531fa7-fe7a-4865-bc82-b6d77e327c94",
+      "title": "",
+      "fullFile": "cypress\\e2e\\Single Session\\SingleSession.cy.js",
+      "file": "cypress\\e2e\\Single Session\\SingleSession.cy.js",
+      "beforeHooks": [],
+      "afterHooks": [],
+      "tests": [],
+      "suites": [
+        {
+          "uuid": "c2a5014e-75d6-4ea9-91a9-d086e6d055ce",
+          "title": "Single Session Module",
+          "fullFile": "",
+          "file": "",
+          "beforeHooks": [],
+          "afterHooks": [],
+          "tests": [
+            {
+              "title": "Single_Session_001 - Verify user A can login successfully",
+              "fullTitle": "Single Session Module Single_Session_001 - Verify user A can login successfully",
+              "timedOut": null,
+              "duration": 13947,
+              "state": "passed",
+              "speed": "slow",
+              "pass": true,
+              "fail": false,
+              "pending": false,
+              "context": null,
+              "code": "(0, _commonMethods.loginToPortal)(_Constants.default.testDesignEngineerEmail, _Constants.default.password);\n_LidarViewer.default.getHomeText.should(\"have.text\", \"Home Page\");",
+              "err": {},
+              "uuid": "9aa73637-0def-41b4-8046-5312ec6805ad",
+              "parentUUID": "c2a5014e-75d6-4ea9-91a9-d086e6d055ce",
+              "isHook": false,
+              "skipped": false
+            },
+            {
+              "title": "Single_Session_002 - Verify User B can login after User A logs out",
+              "fullTitle": "Single Session Module Single_Session_002 - Verify User B can login after User A logs out",
+              "timedOut": null,
+              "duration": 21087,
+              "state": "passed",
+              "speed": "slow",
+              "pass": true,
+              "fail": false,
+              "pending": false,
+              "context": null,
+              "code": "// Step 1: Login as User A\n(0, _commonMethods.loginToPortal)(_Constants.default.testDesignEngineerEmail, _Constants.default.password);\n_LidarViewer.default.getHomeText.should('be.visible').and('have.text', 'Home Page');\ncy.logout();\n// Verify redirected to login page\ncy.url().should('include', 'login');\n// Step 3: Simulate User B login with same credentials\n(0, _commonMethods.loginToPortal)(_Constants.default.testDesignEngineerEmail, _Constants.default.password);\n// Step 4: Verify login successful\n_LidarViewer.default.getHomeText.should('be.visible').and('have.text', 'Home Page');",
+              "err": {},
+              "uuid": "0afd7eda-02be-4076-8d0a-67b83ed5cfe2",
+              "parentUUID": "c2a5014e-75d6-4ea9-91a9-d086e6d055ce",
+              "isHook": false,
+              "skipped": false
+            },
+            {
+              "title": "Single_Session_003 - Verify User B login terminates previous session and logs into new session",
+              "fullTitle": "Single Session Module Single_Session_003 - Verify User B login terminates previous session and logs into new session",
+              "timedOut": null,
+              "duration": 18884,
+              "state": "passed",
+              "speed": "slow",
+              "pass": true,
+              "fail": false,
+              "pending": false,
+              "context": null,
+              "code": "// Step 1: User A logs in\n(0, _commonMethods.loginToPortal)(_Constants.default.testDesignEngineerEmail, _Constants.default.password);\n_LidarViewer.default.getHomeText.should(\"have.text\", \"Home Page\");\n// Step 2: Simulate second device (User B)\ncy.clearCookies();\ncy.clearLocalStorage();\ncy.visit(Cypress.config('baseUrl'));\n// Step 3: Login again with same credentials\n// loginToPortal will automatically handle the \"Active session detected\" popup\n(0, _commonMethods.loginToPortal)(_Constants.default.testDesignEngineerEmail, _Constants.default.password);\n// Step 4: Verify User B successfully logs in\n_LidarViewer.default.getHomeText.should(\"have.text\", \"Home Page\");",
+              "err": {},
+              "uuid": "0f4dd001-c5f6-4330-abcb-10a4e3a5fe05",
+              "parentUUID": "c2a5014e-75d6-4ea9-91a9-d086e6d055ce",
+              "isHook": false,
+              "skipped": false
+            }
+          ],
+          "suites": [],
+          "passes": [
+            "9aa73637-0def-41b4-8046-5312ec6805ad",
+            "0afd7eda-02be-4076-8d0a-67b83ed5cfe2",
+            "0f4dd001-c5f6-4330-abcb-10a4e3a5fe05"
+          ],
+          "failures": [],
+          "pending": [],
+          "skipped": [],
+          "duration": 53918,
+          "root": false,
+          "rootEmpty": false,
+          "_timeout": 2000
+        }
+      ],
+      "passes": [],
+      "failures": [],
+      "pending": [],
+      "skipped": [],
+      "duration": 0,
+      "root": true,
+      "rootEmpty": true,
+      "_timeout": 2000
+    }
+  ],
+  "meta": {
+    "mocha": {
+      "version": "7.2.0"
+    },
+    "mochawesome": {
+      "options": {
+        "quiet": false,
+        "reportFilename": "mochawesome",
+        "saveHtml": true,
+        "saveJson": true,
+        "consoleReporter": "spec",
+        "useInlineDiffs": false,
+        "code": true
+      },
+      "version": "7.1.3"
+    },
+    "marge": {
+      "options": {
+        "reportDir": "cypress/results",
+        "overwrite": false,
+        "html": true,
+        "json": true
+      },
+      "version": "6.2.0"
+    }
+  }
+}
