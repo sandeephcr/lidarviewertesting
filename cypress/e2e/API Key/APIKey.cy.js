@@ -12,7 +12,7 @@ beforeEach(() => {
     cy.visit(Cypress.config("baseUrl"));
 });
 
-    it('APIKey_001_Verify API Key section is visible only for Admin users', () => {
+    it('LVH-7807 APIKey_001_Verify API Key section is visible only for Admin users', () => {
 
         Adminlogin(Constants.AdminEmail, Constants.AdminPassword);
         LidarViewer.getProfileIcon.click();
@@ -50,7 +50,7 @@ beforeEach(() => {
     
     });
 
-    it('APIKey_002_Verify API Key is generated for valid request', () => {
+    it('LVH-7794 APIKey_002_Verify API Key is generated for valid request', () => {
 
         Adminlogin(Constants.AdminEmail, Constants.AdminPassword);
       

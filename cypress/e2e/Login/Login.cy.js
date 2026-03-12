@@ -25,7 +25,7 @@ describe("Login", () => {
   //   LidarViewerElements.getHomeText.should("have.text", "Home Page");
   // });
 
-  it("Login_003_Verify that login with invalid email and valid password", () => {
+  it("LVH-1483 Login_003_Verify that login with invalid email and valid password", () => {
     cy.wait(2000);
     login1(Constants.inValidEmail, Constants.password);
     cy.on("window:alert", (str) => {

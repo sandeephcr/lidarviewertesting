@@ -1,0 +1,24 @@
+{
+  "data": {
+    "id": "27703",
+    "key": "LVH-7843",
+    "self": "https://hcrobot.atlassian.net/rest/api/2/issue/27703"
+  },
+  "headers": {
+    "content-type": "application/json; charset=utf-8",
+    "content-length": "93",
+    "connection": "keep-alive",
+    "cache-control": "no-store, no-cache, must-revalidate, proxy-revalidate",
+    "date": "Thu, 12 Mar 2026 13:03:43 GMT",
+    "etag": "W/\"5d-V0MIMyYWCivExqh3zoWHDIj2dVw\"",
+    "expires": "0",
+    "pragma": "no-cache",
+    "surrogate-control": "no-store",
+    "x-cache": "Miss from cloudfront",
+    "via": "1.1 b21072aae7e55d161c71300007ce122a.cloudfront.net (CloudFront)",
+    "x-amz-cf-pop": "HYD57-P5",
+    "x-amz-cf-id": "S-zN31NyFSZ-Ui4IH0jDahXvHTI2tt2bxiFdcu2BehQTR9ojcwltMA=="
+  },
+  "status": 200,
+  "statusText": "OK"
+}

@@ -1,0 +1,10 @@
+{
+  "body": {
+    "client_id": "A839577F7BF445BB970A005C4B527C2B",
+    "client_secret": "d53d76c59b5452b06c3a7c5d0e0ea59bb2c8943b74a12ac3a637184cc0541e88"
+  },
+  "headers": {
+    "Accept": "application/json, text/plain, */*"
+  },
+  "url": "https://xray.cloud.getxray.app/api/v2/authenticate"
+}

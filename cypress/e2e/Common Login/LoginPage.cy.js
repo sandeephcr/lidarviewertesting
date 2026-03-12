@@ -12,7 +12,7 @@ describe("Login Page Tests", () => {
     cy.visit("/login");
   });
 
-  it("Block_001 - Verify user can successfully login after admin unblocks user account", () =>{
+  it("LVH-2182 Block_001 - Verify user can successfully login after admin unblocks user account", () =>{
 
     //Blocking user account
     for (let i = 0; i <= 5; i++) {

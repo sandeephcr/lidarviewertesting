@@ -58,7 +58,7 @@ describe("Callouts Module", () => {
         cy.wait(5000);
     });
 
-    it("Callouts_001 - Verify the recent placed callout should highlight in the callout list", () => {
+    it("LVH-2900 Callouts_001 - Verify the recent placed callout should highlight in the callout list", () => {
 
         CalloutsAction.placeCallout(500,800);
 
@@ -74,7 +74,7 @@ describe("Callouts Module", () => {
     
     });
 
-    it("Callouts_002 - Verify saving updated callout data to server", () => {
+    it("LVH-2898 Callouts_002 - Verify saving updated callout data to server", () => {
         // Step 0: Place new callout and wrap as alias
         CalloutsAction.placeCallout(500, 800).then((initialCalloutName) => {
       
@@ -106,7 +106,7 @@ describe("Callouts Module", () => {
 
     });
 
-    it("Callouts_003 - Verify saving unchanged callout data to server does not trigger update", () => {
+    it("LVH-2897 Callouts_003 - Verify saving unchanged callout data to server does not trigger update", () => {
 
         // Step 0: Place a new callout and save it to server first
         CalloutsAction.placeCallout(500, 800).then((calloutName) => {
@@ -133,7 +133,7 @@ describe("Callouts Module", () => {
     
     });
 
-    it("Callouts_004 - Verify the functionality of clearing all callout data", () => {
+    it("LVH-2893 Callouts_004 - Verify the functionality of clearing all callout data", () => {
 
         // Step 0: Place a few callouts so there’s something to clear
         CalloutsAction.placeCallout(500, 800);
@@ -155,7 +155,7 @@ describe("Callouts Module", () => {
     
     });
 
-    it("Callouts_005 - Verify the functionality of deleting a callout", () => {
+    it("LVH-2892 Callouts_005 - Verify the functionality of deleting a callout", () => {
 
         // Step 0: Place a new callout
         CalloutsAction.placeCallout(500, 800).then((calloutName) => {
@@ -168,7 +168,7 @@ describe("Callouts Module", () => {
     
     });
 
-    it("Callouts_006 - Verify the functionality of importing callout from the server", () => {
+    it("LVH-2890 Callouts_006 - Verify the functionality of importing callout from the server", () => {
         // Step 1: Place a callout
         CalloutsAction.placeCallout(400, 800).then((calloutName) => {
             // Step 2: Save callouts to server
@@ -181,7 +181,7 @@ describe("Callouts Module", () => {
         });
     });
 
-    it("Callouts_007 - Verify the functionality of saving callout to server", () => {
+    it("LVH-2888 Callouts_007 - Verify the functionality of saving callout to server", () => {
         // Step 1: Place a callout
         CalloutsAction.placeCallout(300, 650).then((calloutName) => {
             // Step 2: Save callouts to server
@@ -189,7 +189,7 @@ describe("Callouts Module", () => {
         });
     });
 
-    it("Callouts_008 - Verify the functionality of saving callout to local machine", () => {
+    it("LVH-2889 Callouts_008 - Verify the functionality of saving callout to local machine", () => {
         // Step 1: Place a callout
         CalloutsAction.placeCallout(350, 700).then((calloutName) => {
             // Step 2: Save callouts to local machine

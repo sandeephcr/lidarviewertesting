@@ -1,0 +1,7 @@
+{
+  "headers": {
+    "Accept": "application/json, text/plain, */*",
+    "Authorization": "Bearer ATATT3xFfGF0ISwyTqmTRbtMfp8ZSNPGQ9d4q60PYHwHGnPkt1CVu6Nqyl8zZttog4Iydk8Hfn1eE5eY2ZzYhadFjZPqeOHjAoE74YF3KqcMICmRinDj4Osl7hS84MAvW0ZAJw2UIyuCrUO1tbs5X7bK-vAU8poa2inQ0-R8S4uWR4dbrW6kyic=F83FDCBD"
+  },
+  "url": "https://hcrobot.atlassian.net/rest/api/latest/myself"
+}

@@ -1,0 +1,12 @@
+{
+  "body": "----------------------------c08bcd7cdba59d9641e18f7b\r\nContent-Disposition: form-data; name=\"results\"; filename=\"results.json\"\r\nContent-Type: application/json\r\n\r\n{\"tests\":[{\"finish\":\"2026-03-12T13:03:36Z\",\"start\":\"2026-03-12T13:03:22Z\",\"status\":\"PASSED\",\"testKey\":\"LVH-1483\"}]}\r\n----------------------------c08bcd7cdba59d9641e18f7b\r\nContent-Disposition: form-data; name=\"info\"; filename=\"info.json\"\r\nContent-Type: application/json\r\n\r\n{\"fields\":{\"description\":\"Cypress version: 14.5.4\\nBrowser: electron (130.0.6723.137)\",\"issuetype\":{\"name\":\"Test Execution\"},\"project\":{\"key\":\"LVH\"},\"summary\":\"Lidarviewer2026.03.04\"},\"xrayFields\":{}}\r\n----------------------------c08bcd7cdba59d9641e18f7b--\r\n",
+  "headers": {
+    "Accept": "application/json, text/plain, */*",
+    "Content-Type": "multipart/form-data; boundary=--------------------------c08bcd7cdba59d9641e18f7b",
+    "Authorization": "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ0ZW5hbnQiOiI2NzZjZjE2MS00ZjZlLTNkNmEtYTgxMy00NjAwOWUyYTVkNWUiLCJhY2NvdW50SWQiOiI3MTIwMjA6ZDMxYTg2NDgtYmE2ZC00NTM5LTg5ODEtYTA1YmRmY2IxZmNjIiwiaXNYZWEiOmZhbHNlLCJpYXQiOjE3NzMzMjA1OTgsImV4cCI6MTc3MzQwNjk5OCwiYXVkIjoiQTgzOTU3N0Y3QkY0NDVCQjk3MEEwMDVDNEI1MjdDMkIiLCJpc3MiOiJjb20ueHBhbmRpdC5wbHVnaW5zLnhyYXkiLCJzdWIiOiJBODM5NTc3RjdCRjQ0NUJCOTcwQTAwNUM0QjUyN0MyQiJ9.CS7umVVAMl3DczXCe8Igphvc2_9jVAV_hMLr9eye_yA",
+    "User-Agent": "axios/1.13.6",
+    "Content-Length": "691",
+    "Accept-Encoding": "gzip, compress, deflate, br"
+  },
+  "url": "https://xray.cloud.getxray.app/api/v2/import/execution/multipart"
+}

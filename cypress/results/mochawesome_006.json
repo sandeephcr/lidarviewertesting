@@ -1,0 +1,105 @@
+{
+  "stats": {
+    "suites": 1,
+    "tests": 1,
+    "passes": 1,
+    "pending": 0,
+    "failures": 0,
+    "start": "2026-03-12T13:57:57.613Z",
+    "end": "2026-03-12T13:58:21.538Z",
+    "duration": 23925,
+    "testsRegistered": 1,
+    "passPercent": 100,
+    "pendingPercent": 0,
+    "other": 0,
+    "hasOther": false,
+    "skipped": 0,
+    "hasSkipped": false
+  },
+  "results": [
+    {
+      "uuid": "aa4dde6d-0fc8-4b12-b2fa-c35037b59e30",
+      "title": "",
+      "fullFile": "cypress\\e2e\\Functional Menu\\Functional Menu.cy.js",
+      "file": "cypress\\e2e\\Functional Menu\\Functional Menu.cy.js",
+      "beforeHooks": [],
+      "afterHooks": [],
+      "tests": [],
+      "suites": [
+        {
+          "uuid": "c060c0cd-089c-4ade-bab6-d3e96256ab8c",
+          "title": "Functional Menu Module",
+          "fullFile": "",
+          "file": "",
+          "beforeHooks": [],
+          "afterHooks": [],
+          "tests": [
+            {
+              "title": "FunctionalMenu_001 - Verify the functionality of snapshot",
+              "fullTitle": "Functional Menu Module FunctionalMenu_001 - Verify the functionality of snapshot",
+              "timedOut": null,
+              "duration": 23627,
+              "state": "passed",
+              "speed": "slow",
+              "pass": true,
+              "fail": false,
+              "pending": false,
+              "context": null,
+              "code": "_ViewerElements.default.getSnapshotBtn.should('be.visible').click();\ncy.exec('dir cypress\\\\downloads').then(result => {\n  expect(result.stdout).to.include('.png');\n  cy.exec('del cypress\\\\downloads\\\\*.png');\n});",
+              "err": {},
+              "uuid": "e4f718cf-d8ef-4b25-893f-5428d457fb4f",
+              "parentUUID": "c060c0cd-089c-4ade-bab6-d3e96256ab8c",
+              "isHook": false,
+              "skipped": false
+            }
+          ],
+          "suites": [],
+          "passes": [
+            "e4f718cf-d8ef-4b25-893f-5428d457fb4f"
+          ],
+          "failures": [],
+          "pending": [],
+          "skipped": [],
+          "duration": 23627,
+          "root": false,
+          "rootEmpty": false,
+          "_timeout": 2000
+        }
+      ],
+      "passes": [],
+      "failures": [],
+      "pending": [],
+      "skipped": [],
+      "duration": 0,
+      "root": true,
+      "rootEmpty": true,
+      "_timeout": 2000
+    }
+  ],
+  "meta": {
+    "mocha": {
+      "version": "7.2.0"
+    },
+    "mochawesome": {
+      "options": {
+        "quiet": false,
+        "reportFilename": "mochawesome",
+        "saveHtml": true,
+        "saveJson": true,
+        "consoleReporter": "spec",
+        "useInlineDiffs": false,
+        "code": true
+      },
+      "version": "7.1.3"
+    },
+    "marge": {
+      "options": {
+        "reportDir": "cypress/results",
+        "overwrite": false,
+        "html": true,
+        "json": true
+      },
+      "version": "6.2.0"
+    }
+  }
+}
