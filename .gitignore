@@ -12,4 +12,4 @@ cypress.env.json
 dist/ 
 build/
 cypress.env.json
-logs
+logs/
