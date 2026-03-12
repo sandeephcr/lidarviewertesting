@@ -403,7 +403,7 @@ class LidarViewerElements {
   }
 
   // Search input inside modal
-  get getSearchInput() {
+  get getUserPermissionsSearchInput() {
     return this.getUserPermissionsModal
       .find('input[placeholder="Search"]');
   }
