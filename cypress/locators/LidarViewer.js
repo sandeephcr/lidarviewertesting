@@ -449,6 +449,7 @@ writeCheckbox(folderName) {
     getDropdownToggleButton(folderName) {
     return this.folderRow(folderName).find('button#dropdown-autoclose-true.custom-toggle.btn.btn-primary');
   }
+<<<<<<< HEAD
   selectDropdownOption(folderName, optionText) {
     // Click toggle first to open dropdown
     this.getDropdownToggleButton(folderName).click();
@@ -458,5 +459,38 @@ writeCheckbox(folderName) {
       .contains('a.dropdown-item', optionText)
       .click();
 }
+=======
+//   selectDropdownOption(folderName, optionText) {
+//     // Click toggle first to open dropdown
+//     this.getDropdownToggleButton(folderName).click();
+
+//     // Then select the option
+//     cy.get('div.dropdown-menu.show')
+//       .contains('a.dropdown-item', optionText)
+//       .click();
+// }
+
+getDropdownToggleButton(folderName) {
+    return this.folderRow(folderName)
+      .find('#dropdown-autoclose-true')
+  }
+  
+  selectDropdownOption(folderName, optionText) {
+  
+    // open dropdown
+    this.getDropdownToggleButton(folderName)
+      .should('be.visible')
+      .click();
+  
+    // select option
+    cy.get('div.options.dropdown-menu.show')
+      .should('be.visible')
+      .contains(optionText)
+      .click();
+  }
+
+
+
+>>>>>>> cc29ae7 (Updated user permissions automation tests)
 }
 export default new LidarViewerElements
