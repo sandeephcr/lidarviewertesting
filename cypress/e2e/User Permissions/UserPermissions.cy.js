@@ -1,5 +1,3 @@
-<<<<<<< HEAD
-=======
 Cypress.on("uncaught:exception", (err) => {
     if (err.message.includes("Request failed with status code 500")) {
       return false; // prevents Cypress from failing the test
@@ -7,7 +5,6 @@ Cypress.on("uncaught:exception", (err) => {
   });
 
 
->>>>>>> cc29ae7 (Updated user permissions automation tests)
 import { 
     Adminlogin,
     loginToPortal
@@ -16,12 +13,9 @@ import {
 import LidarViewer from "../../locators/LidarViewer.js";
 import Constants from "../../utils/Constants";
 import ViewerElements from "../../locators/ViewerElements.js";
-<<<<<<< HEAD
-=======
 import PoleLocators from "../../locators/PoleLocators.js";
 import CalloutsAction from "../../support/CalloutsAction.js";
 import CalloutsLocators from "../../locators/CalloutsLocators.js";
->>>>>>> cc29ae7 (Updated user permissions automation tests)
 import "../../support/commands.js";
 
 
@@ -54,11 +48,9 @@ describe('User Permissions', () => {
         LidarViewer.getUserPermissionsModal.should('be.visible');
 
         // Step 3: Revoke read & write permissions for folder
-<<<<<<< HEAD
         LidarViewer.writeCheckbox(folderName).find('img').click({ force: true }); ;
         LidarViewer.readCheckbox(folderName).find('img').click({ force: true });
         
-=======
       // open dropdown
 LidarViewer.getDropdownToggleButton(folderName).click();
 
@@ -66,7 +58,6 @@ LidarViewer.getDropdownToggleButton(folderName).click();
 cy.get('div.dropdown-menu.show')
   .contains('a.dropdown-item', 'Read')
   .click();
->>>>>>> cc29ae7 (Updated user permissions automation tests)
         // Step 4: Click update
         LidarViewer.getUpdateButton.click();
         cy.get('[data-testid="confirm-button"]').contains("Apply").click();

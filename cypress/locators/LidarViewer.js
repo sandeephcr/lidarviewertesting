@@ -449,17 +449,6 @@ writeCheckbox(folderName) {
     getDropdownToggleButton(folderName) {
     return this.folderRow(folderName).find('button#dropdown-autoclose-true.custom-toggle.btn.btn-primary');
   }
-<<<<<<< HEAD
-  selectDropdownOption(folderName, optionText) {
-    // Click toggle first to open dropdown
-    this.getDropdownToggleButton(folderName).click();
-
-    // Then select the option
-    cy.get('div.dropdown-menu.show')
-      .contains('a.dropdown-item', optionText)
-      .click();
-}
-=======
 //   selectDropdownOption(folderName, optionText) {
 //     // Click toggle first to open dropdown
 //     this.getDropdownToggleButton(folderName).click();
@@ -491,6 +480,5 @@ getDropdownToggleButton(folderName) {
 
 
 
->>>>>>> cc29ae7 (Updated user permissions automation tests)
 }
 export default new LidarViewerElements
