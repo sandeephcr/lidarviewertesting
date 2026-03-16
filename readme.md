@@ -1,8 +1,8 @@
 ## To run tests just execute the below commands:
 
-Headless mode - `npm test`
+Headless mode - `npm run test`
 
-Without Headless mode - `npm test-headed`
+Without Headless mode - `npm run test-headed`
 
 ## To run the tests from the Ui follow the below steps:
 
