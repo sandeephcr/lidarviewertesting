@@ -58,7 +58,7 @@ beforeEach(() => {
     cy.wait(5000);
 });
 
-  it("Measurement_001 - Verify the functionality of deleting point-to-point measurement", () => {
+  it("LVH-3178 Measurement_001 - Verify the functionality of deleting point-to-point measurement", () => {
 
     MeasurementActions.placePointToPointMeasurement(500, 600, 600, 650);
 
@@ -72,7 +72,7 @@ beforeEach(() => {
 
   });
 
-  it("Measurement_002 - Verify saving P2P measurement data to server", () => {
+  it("LVH-2534 Measurement_002 - Verify saving P2P measurement data to server", () => {
 
     // Place measurement
     MeasurementActions.placePointToPointMeasurement(500, 600, 600, 650);
@@ -81,7 +81,7 @@ beforeEach(() => {
   
   });
 
-  it("Measurement_003 - Verify saving with no measurement data", () => {
+  it("LVH-2545 Measurement_003 - Verify saving with no measurement data", () => {
 
     // Try to save measurements
     ViewerElements.getMoreOptionsBtn.click();
@@ -97,7 +97,7 @@ beforeEach(() => {
   
   });
 
-  it("Measurement_004 - Verify deleting a horizontal measurement", () => {
+  it("LVH-2563 Measurement_004 - Verify deleting a horizontal measurement", () => {
 
     // 1. Perform a horizontal measurement
     MeasurementActions.placeHorizontalMeasurement(500, 800, 700, 850);
@@ -111,7 +111,7 @@ beforeEach(() => {
       });
   });
 
-  it("Measurement_005 - Verify the functionality of saving horizontal measurement data to server", () => {
+  it("LVH-2566 Measurement_005 - Verify the functionality of saving horizontal measurement data to server", () => {
 
     // Place measurement
     MeasurementActions.placeHorizontalMeasurement(500, 800, 700, 850);
@@ -120,7 +120,7 @@ beforeEach(() => {
   
   });
 
-  it("Measurement_006 - Verify deleting an angle measurement", () => {
+  it("LVH-2577 Measurement_006 - Verify deleting an angle measurement", () => {
 
     // Place angle measurement
     MeasurementActions.placeAngleMeasurement(500, 800, 600, 850, 600, 900);
@@ -136,7 +136,7 @@ beforeEach(() => {
   
   });
 
-  it("Measurement_007 - Verify the functionality of saving angle measurement data to server", () => {
+  it("LVH-2580 Measurement_007 - Verify the functionality of saving angle measurement data to server", () => {
 
     // Place angle measurement
     MeasurementActions.placeAngleMeasurement(500, 800, 600, 850, 600, 900);
@@ -146,7 +146,7 @@ beforeEach(() => {
   
   });
 
-  it("Measurement_008 - Verify the functionality of saving perpendicular measurement data to server", () => {
+  it("LVH-2594 Measurement_008 - Verify the functionality of saving perpendicular measurement data to server", () => {
 
     // Place perpendicular measurement
     MeasurementActions.placePerpendicularMeasurement(500, 800, 600, 850, 600, 900);
@@ -155,7 +155,7 @@ beforeEach(() => {
   
   });
 
-  it("Measurement_009 - Verify updated vertical offset measurement functionality", () => {
+  it("LVH-2597 Measurement_009 - Verify updated vertical offset measurement functionality", () => {
 
     ViewerElements.getSettingsBtn.click();
     SettingsLocators.measurementsTab.should('be.visible').click();
@@ -175,7 +175,7 @@ beforeEach(() => {
   
   });
 
-  it("Measurement_010 - Verify deleting a vertical offset measurement", () => {
+  it("LVH-2602 Measurement_010 - Verify deleting a vertical offset measurement", () => {
 
     // 1. Perform vertical offset measurement
     MeasurementActions.placeVerticalOffsetMeasurement({
@@ -192,7 +192,7 @@ beforeEach(() => {
   
   });
 
-  it("Measurement_011 - Verify the functionality of deleting polyline measurement", () => {
+  it("LVH-2617 Measurement_011 - Verify the functionality of deleting polyline measurement", () => {
 
     // 1. Place a polyline measurement with multiple points
     MeasurementActions.placePolylineMeasurement([
@@ -214,7 +214,7 @@ beforeEach(() => {
   
   });
 
-  it("Measurement_012 - Verify the functionality of saving polyline measurement data to server", () => {
+  it("LVH-2620 Measurement_012 - Verify the functionality of saving polyline measurement data to server", () => {
 
     // 1. Place a polyline measurement with multiple points
     MeasurementActions.placePolylineMeasurement([
@@ -227,7 +227,7 @@ beforeEach(() => {
     MeasurementActions.savePolylineToServer();
   });
 
-  it("Measurement_013 - Verify the functionality of clearing measurements", () => {
+  it("LVH-2893 Measurement_013 - Verify the functionality of clearing measurements", () => {
 
     // 1. Draw a polyline
     MeasurementActions.placePolylineMeasurement([
@@ -239,7 +239,7 @@ beforeEach(() => {
     MeasurementActions.clearAllMeasurements();
   });
 
-  it("Measurement_014 - Verify saving measurement file to local machine and server", () => {
+  it("LVH-2565 Measurement_014 - Verify saving measurement file to local machine and server", () => {
 
     // Create a measurement
     MeasurementActions.placeHorizontalMeasurement(500, 800, 650, 850);

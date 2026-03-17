@@ -4,7 +4,6 @@ import {
   } from "../../utils/commonMethods.js";
   import LidarViewer from "../../locators/LidarViewer.js";
   import Constants from "../../utils/Constants.js";
-  import ViewerElements from "../../locators/ViewerElements.js";
   import "../../support/commands.js";
   
 describe("API Key Generation Tests", () => {

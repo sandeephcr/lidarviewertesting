@@ -17,7 +17,7 @@ describe('Concurrent Users', () => {
         LidarViewer.getConcurrentUsersOption.click();
     });
 
-    it('ConcurrentUsers_001 - Verify export using custom date range', () => {
+    it('LVH-7825 ConcurrentUsers_001 - Verify export using custom date range', () => {
 
         const FROM_DATE = '2026-03-01';
         const TO_DATE = '2026-03-10';
@@ -49,7 +49,7 @@ describe('Concurrent Users', () => {
           });
     });
 
-    it('ConcurrentUsers_002 - Verify exporting data using Today preset', () => {
+    it('LVH-7821 ConcurrentUsers_002 - Verify exporting data using Today preset', () => {
 
         // Step 1: Open Export modal
         ViewerElements.getActiveUsersExportButton.click();
@@ -68,7 +68,7 @@ describe('Concurrent Users', () => {
     
     });
 
-    it('ConcurrentUsers_003 - Verify switching between servers updates User Metrics Trend graph', () => {
+    it('LVH-7715 ConcurrentUsers_003 - Verify switching between servers updates User Metrics Trend graph', () => {
 
         const SERVER_QA = 'https://qa.lidartechsolutions.com';
         const SERVER_TESTING = 'https://testing.lidartechsolutions.com';
@@ -99,7 +99,7 @@ describe('Concurrent Users', () => {
     
     });
 
-    it('ConcurrentUsers_004 - Verify User Metrics Trend shows data for testing server', () => {
+    it('LVH-7714 ConcurrentUsers_004 - Verify User Metrics Trend shows data for testing server', () => {
 
         const TESTING_SERVER = 'https://testing.lidartechsolutions.com';
         
@@ -126,7 +126,7 @@ describe('Concurrent Users', () => {
     
     });
 
-    it('ConcurrentUsers_005 - Verify Average Users metric updates graph', () => {
+    it('LVH-7709 ConcurrentUsers_005 - Verify Average Users metric updates graph', () => {
 
         const RANGE = '1h'; // Last 1 Hour
         const METRIC = 'avgUsers';
@@ -150,7 +150,7 @@ describe('Concurrent Users', () => {
     
     });
 
-    it('ConcurrentUsers_006 - Verify Max Users metric updates graph', () => {
+    it('LVH-7707 ConcurrentUsers_006 - Verify Max Users metric updates graph', () => {
 
         const RANGE = '1h';       // Last 1 Hour
         const METRIC = 'maxUsers';
@@ -179,7 +179,7 @@ describe('Concurrent Users', () => {
     
     });
 
-    it('ConcurrentUsers_007 - Verify graph updates when switching between Average, Max, and Min Users', () => {
+    it('LVH-7705 ConcurrentUsers_007 - Verify graph updates when switching between Average, Max, and Min Users', () => {
 
         const RANGE = '24h';
         // Step 1: Select time range
@@ -218,7 +218,7 @@ describe('Concurrent Users', () => {
     
     });
 
-    it('ConcurrentUsers_008 - Verify Max Users graph updates for selected time range', () => {
+    it('LVH-7703 ConcurrentUsers_008 - Verify Max Users graph updates for selected time range', () => {
 
         // Step 1: Select Max Users metric
         ViewerElements.getUserMetricsMetricDropdown
@@ -248,7 +248,7 @@ describe('Concurrent Users', () => {
     
     });
 
-    it('ConcurrentUsers_009 - Verify Average Users graph updates for selected time range', () => {
+    it('LVH-7702 ConcurrentUsers_009 - Verify Average Users graph updates for selected time range', () => {
 
         // Step 1: Select Average Users metric
         ViewerElements.getUserMetricsMetricDropdown

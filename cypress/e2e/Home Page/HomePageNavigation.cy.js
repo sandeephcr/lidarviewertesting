@@ -14,12 +14,12 @@ describe("Home Page Navigation Tests", () => {
     Adminlogin(Constants.AdminEmail, Constants.AdminPassword);
   });
 
-  it("Home_Project_nav_001_Verify that double-clicking on a folder from the home page navigates the user into the folder.", () => {
+  it("LVH-3976 Home_Project_nav_001_Verify that double-clicking on a folder from the home page navigates the user into the folder.", () => {
     openDynamicFolderAndRun(folderPath, runName);
     cy.wait(2000);
     cy.get(".body3.ActiveCrumb.pointer").contains("Automation_Atchyutha-");
   });
-  it('Home_Project_nav_003_Verify that clicking on a folder from search results opens the folder correctly.', () => {
+  it('LVH-3978 Home_Project_nav_003_Verify that clicking on a folder from search results opens the folder correctly.', () => {
    
     cy.get(".folderName").contains("Shared Space").should("be.visible").dblclick()
     cy.get('input[placeholder="Type for search"]').should('be.visible').clear().type('Test');
@@ -28,7 +28,7 @@ describe("Home Page Navigation Tests", () => {
     cy.wait(2000);
     cy.get('.folderName').contains('Test').dblclick()
   });
-  it('Home_Project_nav_006_Verifying that the opening of multiple runs', () => {
+  it('LVH-3342 Home_Project_nav_006_Verifying that the opening of multiple runs', () => {
     
     let firstRunName
     cy.get(".folderName").contains("Shared Space").should("be.visible").dblclick()
@@ -46,7 +46,7 @@ describe("Home Page Navigation Tests", () => {
     expect($el.text().trim()).to.eq(firstRunName)
     })
   });
-  it('Multi-run_001_Verify that data can be successfully imported for all opened runs from the server', () => {
+  it('LVH-3352 Multi-run_001_Verify that data can be successfully imported for all opened runs from the server', () => {
     
     let firstRunName
     cy.get(".folderName").contains("Shared Space").should("be.visible").dblclick()
@@ -95,7 +95,7 @@ describe("Home Page Navigation Tests", () => {
         .should('match', /downloaded/i);
 
   });
-  it('Home_Project_nav_008_Verify that clicking on the next button navigates to the next page', () => {
+  it('LVH-3421 Home_Project_nav_008_Verify that clicking on the next button navigates to the next page', () => {
    
     cy.get(".folderName").contains("Shared Space").should("be.visible").dblclick()
       // Verify starting on page 1
@@ -112,7 +112,7 @@ describe("Home Page Navigation Tests", () => {
       .should('contain', '2');
 
   });
-  it('Home_Project_nav_009_Verify that clicking on the previous button navigates to the previous page', () => {
+  it('LVH-3422 Home_Project_nav_009_Verify that clicking on the previous button navigates to the previous page', () => {
 
     // Open folder
     cy.get(".folderName")

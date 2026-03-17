@@ -2,7 +2,7 @@ const { defineConfig } = require("cypress");
 const { configureXrayPlugin } = require("cypress-xray-plugin");
 
 module.exports = defineConfig({
-  projectId: '3irm7b',
+  projectId: process.env.CYPRESS_PROJECT_ID,
   viewportWidth: 1920,
   viewportHeight: 1080,
   defaultCommandTimeout: 30000,
@@ -48,12 +48,12 @@ module.exports = defineConfig({
 
       await configureXrayPlugin(on, config, {
         jira: {
-          projectKey: "LVH",
-          url: "https://hcrobot.atlassian.net",
-          testExecutionIssueKey : "LVH-7844",
+          projectKey: config.env.JIRA_PROJECT_KEY,
+          url: config.env.JIRA_URL,
+          testExecutionIssueKey: config.env.JIRA_TEST_EXECUTION_KEY,
           testExecutionIssue: {
             fields: {
-              summary: "SanityTestXrayExp2026.03.04",
+              summary: "Lidarviewer2026.03.04",
             },
           },
         },
@@ -69,10 +69,10 @@ module.exports = defineConfig({
         plugin: {
           debug: true,
         },
-          cloud: {
-    clientId: "pB47CC65540634E4081BBF6690C708F5B3EA323D084904A64A256B78F9EDA60CE",
-    clientSecret: "4d50b25b8071f30d1ba21158285d7ec9cc759fba3f0217593c709c28b2213616",
-  },
+        cloud: {
+          clientId: config.env.XRAY_CLIENT_ID,
+          clientSecret: config.env.XRAY_CLIENT_SECRET,
+        },
       });
 
       return config;
