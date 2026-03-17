@@ -25,6 +25,9 @@
 // Cypress.Commands.overwrite('visit', (originalFn, url, options) => { ... })import 'cypress-plugin-snapshots/commands';
 // import 'cypress-plugin-snapshots/commands';
 
+// cypress/support/commands.js
+
+
 Cypress.Commands.add("simulateOffline", () => {
     cy.then(() => {
         return Cypress.automation("remote:debugger:protocol", {

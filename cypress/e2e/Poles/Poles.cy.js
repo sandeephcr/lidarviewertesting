@@ -58,7 +58,7 @@ beforeEach(() => {
 });
 
 
-  it("Pole_001 - Verify deleting imported pole data from server", () => {
+  it("LVH-3688 Pole_001 - Verify deleting imported pole data from server", () => {
 
       // Place and save pole
       const poleName = PoleActions.placePole(600, 350);
@@ -72,7 +72,7 @@ beforeEach(() => {
 
     });
 
-  it("Pole_002 - Verify opening pole form by clicking pole node or ID in camera", () => {
+  it("LVH-3687 Pole_002 - Verify opening pole form by clicking pole node or ID in camera", () => {
       // Place a pole and get the generated name
       const poleName = PoleActions.placePole(600, 350);
       // Search by polename and open it
@@ -80,7 +80,7 @@ beforeEach(() => {
       PoleLocators.getField('Id').should('have.value', poleName);
     });
 
-  it("Pole_003 - Verify opening pole form by clicking Pole icon in the map view", () => {
+  it("LVH-3686 Pole_003 - Verify opening pole form by clicking Pole icon in the map view", () => {
     // Place a pole and get the generated name
     const poleName = PoleActions.placePole(600, 350);
     // Search by polename and open it
@@ -88,7 +88,7 @@ beforeEach(() => {
     PoleLocators.getField('Id').should('have.value', poleName);
     });
   
-  it("Pole_004 - Verify the functionality of copy feature in pole", () => {
+  it("LVH-3675 Pole_004 - Verify the functionality of copy feature in pole", () => {
 
     const poleName = PoleActions.placePole(600, 350);
     // SPANS TAB
@@ -122,7 +122,7 @@ beforeEach(() => {
   
     });
 
-  it("Pole_005 -Verify the functionality of display associated form data upon switching  between tabs", () => {
+  it("LVH-3668 Pole_005 -Verify the functionality of display associated form data upon switching  between tabs", () => {
       const poleName = PoleActions.placePole(600, 350);
 
       PoleLocators.getTab('Spans').click();
@@ -137,7 +137,7 @@ beforeEach(() => {
 
     });
 
-  it("Pole_006 - Verify deleting nested forms under main tabs in pole form", () => {
+  it("LVH-3667 Pole_006 - Verify deleting nested forms under main tabs in pole form", () => {
     const poleName = PoleActions.placePole(600, 350);
   
     // ======================
@@ -175,7 +175,7 @@ beforeEach(() => {
   
     });
 
-  it("Pole_007 - Verify the functionality of adding new sub forms in pole form", () => {
+  it("LVH-3666 Pole_007 - Verify the functionality of adding new sub forms in pole form", () => {
     const poleName = PoleActions.placePole(600, 350);
     // SPANS TAB
     PoleLocators.getTab('Spans').click();
@@ -223,7 +223,7 @@ beforeEach(() => {
   
     });
 
-  it("Pole_008 -Verify the functionality of saving updated pole to server", () => {
+  it("LVH-3658 Pole_008 -Verify the functionality of saving updated pole to server", () => {
     
     const poleName = PoleActions.placePole(650, 380);
     PoleActions.savePole();
@@ -254,7 +254,7 @@ beforeEach(() => {
     PoleLocators.getField('Id').should('have.value', updatedPoleName);
     });
 
-  it("Pole_009 -Verifying the functionality of pole form deletion from server", () => {
+  it("LVH-3657 Pole_009 -Verifying the functionality of pole form deletion from server", () => {
         // Place & save pole
         const poleName = PoleActions.placePole(600, 350);
         PoleActions.savePole();
@@ -268,7 +268,7 @@ beforeEach(() => {
 
     });
 
-  it("Pole_010 -Verifying the functionality of importing pole from the server", () => {
+  it("LVH-3656 Pole_010 -Verifying the functionality of importing pole from the server", () => {
         const poleName = PoleActions.placePole(650, 400);
         PoleActions.savePole();
         cy.reload();
@@ -280,7 +280,7 @@ beforeEach(() => {
         PoleLocators.getField('Id').should('have.value', poleName);
     });
 
-  it("Pole_011 -Verifying the functionality of saving pole form data to server", () => {
+  it("LVH-3655 Pole_011 -Verifying the functionality of saving pole form data to server", () => {
         // Place a new pole and save it
         const poleName = PoleActions.placePole(700, 450);
         PoleActions.savePole();

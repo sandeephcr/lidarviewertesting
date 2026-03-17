@@ -8,7 +8,7 @@ describe("Forgot Password Tests", () => {
     LidarViewerElements.forgotPassword.click();
   });
 
-  it("Forgot_Password_001_Verify user can request password reset link with valid email", () => {
+  it("LVH-1500 Forgot_Password_001_Verify user can request password reset link with valid email", () => {
     cy.intercept("POST", "/api/forgotPassword/*", {
   statusCode: 200,
   body: {
@@ -29,7 +29,7 @@ describe("Forgot Password Tests", () => {
     });
   });
 
-it("Forgot_Password_002_Verify user cannot request password reset with INVALID email format", () => {
+it("LVH-1483 Forgot_Password_002_Verify user cannot request password reset with INVALID email format", () => {
 
     const invalidMail=`hcr${Date.now()}`;
     LidarViewerElements.emailInForgotPasswordField

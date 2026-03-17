@@ -1,6 +1,5 @@
-import { addUser,Adminlogin,validateAddedUser } from "../../utils/commonMethods";
+import { Adminlogin } from "../../utils/commonMethods";
 import LidarViewer from "../../locators/LidarViewer.js";
-import UserManagementLocatos from "../../locators/UserManagementLocators.js"
 import Constants from "../../utils/Constants";
 
 describe('User Management Module', () => {
@@ -12,7 +11,7 @@ describe('User Management Module', () => {
         LidarViewer.getUserManagementOption.click();
     });
 
-    it('User Management_001 - Verify that the functionality of creating a new user with valid credentials', () => {
+    it('LVH-3511 User Management_001 - Verify that the functionality of creating a new user with valid credentials', () => {
         
         LidarViewer.getAddUserButton.click();
         const username=`hcr${Date.now()}`;
@@ -47,7 +46,7 @@ describe('User Management Module', () => {
 
     });
 
-    it('User Management_002 - Verify email is case-insensitive when registering', () => {
+    it('LVH-3518 User Management_002 - Verify email is case-insensitive when registering', () => {
 
         cy.get('table tbody tr')
         .first()
@@ -87,7 +86,7 @@ describe('User Management Module', () => {
           });
     });
 
-    it('User Management_003 - Verify admin can update a user password', () => {
+    it('LVH-3524 User Management_003 - Verify admin can update a user password', () => {
 
         const TEST_USERNAME = Constants.UserManagementTestUser;
         const NEW_PASSWORD = Constants.UserManagementTestPassword;
@@ -119,7 +118,7 @@ describe('User Management Module', () => {
             .and('contain.text', 'password updated successfully');
     });
 
-    it('User Management_004 - Verify admin can enable and disable a user account', () => {
+    it('LVH-3528 User Management_004 - Verify admin can enable and disable a user account', () => {
 
         const TEST_USERNAME = Constants.UserManagementTestUser;
     

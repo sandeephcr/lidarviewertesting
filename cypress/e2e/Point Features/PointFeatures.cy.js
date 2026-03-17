@@ -10,10 +10,6 @@ import {
 import Constants from "../../utils/Constants.js";
 import LidarViewer from '../../locators/LidarViewer.js';
 import PointsAction from '../../support/PointsAction.js';
-import PointsLocators from '../../locators/PointsLocators.js';
-import SettingsLocators from '../../locators/SettingsLocators.js';
-import MeasurementLocators from '../../locators/MeasurementLocators.js'
-import MeasurementAction from '../../support/MeasurementAction.js';
 import '../../support/commands.js'
 
 describe("Point Features Module", () => {
@@ -61,7 +57,7 @@ beforeEach(() => {
     cy.wait(5000);
 });
 
-it("Points_001 - Verify the functionality of point feature", () => {
+it("LVH-3174 Points_001 - Verify placing and saving a point to server", () => {
 
     // 1–4 Activate point feature, place point, open dialog, fill data
     PointsAction.placePoint(500, 800);
@@ -71,7 +67,7 @@ it("Points_001 - Verify the functionality of point feature", () => {
   
   });
 
-it("Points_002 - Verify the functionality of deleting point", () => {
+it("LVH-3178 Points_002 - Verify deleting a point", () => {
 
     // Define point location once
     const point = { x: 500, y: 700 };
@@ -90,8 +86,8 @@ it("Points_002 - Verify the functionality of deleting point", () => {
 
 });
 
-it("Points_003 - Verify the functionality of deleting imported points data", () => {
-
+it("LVH-3181 Points_003 - Verify deleting an imported point from server", () => {
+  
     const point = { x: 500, y: 600 };
   
     // Place a point
@@ -115,8 +111,8 @@ it("Points_003 - Verify the functionality of deleting imported points data", () 
   
   });
 
-it("Points_004 - Verify the functionality of saving points data to server", () => {
-
+ it("LVH-3188 Points_004 - Verify saving points data to server", () => {
+ 
     // 1–4 Activate point feature, place point, open dialog, fill data
     PointsAction.placePoint(500, 750);
     
@@ -125,8 +121,8 @@ it("Points_004 - Verify the functionality of saving points data to server", () =
   
   });
 
-it("Points_005 - Verify the functionality of saving points data to local machine", () => {
-
+it("LVH-3183 Points_005 - Verify saving points data to local machine", () => {
+  
     PointsAction.placePoint(500, 850);
     PointsAction.savePointsToLocalMachine();
     cy.exec('dir cypress\\downloads').then((result) => {
@@ -135,8 +131,8 @@ it("Points_005 - Verify the functionality of saving points data to local machine
     });
 });
   
-it("Points_006 - Verify the functionality of importing points data from sever", () => {
-
+it("LVH-3184 Points_006 - Verify importing points data from server", () => {
+  
     const point = { x: 500, y: 600 };
 
     // Place a point
@@ -152,8 +148,8 @@ it("Points_006 - Verify the functionality of importing points data from sever", 
 
 });
 
-it("Points_007 - Verify network failure functionality of saving points data to server", () => {
-
+it("LVH-3188 Points_007 - Verify network failure when saving points to server", () => {
+  
     const point = { x: 500, y: 650 };
     // Place a point
     PointsAction.placePoint(point.x, point.y);
@@ -177,8 +173,8 @@ it("Points_007 - Verify network failure functionality of saving points data to s
   
   });
 
-it("Points_008 - Verify the functionality of updating points location", () => {
-
+it("LVH-3190 Points_008 - Verify updating point locations", () => {
+  
     const point1 = { x: 500, y: 650 };
     const point2 = { x: 600, y: 700 };
 

@@ -12,7 +12,7 @@ describe("Login Page Tests", () => {
     cy.visit("/login");
   });
 
-  it("Block_001 - Verify user can successfully login after admin unblocks user account", () =>{
+  it("LVH-2182 Block_001 - Verify user can successfully login after admin unblocks user account", () =>{
 
     //Blocking user account
     for (let i = 0; i <= 5; i++) {
@@ -33,12 +33,12 @@ describe("Login Page Tests", () => {
 
   });
 
-  it("OTP_001_Verify that login with valid OTP", () => {
+  it("LVH-2184 OTP_001_Verify that login with valid OTP", () => {
      loginToPortal(Constants.testDesignEngineerEmail, Constants.password)
      LidarViewerElements.getHomeText.should("have.text", "Home Page");
    });
 
-  it("Profile_001 - Verify user able to update password from view profile dialog", () => {
+  it("LVH-2192 Profile_001 - Verify user able to update password from view profile dialog", () => {
     // Step 1: Login to user account
     loginToPortal(Constants.validEmail, Constants.password);
     LidarViewerElements.getHomeText.should("have.text", "Home Page");
@@ -88,7 +88,7 @@ describe("Login Page Tests", () => {
 
   });
 
-  it("Profile_002 - Verify View Profile option is visible to all user accounts", () => {
+  it("LVH-2191 Profile_002 - Verify View Profile option is visible to all user accounts", () => {
 
     // ----- Admin User -----
     Adminlogin(Constants.AdminEmail, Constants.AdminPassword);

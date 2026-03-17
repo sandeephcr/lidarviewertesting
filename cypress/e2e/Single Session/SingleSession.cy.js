@@ -1,10 +1,8 @@
 import { 
-    Adminlogin,
     loginToPortal,
  } from "../../utils/commonMethods";
 import LidarViewer from "../../locators/LidarViewer.js";
 import Constants from "../../utils/Constants";
-import ViewerElements from "../../locators/ViewerElements.js";
 import "../../support/commands.js";
 
 describe('Single Session Module', () => {
@@ -13,14 +11,14 @@ describe('Single Session Module', () => {
         cy.visit(Cypress.config('baseUrl'))
     });
 
-    it('Single_Session_001 - Verify user A can login successfully', () => {
+    it('LVH-7647 Single_Session_001 - Verify user A can login successfully', () => {
     
         loginToPortal(Constants.testDesignEngineerEmail, Constants.password)
         LidarViewer.getHomeText.should("have.text", "Home Page");
 
     });
 
-    it('Single_Session_002 - Verify User B can login after User A logs out', () => {
+    it('LVH-7650 Single_Session_002 - Verify User B can login after User A logs out', () => {
 
         // Step 1: Login as User A
         loginToPortal(Constants.testDesignEngineerEmail, Constants.password);
@@ -43,7 +41,7 @@ describe('Single Session Module', () => {
             .and('have.text', 'Home Page');
     });
 
-    it('Single_Session_003 - Verify User B login terminates previous session and logs into new session', () => {
+    it('LVH-7653 Single_Session_003 - Verify User B login terminates previous session and logs into new session', () => {
 
         // Step 1: User A logs in
         loginToPortal(Constants.testDesignEngineerEmail, Constants.password);

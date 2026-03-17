@@ -55,7 +55,7 @@ describe("Multi Sensor Module", () => {
         cy.wait(5000);
     });
 
-    it("Multi_Sensor_001 - Verify the system restricts deselecting both Hesai and ZF sensors at the same time", () => {
+    it("LVH-3906 Multi_Sensor_001 - Verify the system restricts deselecting both Hesai and ZF sensors at the same time", () => {
 
         ViewerElements.getPcdFilterButton.click();
     
@@ -72,7 +72,7 @@ describe("Multi Sensor Module", () => {
     
     });
 
-    it("Multi_Sensor_002 - Verify LiDAR unit filter panel appears when PCD Filters icon is clicked", () => {
+    it("LVH-3898 Multi_Sensor_002 - Verify LiDAR unit filter panel appears when PCD Filters icon is clicked", () => {
 
         // Click PCD Filters button
         ViewerElements.getPcdFilterButton.click();
