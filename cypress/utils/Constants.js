@@ -34,6 +34,8 @@ export default {
   emailEmptyString: "Invalid email format. ",
   adminUserName: "Admin",
   caseSensitiveAdminEmail: "Admin@hcrobo.com",
+  AdminEmail:"admin@hcrobo.com",
+  AdminPassword: "Cnsw-123",
 
   testuserEmail: "abc@hcrobo.com",
   testuserPwd: "cnsw-123",

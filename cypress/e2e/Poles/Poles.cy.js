@@ -90,7 +90,6 @@ beforeEach(() => {
   
   it("LVH-3675 Pole_004 - Verify the functionality of copy feature in pole", () => {
 
-    const poleName = PoleActions.placePole(600, 350);
     // SPANS TAB
     PoleLocators.getTab('Spans').click();
   
@@ -123,7 +122,6 @@ beforeEach(() => {
     });
 
   it("LVH-3668 Pole_005 -Verify the functionality of display associated form data upon switching  between tabs", () => {
-      const poleName = PoleActions.placePole(600, 350);
 
       PoleLocators.getTab('Spans').click();
       cy.contains('Span [1]').should('exist');
@@ -138,7 +136,6 @@ beforeEach(() => {
     });
 
   it("LVH-3667 Pole_006 - Verify deleting nested forms under main tabs in pole form", () => {
-    const poleName = PoleActions.placePole(600, 350);
   
     // ======================
     // SPANS TAB
@@ -176,7 +173,6 @@ beforeEach(() => {
     });
 
   it("LVH-3666 Pole_007 - Verify the functionality of adding new sub forms in pole form", () => {
-    const poleName = PoleActions.placePole(600, 350);
     // SPANS TAB
     PoleLocators.getTab('Spans').click();
     PoleLocators.poleSidePanel.contains('Add Span').click();

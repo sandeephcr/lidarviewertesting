@@ -1,0 +1,15 @@
+export const VALIDATION_DATA = {
+  INTEGER:           '12345',
+  FLOATING_POINT:    '3.14',
+  STRING:            'HelloWorld',
+  ALPHANUMERIC:      'FS2026AB',
+  SPECIAL_CHARS:     '!@##@#@##@',
+  QUOTES:            '"quoted"',
+  SCRIPTS:           '<script>alert(1)</script>',
+  SPACES_ESCAPE:     '   spaced   ',
+  ZERO_VALUE:        '0',
+  NEGATIVE:          '-999',
+  SCIENTIFIC:        '1.5e10',
+  GEO_DATA:          '17.3850,78.4867',
+  BOOLEAN:           'true',
+};
