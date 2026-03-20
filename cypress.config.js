@@ -24,7 +24,7 @@ module.exports = defineConfig({
     },
 
     retries: {
-      runMode: 2,
+      runMode: 0,
       openMode: 0
     },
 
@@ -53,9 +53,13 @@ module.exports = defineConfig({
           testExecutionIssueKey: config.env.JIRA_TEST_EXECUTION_KEY,
           testExecutionIssue: {
             fields: {
-              summary: "Lidarviewer2026.03.04",
+              summary: config.env.PROJECTNAME,
             },
           },
+           authentication: {                          // ✅ ADD THIS BLOCK
+      username: config.env.JIRA_USERNAME,      // your Atlassian email
+      apiToken: config.env.JIRA_API_TOKEN,     // token from id.atlassian.com
+    },
         },
         xray: {
           uploadResults: true,

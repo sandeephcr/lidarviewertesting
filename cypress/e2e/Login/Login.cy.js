@@ -1,4 +1,3 @@
-import LidarViewerElements from "../../locators/LidarViewer.js";
 import { login1 } from "../../utils/commonMethods.js";
 import Constants from "../../utils/Constants.js";
 

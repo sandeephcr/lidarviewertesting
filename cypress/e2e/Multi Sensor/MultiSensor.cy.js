@@ -8,7 +8,6 @@ import {
     Adminlogin,
      } from '../../utils/commonMethods.js';
 import Constants from "../../utils/Constants.js";
-import LidarViewer from '../../locators/LidarViewer.js';
 
 describe("Multi Sensor Module", () => {
 
