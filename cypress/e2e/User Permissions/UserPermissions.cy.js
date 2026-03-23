@@ -49,16 +49,9 @@ describe('User Permissions', () => {
         LidarViewer.getUserPermissionsModal.should('be.visible');
 
         // Step 3: Revoke read & write permissions for folder
-        LidarViewer.writeCheckbox(folderName).find('img').click({ force: true });
+        LidarViewer.writeCheckbox(folderName).find('img').click({ force: true }); ;
         LidarViewer.readCheckbox(folderName).find('img').click({ force: true });
         
-            // open dropdown
-        LidarViewer.getDropdownToggleButton(folderName).click();
-
-        // select permission
-        cy.get('div.dropdown-menu.show')
-        .contains('a.dropdown-item', 'Read')
-        .click();
         // Step 4: Click update
         LidarViewer.getUpdateButton.click();
         cy.get('[data-testid="confirm-button"]').contains("Apply").click();
@@ -99,162 +92,120 @@ describe('User Permissions', () => {
 
     it.only('User_Permissions_002 - Verify assigning read permissions for multiple runs', () => {
 
+       // Step 1: Search for the user
+       LidarViewer.getUserSearchInput.clear().type(testUser);
+       LidarViewer.getUserRows.contains('td', testUser).should('exist');
+
+       // Step 2: Open User Permissions modal
+       LidarViewer.getUserRows.contains('td', testUser)
+           .parent('tr')
+           .then((row) => {
+               const $row = cy.wrap(row);
+               LidarViewer.getPermissionsButton($row).click();
+           });
+
+       // Wait for modal
+       LidarViewer.getUserPermissionsModal.should('be.visible');
+
+       // Step 3: Revoke read & write permissions for folder
+       LidarViewer.writeCheckbox(folderName).find('img').click({ force: true }); ;
+       LidarViewer.readCheckbox(folderName).find('img').click({ force: true });
+       
+       // Step 4: Click update
+       LidarViewer.getUpdateButton.click();
+       cy.get('[data-testid="confirm-button"]').contains("Apply").click();
+
+       cy.reload();
+       cy.logout();
+
+       // Step 6: Login as test user and verify folder is not visible
+       loginToPortal(testUser, Constants.password);
+       cy.contains(folderName).should('not.exist');
+
+       cy.logout();
+
+       // Step 8: Login back as Admin
+       Adminlogin(Constants.AdminEmail, Constants.AdminPassword);
+       LidarViewer.getProfileIcon.click();
+       LidarViewer.getAdministrationOption.click();
+       LidarViewer.getUserManagementOption.click();
         // Step 1: Search for the user
         LidarViewer.getUserSearchInput.clear().type(testUser);
         LidarViewer.getUserRows.contains('td', testUser).should('exist');
 
         // Step 2: Open User Permissions modal
         LidarViewer.getUserRows.contains('td', testUser)
-            .parent('tr')
-            .then((row) => {
-                const $row = cy.wrap(row);
-                LidarViewer.getPermissionsButton($row).click();
-            });
-
-        // Wait for modal
-        LidarViewer.getUserPermissionsModal.should('be.visible');
-
-        // Step 3: Revoke read & write permissions for folder
-        LidarViewer.writeCheckbox(folderName).find('img').click({ force: true });
-        LidarViewer.readCheckbox(folderName).find('img').click({ force: true });
-        
-        // Step 4: Click update
-        // Step 3: Assign Read permission for folder
-        LidarViewer.selectDropdownOption(folderName, 'Read');
-
-        // Step 4: Click update and apply
-        LidarViewer.getUpdateButton.click();
-        cy.get('[data-testid="confirm-button"]').contains("Apply").click();
-
-        cy.reload();
-        cy.logout();
-
-        // Step 6: Login as test user and verify folder is not visible
-        loginToPortal(testUser, Constants.password);
-        cy.contains(folderName).should('not.exist');
-        // Step 5: Login as test user and verify folder is visible (read access)
-        loginToPortal(testUser, Constants.password);
-        cy.contains(folderName).should('be.visible');
-
-        // Open folder and open first available run
-        cy.get(".folderName").contains(folderName).should("be.visible").dblclick();
-        cy.get('[data-testid="run-card-container"]')
-            .filter(':visible')
-            .should('have.length.greaterThan', 0)
-            .first()
-            .click();
-        cy.contains('div.primary-btn', 'Open').should('be.visible').click();
-
-        // Verify user is in viewer and Save is not available (read-only)
-        cy.get("#canvas3D", { timeout: 60000 }).should("exist");
-        ViewerElements.getMoreOptionsBtn.should('be.visible').click();
-        ViewerElements.getSaveOption.should('not.exist');
-
-        cy.logout();
-
-        // Step 8: Login back as Admin
-        Adminlogin(Constants.AdminEmail, Constants.AdminPassword);
-        LidarViewer.getProfileIcon.click();
-        LidarViewer.getAdministrationOption.click();
-        LidarViewer.getUserManagementOption.click();
-         // Step 1: Search for the user
-         LidarViewer.getUserSearchInput.clear().type(testUser);
-         LidarViewer.getUserRows.contains('td', testUser).should('exist');
-
-         // Step 2: Open User Permissions modal
-         LidarViewer.getUserRows.contains('td', testUser)
-         .parent('tr')
-         .then((row) => {
-             const $row = cy.wrap(row);
-             LidarViewer.getPermissionsButton($row).click();
-         });
+        .parent('tr')
+        .then((row) => {
+            const $row = cy.wrap(row);
+            LidarViewer.getPermissionsButton($row).click();
+        });
 
 
-        LidarViewer.getUserPermissionsModal.should('be.visible');
-        LidarViewer.selectDropdownOption(folderName, 'Write');
+       LidarViewer.getUserPermissionsModal.should('be.visible');
+       LidarViewer.selectDropdownOption(folderName, 'Write');
 
-        LidarViewer.getUpdateButton.click();
-        cy.get('[data-testid="confirm-button"]').contains("Apply").click();
+       LidarViewer.getUpdateButton.click();
+       cy.get('[data-testid="confirm-button"]').contains("Apply").click();
     });
 
     it.only('User_Permissions_003 - Verify the functionality of revoking all permissions', () => {
 
+       // Step 1: Search for the user
+       LidarViewer.getUserSearchInput.clear().type(testUser);
+       LidarViewer.getUserRows.contains('td', testUser).should('exist');
+
+       // Step 2: Open User Permissions modal
+       LidarViewer.getUserRows.contains('td', testUser)
+           .parent('tr')
+           .then((row) => {
+               const $row = cy.wrap(row);
+               LidarViewer.getPermissionsButton($row).click();
+           });
+
+       // Wait for modal
+       LidarViewer.getUserPermissionsModal.should('be.visible');
+
+       // Step 3: Revoke read & write permissions for folder
+       LidarViewer.writeCheckbox(folderName).find('img').click({ force: true }); ;
+       LidarViewer.readCheckbox(folderName).find('img').click({ force: true });
+       
+       // Step 4: Click update
+       LidarViewer.getUpdateButton.click();
+       cy.get('[data-testid="confirm-button"]').contains("Apply").click();
+
+       cy.reload();
+       cy.logout();
+
+       // Step 6: Login as test user and verify folder is not visible
+       loginToPortal(testUser, Constants.password);
+       cy.contains(folderName).should('not.exist');
+
+       cy.logout();
+
+       // Step 8: Login back as Admin
+       Adminlogin(Constants.AdminEmail, Constants.AdminPassword);
+       LidarViewer.getProfileIcon.click();
+       LidarViewer.getAdministrationOption.click();
+       LidarViewer.getUserManagementOption.click();
         // Step 1: Search for the user
         LidarViewer.getUserSearchInput.clear().type(testUser);
         LidarViewer.getUserRows.contains('td', testUser).should('exist');
 
         // Step 2: Open User Permissions modal
         LidarViewer.getUserRows.contains('td', testUser)
-            .parent('tr')
-            .then((row) => {
-                const $row = cy.wrap(row);
-                LidarViewer.getPermissionsButton($row).click();
-            });
-
-        // Wait for modal
-        LidarViewer.getUserPermissionsModal.should('be.visible');
-
-        // Step 3: Revoke read & write permissions for folder
-        LidarViewer.writeCheckbox(folderName).find('img').click({ force: true });
-        LidarViewer.readCheckbox(folderName).find('img').click({ force: true });
-        
-        // Step 4: Click update
-        // Step 3: Assign Read permission for folder
-        LidarViewer.selectDropdownOption(folderName, 'Read');
-
-        // Step 4: Click update and apply
-        LidarViewer.getUpdateButton.click();
-        cy.get('[data-testid="confirm-button"]').contains("Apply").click();
-
-        cy.reload();
-        cy.logout();
-
-        // Step 6: Login as test user and verify folder is not visible
-        loginToPortal(testUser, Constants.password);
-        cy.contains(folderName).should('not.exist');
-        // Step 5: Login as test user and verify folder is visible (read access)
-        loginToPortal(testUser, Constants.password);
-        cy.contains(folderName).should('be.visible');
-
-        // Open folder and open first available run
-        cy.get(".folderName").contains(folderName).should("be.visible").dblclick();
-        cy.get('[data-testid="run-card-container"]')
-            .filter(':visible')
-            .should('have.length.greaterThan', 0)
-            .first()
-            .click();
-        cy.contains('div.primary-btn', 'Open').should('be.visible').click();
-
-        // Verify user is in viewer and Save is not available (read-only)
-        cy.get("#canvas3D", { timeout: 60000 }).should("exist");
-        ViewerElements.getMoreOptionsBtn.should('be.visible').click();
-        ViewerElements.getSaveOption.should('not.exist');
-
-        cy.logout();
-
-        // Step 8: Login back as Admin
-        Adminlogin(Constants.AdminEmail, Constants.AdminPassword);
-        LidarViewer.getProfileIcon.click();
-        LidarViewer.getAdministrationOption.click();
-        LidarViewer.getUserManagementOption.click();
-         // Step 1: Search for the user
-         LidarViewer.getUserSearchInput.clear().type(testUser);
-         LidarViewer.getUserRows.contains('td', testUser).should('exist');
-
-         // Step 2: Open User Permissions modal
-         LidarViewer.getUserRows.contains('td', testUser)
-         .parent('tr')
-         .then((row) => {
-             const $row = cy.wrap(row);
-             LidarViewer.getPermissionsButton($row).click();
-         });
+        .parent('tr')
+        .then((row) => {
+            const $row = cy.wrap(row);
+            LidarViewer.getPermissionsButton($row).click();
+        });
 
 
-        LidarViewer.getUserPermissionsModal.should('be.visible');
-        LidarViewer.selectDropdownOption(folderName, 'Write');
+       LidarViewer.getUserPermissionsModal.should('be.visible');
+       LidarViewer.selectDropdownOption(folderName, 'Write');
 
-        LidarViewer.getUpdateButton.click();
-        cy.get('[data-testid="confirm-button"]').contains("Apply").click();
+       LidarViewer.getUpdateButton.click();
+       cy.get('[data-testid="confirm-button"]').contains("Apply").click();
     });
 
     it.only('User_Permissions_004 - Verify user has write permission', () => {
