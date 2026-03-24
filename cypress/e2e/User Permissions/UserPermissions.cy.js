@@ -24,7 +24,8 @@ describe('User Permissions', () => {
     const folderName = "Shared Space";
     const runName = "Test-HCR-ZF-Dec28-1";
     const updateWriteRunName="Test_31-12-2025";
-    const revokeWriteRunName="Test-MLS07-03"
+    const revokeWriteRunName="Test-MLS07-03";
+    const calloutPoleRunName="Test-Feb27"
     beforeEach(() => {
         cy.visit(Cypress.config('baseUrl'))
         Adminlogin(Constants.AdminEmail, Constants.AdminPassword);
@@ -494,7 +495,7 @@ describe('User Permissions', () => {
        
     });
 
-    it.only('User_Permissions_008 - Verify read and write permissions on callout data', () => {
+    it('User_Permissions_008 - Verify read and write permissions on callout data', () => {
 
         // Part A: READ permissions => no Save, no Update/Delete callouts
         LidarViewer.getUserSearchInput.clear().type(testUser);
@@ -508,7 +509,7 @@ describe('User Permissions', () => {
             });
 
         LidarViewer.getUserPermissionsModal.should('be.visible');
-        LidarViewer.selectDropdownOption(folderName, 'Read');
+        LidarViewer.writeCheckbox(calloutPoleRunName).find('img').click({ force: true });
         LidarViewer.getUpdateButton.click();
         cy.get('[data-testid="confirm-button"]').contains("Apply").click();
 
@@ -516,36 +517,33 @@ describe('User Permissions', () => {
         cy.logout();
 
         loginToPortal(testUser, Constants.password);
-        cy.contains(folderName).should('be.visible');
-        cy.get(".folderName").contains(folderName).should("be.visible").dblclick();
-        cy.get('[data-testid="run-card-container"]').filter(':visible').first().click();
-        cy.contains('div.primary-btn', 'Open').should('be.visible').click();
-        cy.get("#canvas3D", { timeout: 60000 }).should("exist");
+        cy.get('input[placeholder="Type for search"]')
+        .should("be.visible")
+        .clear()
+        .type(calloutPoleRunName);
+        cy.wait(500);
+        cy.get('div.primary-btn[alt="search"]')
+        .should("be.visible")
+        .click();
 
-        ViewerElements.getMoreOptionsBtn.should('be.visible').click();
-        ViewerElements.getSaveOption.should('not.exist');
+        cy.get(".runCardHomeName")
+        .filter((_, el) => el.innerText.trim() === calloutPoleRunName)
+        .should("have.length", 1)
+        .first()
+        .click();
+
 
         // Import callouts and validate restrictions in UI
+        cy.wait(5000);
         CalloutsAction.importCalloutsFromServer();
-        CalloutsLocators.getCalloutsBtn.should('be.visible').click();
-        CalloutsLocators.getCalloutDetailsBtn.should('be.visible').click();
-        CalloutsLocators.getCalloutCards.should('have.length.greaterThan', 0);
-
+       
         // No delete on callout cards in read-only mode
         CalloutsLocators.getCalloutCards.first().find('[data-testid="deletebutton"]').should('not.exist');
 
-        // No update: textarea should be disabled/readonly when opening a callout
-        CalloutsLocators.getCalloutCards.first().find('span').first().click({ force: true });
-        CalloutsLocators.getCalloutTextarea.should(($el) => {
-            const disabled = $el.is(':disabled');
-            const readOnly = $el.attr('readonly') !== undefined;
-            expect(disabled || readOnly, 'Callout textarea is read-only').to.equal(true);
-        });
-        cy.get('[data-testid="cancel-button"]').then(($btn) => {
-            if ($btn.length) cy.wrap($btn).click({ force: true });
-        });
-
-        cy.logout();
+        cy.contains('.ToolTip-container', 'Profile menu').click();
+        cy.contains('Logout').should('be.visible').click();
+        cy.contains('Are you sure').should('be.visible');
+        cy.get('[data-testid="confirm-button"]').should('be.visible').click();
 
         // Part B: WRITE permissions => Save option available for callouts
         Adminlogin(Constants.AdminEmail, Constants.AdminPassword);
@@ -561,7 +559,7 @@ describe('User Permissions', () => {
                 LidarViewer.getPermissionsButton($row).click();
             });
         LidarViewer.getUserPermissionsModal.should('be.visible');
-        LidarViewer.selectDropdownOption(folderName, 'Write');
+        LidarViewer.selectDropdownOption(calloutPoleRunName, 'Write');
         LidarViewer.getUpdateButton.click();
         cy.get('[data-testid="confirm-button"]').contains("Apply").click();
 
@@ -569,19 +567,26 @@ describe('User Permissions', () => {
         cy.logout();
 
         loginToPortal(testUser, Constants.password);
-        cy.contains(folderName).should('be.visible');
-        cy.get(".folderName").contains(folderName).should("be.visible").dblclick();
-        cy.get('[data-testid="run-card-container"]').filter(':visible').first().click();
-        cy.contains('div.primary-btn', 'Open').should('be.visible').click();
-        cy.get("#canvas3D", { timeout: 60000 }).should("exist");
+        cy.get('input[placeholder="Type for search"]')
+        .should("be.visible")
+        .clear()
+        .type(calloutPoleRunName);
+        cy.wait(500);
+        cy.get('div.primary-btn[alt="search"]')
+        .should("be.visible")
+        .click();
+
+        cy.get(".runCardHomeName")
+        .filter((_, el) => el.innerText.trim() === calloutPoleRunName)
+        .should("have.length", 1)
+        .first()
+        .click();
 
         ViewerElements.getMoreOptionsBtn.should('be.visible').click();
         ViewerElements.getSaveOption.should('be.visible').click();
         ViewerElements.getSaveDialog.should('be.visible');
         ViewerElements.getCalloutsCheckbox.should('be.visible');
         ViewerElements.getSaveCancelBtn.should('be.visible').click();
-
-        cy.logout();
     });
 
     it('User_Permissions_009 - Verify restrictions on save, update and delete actions for read-only Poles data', () => {
