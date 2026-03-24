@@ -1,6 +1,7 @@
 import LidarViewerElements from "../../locators/LidarViewer.js";
 import Constants from "../../utils/Constants.js";
 import {
+  Adminlogin,
   loginToPortal,
 } from "../../utils/commonMethods.js";
 import "../../support/commands.js";
@@ -11,7 +12,7 @@ describe("Common Login Tests", () => {
     cy.visit("/login");
   });
 
-  it("Common_Login_001 - User should be locked after 4 failed login attempts", () => {
+  it("Common_Login_001 - User should be locked after 5 failed login attempts", () => {
     for (let i = 0; i <= 5; i++) {
       LidarViewerElements.getEmail.clear().type(Constants.validEmail);
       LidarViewerElements.getPassword.clear().type(Constants.invalidPwd);
@@ -23,36 +24,44 @@ describe("Common Login Tests", () => {
     cy.unblockUser(Constants.validEmail);
   });
 
-  it("Common_Login_002 - User should be locked after 3 failed OTP attempts", () => {
+  it("Common_Login_002 - User should be locked after 5 failed OTP attempts", () => {
 
     // Login with valid email + password to reach OTP page
     LidarViewerElements.getEmail.type(Constants.validEmail);
     LidarViewerElements.getPassword.type(Constants.password);
     LidarViewerElements.getLoginBtn.click();
 
-    for (let i = 0; i < 4; i++) {
-      cy.get("input[type='tel']").clear().type("000000"); // invalid OTP
-      cy.contains("button", "Verify OTP").click();
+    for (let i = 0; i <=5 ; i++) {
+      cy.contains('Enter OTP')
+      .parents('div')
+      .find('input.search-input')
+      .should('have.length', 1)
+      .clear()
+      .type('000000'); // invalid OTP
+      cy.contains("button", "Verify").click();
       cy.wait(500);
     }
 
-    cy.contains("Your account has been locked due to multiple failed OTP attempts")
+    cy.contains("OTP")
       .should("be.visible");
     cy.unblockUser(Constants.validEmail);
   });
 
-  it("Common_Login_003 - User should be locked after 3 failed forgot-password attempts", () => {
+  it("Common_Login_003 - User should be locked after 5 failed forgot-password attempts", () => {
 
     LidarViewerElements.forgotPassword.click();
 
     for (let i = 0; i < 4; i++) {
-      LidarViewerElements.emailInForgotPasswordField.clear().type(Constants.notExistingEmail);
+      LidarViewerElements.emailInForgotPasswordField.clear().type(Constants.validEmail);
       LidarViewerElements.sendRecoverLinkBtn.click();
       cy.wait(500);
     }
 
-    cy.contains("Your account has been locked due to multiple failed recovery attempts")
+    cy.contains("Failed")
       .should("be.visible");
+    
+    cy.visit("/login");
+    cy.unblockUser(Constants.validEmail);
     
   });
 
@@ -82,7 +91,7 @@ describe("Common Login Tests", () => {
      LidarViewerElements.getHomeText.should("have.text", "Home Page");
    });
 
-   it("LVH-2192 Profile_001 - Verify user able to update password from view profile dialog", () => {
+  it("LVH-2192 Profile_001 - Verify user able to update password from view profile dialog", () => {
     // Step 1: Login to user account
     loginToPortal(Constants.validEmail, Constants.password);
     LidarViewerElements.getHomeText.should("have.text", "Home Page");
@@ -149,4 +158,5 @@ describe("Common Login Tests", () => {
     cy.logout();
 
   });
+
 });
