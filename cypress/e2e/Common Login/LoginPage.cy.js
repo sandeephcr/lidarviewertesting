@@ -12,7 +12,7 @@ describe("Common Login Tests", () => {
     cy.visit("/login");
   });
 
-  it("Common_Login_001 - User should be locked after 5 failed login attempts", () => {
+  it("LVH-2178 - User should be locked after 5 failed login attempts", () => {
     for (let i = 0; i <= 5; i++) {
       LidarViewerElements.getEmail.clear().type(Constants.validEmail);
       LidarViewerElements.getPassword.clear().type(Constants.invalidPwd);
@@ -24,7 +24,7 @@ describe("Common Login Tests", () => {
     cy.unblockUser(Constants.validEmail);
   });
 
-  it("Common_Login_002 - User should be locked after 5 failed OTP attempts", () => {
+  it("LVH-2179 - User should be locked after 5 failed OTP attempts", () => {
 
     // Login with valid email + password to reach OTP page
     LidarViewerElements.getEmail.type(Constants.validEmail);
@@ -47,7 +47,7 @@ describe("Common Login Tests", () => {
     cy.unblockUser(Constants.validEmail);
   });
 
-  it("Common_Login_003 - User should be locked after 5 failed forgot-password attempts", () => {
+  it("LVH-2180 - User should be locked after 5 failed forgot-password attempts", () => {
 
     LidarViewerElements.forgotPassword.click();
 
@@ -65,7 +65,7 @@ describe("Common Login Tests", () => {
     
   });
 
-  it("LVH-2182 Block_001 - Verify user can successfully login after admin unblocks user account", () =>{
+  it("LVH-2182 - Verify user can successfully login after admin unblocks user account", () =>{
 
     //Blocking user account
     for (let i = 0; i <= 5; i++) {
@@ -86,12 +86,12 @@ describe("Common Login Tests", () => {
 
   });
 
-  it("OTP_001_Verify that login with valid OTP", () => {
+  it("LVH-2184 - Verify that login with valid OTP", () => {
      loginToPortal(Constants.testDesignEngineerEmail, Constants.password)
      LidarViewerElements.getHomeText.should("have.text", "Home Page");
    });
 
-  it("LVH-2192 Profile_001 - Verify user able to update password from view profile dialog", () => {
+  it("LVH-2192 - Verify user able to update password from view profile dialog", () => {
     // Step 1: Login to user account
     loginToPortal(Constants.validEmail, Constants.password);
     LidarViewerElements.getHomeText.should("have.text", "Home Page");
@@ -141,7 +141,7 @@ describe("Common Login Tests", () => {
 
   });
 
-  it("LVH-2191 Profile_002 - Verify View Profile option is visible to all user accounts", () => {
+  it("LVH-2191 - Verify View Profile option is visible to all user accounts", () => {
 
     // ----- Admin User -----
     Adminlogin(Constants.AdminEmail, Constants.AdminPassword);
