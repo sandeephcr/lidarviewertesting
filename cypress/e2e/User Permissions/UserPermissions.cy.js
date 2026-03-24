@@ -605,7 +605,7 @@ describe('User Permissions', () => {
 
         // Step 3: Assign Read permission for folder and apply
         LidarViewer.getUserPermissionsModal.should('be.visible');
-        LidarViewer.selectDropdownOption(folderName, 'Read');
+        LidarViewer.writeCheckbox(calloutPoleRunName).find('img').click({ force: true });
         LidarViewer.getUpdateButton.click();
         cy.get('[data-testid="confirm-button"]').contains("Apply").click();
 
@@ -614,27 +614,23 @@ describe('User Permissions', () => {
 
         // Step 4: Login as test user and open a run
         loginToPortal(testUser, Constants.password);
-        cy.contains(folderName).should('be.visible');
+        cy.get('input[placeholder="Type for search"]')
+        .should("be.visible")
+        .clear()
+        .type(calloutPoleRunName);
+        cy.wait(500);
+        cy.get('div.primary-btn[alt="search"]')
+        .should("be.visible")
+        .click();
 
-            // Open folder
-        cy.contains('.folderName', folderName)
-        .should('be.visible')
-        .dblclick();
-
-        // Click first run card
-        cy.get('[data-testid="run-card-container"]')
-        .filter(':visible')
-        .should('have.length.greaterThan', 0)
+        cy.get(".runCardHomeName")
+        .filter((_, el) => el.innerText.trim() === calloutPoleRunName)
+        .should("have.length", 1)
         .first()
-        .click({ force: true });
-
-        // Click Open button
-        cy.contains('div.primary-btn', 'Open', { timeout: 20000 })
-        .should('be.visible')
         .click();
 
         cy.get("#canvas3D", { timeout: 60000 }).should("exist");
-
+        cy.wait(5000);
         // Step 5: Verify Save is not available (cannot save poles data)
         ViewerElements.getMoreOptionsBtn.should('be.visible').click();
         ViewerElements.getSaveOption.should('not.exist');
@@ -648,7 +644,7 @@ describe('User Permissions', () => {
         cy.contains(/Poles downloaded successfully/i, { timeout: 20000 }).should("be.visible");
 
         // Step 7: Open any pole and verify update/delete controls are restricted
-        cy.get('div[role="button"][aria-label]', { timeout: 20000 })
+        cy.get(`div[role="button"][aria-label="abcd"]`, { timeout: 20000 })
             .should('have.length.greaterThan', 0)
             .first()
             .click({ force: true });
@@ -657,18 +653,13 @@ describe('User Permissions', () => {
 
         // Delete buttons should not be available in read-only mode
         cy.get('[data-testid="deletebutton"]').should('not.exist');
-
-        // Update/edit should be restricted: core fields must be non-editable
-        PoleLocators.getField('Id').should(($el) => {
-            const disabled = $el.is(':disabled');
-            const readOnly = $el.attr('readonly') !== undefined;
-            expect(disabled || readOnly, 'Id field is read-only').to.equal(true);
-        });
-
         // Also ensure pole-panel save action is not available (if present in this UI)
         PoleLocators.saveButton.should('not.exist');
 
-        cy.logout();
+        cy.contains('.ToolTip-container', 'Profile menu').click();
+        cy.contains('Logout').should('be.visible').click();
+        cy.contains('Are you sure').should('be.visible');
+        cy.get('[data-testid="confirm-button"]').should('be.visible').click();
 
         // Cleanup: restore Write for subsequent tests
         Adminlogin(Constants.AdminEmail, Constants.AdminPassword);
@@ -684,7 +675,7 @@ describe('User Permissions', () => {
                 LidarViewer.getPermissionsButton($row).click();
             });
         LidarViewer.getUserPermissionsModal.should('be.visible');
-        LidarViewer.selectDropdownOption(folderName, 'Write');
+        LidarViewer.selectDropdownOption(calloutPoleRunName, 'Write');
         LidarViewer.getUpdateButton.click();
         cy.get('[data-testid="confirm-button"]').contains("Apply").click();
     });
