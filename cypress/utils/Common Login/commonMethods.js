@@ -1,4 +1,4 @@
-import LidarViewerElements from "../locators/LidarViewer.js";
+import LidarViewerElements from "../../locators/Common Login/LidarViewer.js";
 
 export const loginToPortal = (email, pwd) => {
   let otp;
