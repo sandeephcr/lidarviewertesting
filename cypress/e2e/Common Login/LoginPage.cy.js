@@ -849,4 +849,394 @@ describe("Common Login Tests", () => {
   
   });
 
+  it("LVH-2215 - Verify admin users can access all assigned sites", () => {
+
+    // Testing server
+    //cy.visit("https://testing.lidartechsolutions.com");
+    Adminlogin(Constants.AdminEmail, Constants.AdminPassword);
+    LidarViewerElements.getHomeText.should("have.text", "Home Page");
+    cy.logout();
+  
+    // QA server
+    cy.origin("https://qa.lidartechsolutions.com", { args: { email: Constants.AdminEmail, pwd: Constants.AdminPassword } }, ({ email, pwd }) => {
+    
+      cy.visit("https://qa.lidartechsolutions.com");
+  
+      //Login
+      cy.get('input[type="text"]').type(email); 
+      cy.get('input[type="password"]').type(pwd);
+      cy.get('button[type="submit"]').click();
+  
+      // Validate Home page
+      cy.contains("Home Page").should("be.visible");
+    });
+  
+  });
+
+  it("LVH-2216 - Verify users are blocked from accessing sites not assigned to them", () => {
+
+    cy.origin("https://qa.lidartechsolutions.com", { args: { email: "ff1@square.com", pwd: Constants.AdminPassword } }, ({ email, pwd }) => {
+    
+      cy.visit("https://qa.lidartechsolutions.com");
+  
+      //Login
+      cy.get('input[type="text"]').type(email); 
+      cy.get('input[type="password"]').type(pwd);
+      // Listen for window alert
+      cy.on('window:alert', (text) => {
+        expect(text).to.contains("Unable to login, contact Site Administrator");
+      });
+      cy.get('button[type="submit"]').click();
+
+    });
+
+  });
+
+  it("LVH-2217 - Verify admin can assign site access to a user", () => {
+
+    const targetUser = "ff2@square.com";
+  
+    // Step 1: Login as admin
+    Adminlogin(Constants.AdminEmail, Constants.AdminPassword);
+  
+    // Step 2: Navigate to User Management
+    LidarViewerElements.getProfileIcon.click();
+    LidarViewerElements.getAdministrationOption.click();
+    LidarViewerElements.getUserManagementOption.click();
+  
+    // Step 3: Search for the user and open edit dialog
+    LidarViewerElements.getSearchInput.clear().type(targetUser);
+    LidarViewerElements.getUserRows.contains('td', targetUser)
+      .parent('tr')
+      .within(() => {
+        cy.get('td:last-child svg').first().click();
+      });
+  
+    // Step 4: Assign Site 1 access
+    LidarViewerElements.getSitesDropdown.click();
+    cy.get('body').get('.dropdown-container') 
+      .contains('https://testing.lidartechsolutions.com')
+      .parent()
+      .find('input[type="checkbox"]')
+      .check({ force: true });
+    LidarViewerElements.getSitesDropdown.click();
+    LidarViewerElements.getUpdateButtonUM.click();
+    
+    cy.reload();
+    cy.logout();
+  
+    // Step 5: Login as the user to confirm access
+      cy.visit("https://testing.lidartechsolutions.com");
+      cy.get('input[type="text"]').type(targetUser);
+      cy.get('input[type="password"]').type(Constants.password);
+      cy.get('button[type="submit"]').click();
+      // Validate successful login by checking home page
+      cy.contains("Home Page").should("be.visible");
+      cy.logout();
+
+  // Revoke the previously assigned site access and verify it
+  cy.visit("/login");
+  // Step 6: Login as admin again to revoke access
+  Adminlogin(Constants.AdminEmail, Constants.AdminPassword);
+  LidarViewerElements.getProfileIcon.click();
+  LidarViewerElements.getAdministrationOption.click();
+  LidarViewerElements.getUserManagementOption.click();
+
+  // Search for the user and open edit dialog
+  LidarViewerElements.getSearchInput.clear().type(targetUser);
+  LidarViewerElements.getUserRows.contains('td', targetUser)
+    .parent('tr')
+    .within(() => {
+      cy.get('td:last-child svg').first().click();
+    });
+
+  // Step 7: Uncheck Site 1 access
+  LidarViewerElements.getSitesDropdown.click();
+  cy.get('body').get('.dropdown-container')
+    .find('span')
+    .filter(':contains("https://testing.lidartechsolutions.com")')
+    .eq(1)
+    .parent()
+    .find('input[type="checkbox"]')
+    .uncheck({ force: true });
+    LidarViewerElements.getSitesDropdown.click();
+    LidarViewerElements.getUpdateButtonUM.click();
+
+  });
+
+  it("LVH-2218 - Verify admin can revoke a user's site access", () => {
+
+    const targetUser = "ff1@square.com";
+
+    // Step 1: Login as admin
+    Adminlogin(Constants.AdminEmail, Constants.AdminPassword);
+
+    // Step 2: Navigate to User Management
+    LidarViewerElements.getProfileIcon.click();
+    LidarViewerElements.getAdministrationOption.click();
+    LidarViewerElements.getUserManagementOption.click();
+
+    // Step 3: Search for the user and open edit dialog
+    LidarViewerElements.getSearchInput.clear().type(targetUser);
+    LidarViewerElements.getUserRows.contains('td', targetUser)
+      .parent('tr')
+      .within(() => {
+        cy.get('td:last-child svg').first().click();
+      });
+
+    // Step 4: Uncheck Site 1 access
+    LidarViewerElements.getSitesDropdown.click();
+    cy.get('body').get('.dropdown-container')
+      .find('span')
+      .filter(':contains("https://testing.lidartechsolutions.com")')
+      .eq(1)
+      .parent()
+      .find('input[type="checkbox"]')
+      .uncheck({ force: true });
+    LidarViewerElements.getSitesDropdown.click();
+    LidarViewerElements.getUpdateButtonUM.click();
+    
+    cy.reload();
+    cy.logout();
+
+    // Step 5: Attempt login as the user to verify access is revoked
+    cy.visit("https://testing.lidartechsolutions.com");
+    cy.get('input[type="text"]').type(targetUser);
+    cy.get('input[type="password"]').type(Constants.password);
+    cy.get('button[type="submit"]').click();
+
+    // Listen for the window alert
+    cy.on('window:alert', (text) => {
+      expect(text).to.contains("failed");
+    });
+
+    // Step 6: Reassign site access to keep test isolated
+    cy.visit("/login");
+    Adminlogin(Constants.AdminEmail, Constants.AdminPassword);
+    LidarViewerElements.getProfileIcon.click();
+    LidarViewerElements.getAdministrationOption.click();
+    LidarViewerElements.getUserManagementOption.click();
+
+    LidarViewerElements.getSearchInput.clear().type(targetUser);
+    LidarViewerElements.getUserRows.contains('td', targetUser)
+      .parent('tr')
+      .within(() => {
+        cy.get('td:last-child svg').first().click();
+      });
+
+    // Re-check Site 1 access
+    LidarViewerElements.getSitesDropdown.click();
+    cy.get('body').get('.dropdown-container')
+      .find('span')
+      .filter(':contains("https://testing.lidartechsolutions.com")')
+      .eq(0)
+      .parent()
+      .find('input[type="checkbox"]')
+      .check({ force: true });
+    LidarViewerElements.getSitesDropdown.click();
+    LidarViewerElements.getUpdateButtonUM.click();
+
+  });
+
+  it("LVH-2219 - Verify admin logout from one site doesn't log them out from another", () => {
+
+    const adminEmail = Constants.AdminEmail;
+    const adminPwd = Constants.AdminPassword;
+  
+    // Step 1: Login to Site 1 (default origin)
+    cy.visit('/login');
+    Adminlogin(adminEmail, adminPwd);
+    cy.contains("Home Page").should("be.visible");
+  
+    // Step 2: Login to Site 2
+    cy.origin('https://qa.lidartechsolutions.com', { args: { adminEmail, adminPwd } }, ({ adminEmail, adminPwd }) => {
+      cy.visit('/login');
+      cy.get('input[type="text"]').type(adminEmail);
+      cy.get('input[type="password"]').type(adminPwd);
+      cy.get('button[type="submit"]').click();
+      cy.contains("Home Page").should("be.visible");
+    });
+  
+    // Step 3: Logout from Site 1
+    cy.visit('https://testing.lidartechsolutions.com');
+    cy.logout();
+    cy.contains("Login").should("be.visible");
+  
+    // Step 4: Go back to Site 2 and verify still logged in
+    cy.origin('https://qa.lidartechsolutions.com', () => {
+      cy.visit('/');   
+      cy.reload();
+      cy.contains("Home Page").should("be.visible");
+    });
+  
+  });
+
+  it("LVH-2220 - Verify newly created user is visible across different sites", () => {
+
+    const username = `user${Date.now()}`;
+    const email = `user${Date.now()}@test.com`;
+    const adminEmail = Constants.AdminEmail;
+    const adminPwd = Constants.AdminPassword;
+  
+    // Step 1: Login to Site 1 (testing)
+    Adminlogin(Constants.AdminEmail, Constants.AdminPassword);
+  
+    // Navigate to User Management
+    LidarViewerElements.getProfileIcon.click();
+    LidarViewerElements.getAdministrationOption.click();
+    LidarViewerElements.getUserManagementOption.click();
+  
+    // Step 2: Create a new user
+    LidarViewerElements.getAddUserButton.click();
+    LidarViewerElements.getUsernameInput.type(username);
+    LidarViewerElements.getEmailInput.type(email);
+    LidarViewerElements.getDesignationDropdown().select('Design Engineer');
+  
+    LidarViewerElements.getSitesDropdown.click();
+    cy.get('body').contains('Select All').click({ force: true });
+    LidarViewerElements.getSitesDropdown.click();
+  
+    LidarViewerElements.getPasswordInput.type('Cnsw-123');
+    LidarViewerElements.getConfirmPasswordInput.type('Cnsw-123');
+    LidarViewerElements.getMailRequiredCheckbox.click();
+    LidarViewerElements.getRegisterButton.click();
+  
+    // Validate user created
+    LidarViewerElements.infoMessageContainer
+      .should('be.visible')
+      .and('contain.text', 'User created');
+    cy.logout();
+  
+    // Step 3: Go to Site 2 (QA)
+    cy.origin('https://qa.lidartechsolutions.com', { args: { email, adminEmail, adminPwd  } }, ({ email, adminEmail, adminPwd }) => {
+  
+      cy.visit('/login');
+  
+      // Login as admin
+      cy.get('input[type="text"]').type(adminEmail);
+      cy.get('input[type="password"]').type(adminPwd);
+      cy.get('button[type="submit"]').click();
+  
+      cy.contains("Home Page").should("be.visible");
+  
+      // Navigate to User Management
+      cy.get('[data-cy=profile-icon]').click(); // adjust if needed
+      cy.contains('Administration').click();
+      cy.contains('User Management').click();
+  
+      // Step 4: Search for created user
+      cy.get('input[placeholder="Search"]').clear().type(email);
+      cy.get('table').contains('td', email).should('exist');
+  
+    });
+  
+  });
+
+  it("LVH-2221 - Verify non-admin user is denied access to restricted site", () => {
+
+    const targetUser = "fffffffff999@hcrobo.com";
+  
+    // Step 1: Login as admin
+    Adminlogin(Constants.AdminEmail, Constants.AdminPassword);
+  
+    // Step 2: Navigate to User Management
+    LidarViewerElements.getProfileIcon.click();
+    LidarViewerElements.getAdministrationOption.click();
+    LidarViewerElements.getUserManagementOption.click();
+  
+    // Step 3: Search user and open edit dialog
+    LidarViewerElements.getSearchInput.clear().type(targetUser);
+    LidarViewerElements.getUserRows.contains('td', targetUser)
+      .parent('tr')
+      .within(() => {
+        cy.get('td:last-child svg').first().click();
+      });
+  
+    // Step 4: Revoke site access
+    LidarViewerElements.getSitesDropdown.click();
+    cy.get('body').get('.dropdown-container')
+      .find('span')
+      .filter(':contains("https://testing.lidartechsolutions.com")')
+      .eq(1)
+      .parent()
+      .find('input[type="checkbox"]')
+      .uncheck({ force: true });
+    LidarViewerElements.getSitesDropdown.click();
+    LidarViewerElements.getUpdateButtonUM.click();
+  
+    cy.reload();
+    cy.logout();
+  
+    // Step 5: Attempt login as non-admin user to restricted site
+    cy.visit("https://testing.lidartechsolutions.com");
+    cy.get('input[type="text"]').type(targetUser);
+    cy.get('input[type="password"]').type(Constants.password);
+    cy.get('button[type="submit"]').click();
+  
+    // Validate alert
+    cy.on('window:alert', (text) => {
+      expect(text).to.contains("Unable to login, contact Site Administrator");
+    });
+  
+    // Step 6: Reassign access (cleanup)
+    cy.visit('/login');
+    Adminlogin(Constants.AdminEmail, Constants.AdminPassword);
+  
+    LidarViewerElements.getProfileIcon.click();
+    LidarViewerElements.getAdministrationOption.click();
+    LidarViewerElements.getUserManagementOption.click();
+  
+    LidarViewerElements.getSearchInput.clear().type(targetUser);
+    LidarViewerElements.getUserRows.contains('td', targetUser)
+      .parent('tr')
+      .within(() => {
+        cy.get('td:last-child svg').first().click();
+      });
+  
+    // Reassign site access
+    LidarViewerElements.getSitesDropdown.click();
+    cy.get('body').get('.dropdown-container')
+      .find('span')
+      .filter(':contains("https://testing.lidartechsolutions.com")')
+      .eq(0)
+      .parent()
+      .find('input[type="checkbox"]')
+      .check({ force: true });
+    LidarViewerElements.getSitesDropdown.click();
+    LidarViewerElements.getUpdateButtonUM.click();
+  
+  });
+
+  it("LVH-2223 - Verify user cannot access restricted data by manipulating URL", () => {
+
+    // Step 1: Login as admin and capture restricted URL
+    cy.visit('/login');
+    Adminlogin(Constants.AdminEmail, Constants.AdminPassword);
+  
+    LidarViewerElements.getProfileIcon.click();
+    LidarViewerElements.getAdministrationOption.click();
+    LidarViewerElements.getUserManagementOption.click();
+  
+    cy.url().then((adminUrl) => {
+  
+      cy.logout();
+  
+      // Step 2: Login as non-admin user
+      cy.visit('/login');
+      loginToPortal(Constants.testDesignEngineerEmail, Constants.password);
+      LidarViewerElements.getHomeText.should("have.text", "Home Page");
+  
+      // Step 3: Try to access restricted URL
+      cy.visit(adminUrl);
+  
+      // Step 4: Validate access is denied
+      cy.url().should('not.include', '/user-management');
+      cy.contains('Unauthorized').should('be.visible');
+      cy.contains('You do not have access to the requested page.').should('be.visible');
+      cy.contains('button', 'Go Back').should('be.visible').click();
+  
+    });
+  
+  });
+
 });

@@ -370,7 +370,7 @@ class LidarViewerElements {
     }
 
     // Update button
-    get getUpdateButton() {
+    get getUpdateButtonUM() {
         return this.getEditUserModal.find('button').contains('Update');
     }
 
