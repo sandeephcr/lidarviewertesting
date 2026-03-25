@@ -478,6 +478,16 @@ getDropdownToggleButton(folderName) {
       .click();
   }
 
+// Password expired page elements
+
+   get EnterOldPassword() {
+    return cy.get(':nth-child(1) > .flex-c > .flex-r')
+  }
+
+  get NetworkErrorMessage() {
+    return cy.get('.info-message-container > .width-100').should('be.visible')
+  }
+
 
 
 }

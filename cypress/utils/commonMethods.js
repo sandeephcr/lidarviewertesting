@@ -46,10 +46,12 @@ export const loginToPortal = (email, pwd) => {
       }
     });
 
-    cy.url({ timeout: 60000 }).should("include", "/home");
+    // cy.url({ timeout: 60000 }).should("include", "/home");  // For handling expired password user scenario for making the this function dynamic for both expired and non expired password users
   };
   fetchOtp();
 };
+
+
 
 
 export const login1 = (email, pwd) => {

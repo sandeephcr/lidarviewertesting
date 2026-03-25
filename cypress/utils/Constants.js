@@ -65,4 +65,11 @@ export default {
   nonExistingEmailForgot: "notExisting@hcrobo.com",
   validForgotEmail: "atchyutha.padarthi@hcrobo.com",
   resetPasswordEmail:"loadtester2@hcr.com",
+  ExpiredPasswordEmail30: "hcr1773139816352@hcrobotics.com",
+  ExpiredPasswordEmailPassword30: "Cnsw-123",
+  ExpiredPasswordEmail31: "atchyutha.padarthi@centillionnetworks.com",
+  ExpiredPasswordEmailPassword31: "Cnsw-123",
+  WarningPasswordEmail: "testdesignengineer@hcrobo.com",
+  WarningPasswordPassword: "Cnsw-123"
+
 };
