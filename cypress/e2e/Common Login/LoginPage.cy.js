@@ -252,7 +252,7 @@ describe("Common Login Tests", () => {
   
   });
 
-  it("LVH-2191 - Verify View Profile option is visible to all user accounts", () => {
+  it("LVH-2191 - (View Profile) - Verify View Profile option is visible to all user accounts", () => {
 
     // ----- Admin User -----
     Adminlogin(Constants.AdminEmail, Constants.AdminPassword);
@@ -270,7 +270,7 @@ describe("Common Login Tests", () => {
 
   });
 
-  it("LVH-2192 - Verify user able to update password from view profile dialog", () => {
+  it("LVH-2192 - (View Profile) - Verify user able to update password from view profile dialog", () => {
     // Step 1: Login to user account
     loginToPortal(Constants.validEmail, Constants.password);
     LidarViewerElements.getHomeText.should("have.text", "Home Page");
@@ -320,7 +320,7 @@ describe("Common Login Tests", () => {
 
   });
 
-  it("LVH-2193 - Verify password updation fails when new password is same as old password", () => {
+  it("LVH-2193 - (View Profile) - Verify password updation fails when new password is same as old password", () => {
 
     // Step 1: Login
     loginToPortal(Constants.validEmail, Constants.password);
@@ -351,6 +351,210 @@ describe("Common Login Tests", () => {
     // Cleanup
     cy.get('body').click(0, 0);
     cy.logout();
+  
+  });
+
+  it("LVH-2201 - (View Profile) - Verify password updation fails when new password does not meet validation rules", () => {
+
+    // Step 1: Login
+    loginToPortal(Constants.validEmail, Constants.password);
+    LidarViewerElements.getHomeText.should("have.text", "Home Page");
+  
+    // Step 2: Open change password dialog
+    LidarViewerElements.getProfileIcon.click();
+    LidarViewerElements.getViewProfileOption.click();
+    LidarViewerElements.getChangePasswordBtn.click();
+  
+    // Step 3: Enter invalid new password (fails policy)
+    const invalidPwd = "cnsw-1234"; // no uppercase, etc.
+  
+    LidarViewerElements.getOldPasswordField.clear().type(Constants.password);
+    LidarViewerElements.getNewPasswordField.clear().type(invalidPwd);
+    LidarViewerElements.getConfirmNewPasswordField.clear().type(invalidPwd);
+  
+    // Step 4: Click update
+    LidarViewerElements.getUpdatePasswordBtn.click();
+  
+    // Step 5: Validate error message
+    cy.contains("Incorrect password").should("be.visible");
+  
+  });
+
+  it("LVH-2202 - (View Profile) - Verify password updation fails when new password is less than 8 characters", () => {
+
+    // Step 1: Login
+    loginToPortal(Constants.validEmail, Constants.password);
+    LidarViewerElements.getHomeText.should("have.text", "Home Page");
+  
+    // Step 2: Open change password dialog
+    LidarViewerElements.getProfileIcon.click();
+    LidarViewerElements.getViewProfileOption.click();
+    LidarViewerElements.getChangePasswordBtn.click();
+  
+    // Step 3: Enter invalid password (< 8 chars)
+    const shortPwd = "Ab1!a";
+  
+    LidarViewerElements.getOldPasswordField.clear().type(Constants.password);
+    LidarViewerElements.getNewPasswordField.clear().type(shortPwd);
+    LidarViewerElements.getConfirmNewPasswordField.clear().type(shortPwd);
+  
+    // Step 4: Click update
+    LidarViewerElements.getUpdatePasswordBtn.click();
+  
+    // Step 5: Validate error message
+    cy.contains('Should be between 08 and 16 characters')
+  .should('have.css', 'color', 'rgb(255, 0, 0)');
+  
+  });
+
+  it("LVH-2203 - (View Profile) - Verify password updation fails when new password exceeds 16 characters", () => {
+
+    // Step 1: Login
+    loginToPortal(Constants.validEmail, Constants.password);
+    LidarViewerElements.getHomeText.should("have.text", "Home Page");
+  
+    // Step 2: Open change password dialog
+    LidarViewerElements.getProfileIcon.click();
+    LidarViewerElements.getViewProfileOption.click();
+    LidarViewerElements.getChangePasswordBtn.click();
+  
+    // Step 3: Enter invalid password (>16 chars)
+    const longPwd = "Abcdef12345!@#XYZ"; // 17+ chars
+  
+    LidarViewerElements.getOldPasswordField.clear().type(Constants.password);
+    LidarViewerElements.getNewPasswordField.clear().type(longPwd);
+    LidarViewerElements.getConfirmNewPasswordField.clear().type(longPwd);
+  
+    // Step 4: Click update
+    LidarViewerElements.getUpdatePasswordBtn.click();
+  
+    // Step 5: Validate rule turns RED
+    cy.contains('Should be between 08 and 16 characters')
+      .should('have.css', 'color', 'rgb(255, 0, 0)');
+  
+  });
+
+  it("LVH-2204 - (View Profile) - Verify password updation fails when new password does not contain uppercase letter", () => {
+
+    // Step 1: Login
+    loginToPortal(Constants.validEmail, Constants.password);
+    LidarViewerElements.getHomeText.should("have.text", "Home Page");
+  
+    // Step 2: Open change password dialog
+    LidarViewerElements.getProfileIcon.click();
+    LidarViewerElements.getViewProfileOption.click();
+    LidarViewerElements.getChangePasswordBtn.click();
+  
+    // Step 3: Enter invalid password (no uppercase)
+    const invalidPwd = "cnsw-1234!"; // no uppercase
+  
+    LidarViewerElements.getOldPasswordField.clear().type(Constants.password);
+    LidarViewerElements.getNewPasswordField.clear().type(invalidPwd);
+    LidarViewerElements.getConfirmNewPasswordField.clear().type(invalidPwd);
+  
+    // Step 4: Click update
+    LidarViewerElements.getUpdatePasswordBtn.click();
+  
+    // Step 5: Validate uppercase rule turns RED
+    cy.contains('Should contain at least one uppercase letter')
+      .should('have.css', 'color', 'rgb(255, 0, 0)');
+  
+  });
+
+  it("LVH-2205 - (View Profile) - Verify password updation fails when new password does not contain lowercase letter", () => {
+
+    // Step 1: Login
+    loginToPortal(Constants.validEmail, Constants.password);
+    LidarViewerElements.getHomeText.should("have.text", "Home Page");
+  
+    // Step 2: Open change password dialog
+    LidarViewerElements.getProfileIcon.click();
+    LidarViewerElements.getViewProfileOption.click();
+    LidarViewerElements.getChangePasswordBtn.click();
+  
+    // Step 3: Enter invalid password (no lowercase)
+    const invalidPwd = "CNSW-1234!"; // no lowercase
+  
+    LidarViewerElements.getOldPasswordField.clear().type(Constants.password);
+    LidarViewerElements.getNewPasswordField.clear().type(invalidPwd);
+    LidarViewerElements.getConfirmNewPasswordField.clear().type(invalidPwd);
+  
+    // Step 4: Click update
+    LidarViewerElements.getUpdatePasswordBtn.click();
+  
+    // Step 5: Validate lowercase rule turns RED
+    cy.contains('Should contain at least one lowercase letter')
+      .should('have.css', 'color', 'rgb(255, 0, 0)');
+  
+  });
+
+  it("LVH-2206 - (View Profile) - Verify password updation fails when new password does not contain special character", () => {
+
+    // Step 1: Login
+    loginToPortal(Constants.validEmail, Constants.password);
+    LidarViewerElements.getHomeText.should("have.text", "Home Page");
+  
+    // Step 2: Open change password dialog
+    LidarViewerElements.getProfileIcon.click();
+    LidarViewerElements.getViewProfileOption.click();
+    LidarViewerElements.getChangePasswordBtn.click();
+  
+    // Step 3: Enter invalid password (no special character)
+    const invalidPwd = "Cnsw1234"; // no special char
+  
+    LidarViewerElements.getOldPasswordField.clear().type(Constants.password);
+    LidarViewerElements.getNewPasswordField.clear().type(invalidPwd);
+    LidarViewerElements.getConfirmNewPasswordField.clear().type(invalidPwd);
+  
+    // Step 4: Click update
+    LidarViewerElements.getUpdatePasswordBtn.click();
+  
+    // Step 5: Validate special character rule turns RED
+    cy.contains('Should contain at least one special character')
+      .should('have.css', 'color', 'rgb(255, 0, 0)');
+  
+  });
+
+  it("LVH-2207 - (View Profile) - Verify user can successfully update password with all required validation rules", () => {
+
+    // Step 1: Login
+    loginToPortal(Constants.validEmail, Constants.password);
+    LidarViewerElements.getHomeText.should("have.text", "Home Page");
+  
+    // Step 2: Open change password dialog
+    LidarViewerElements.getProfileIcon.click();
+    LidarViewerElements.getViewProfileOption.click();
+    LidarViewerElements.getChangePasswordBtn.click();
+  
+    // Step 3: Enter valid password (meets all rules)
+    const validPwd = "Abcd1234!"; // meets all conditions
+  
+    LidarViewerElements.getOldPasswordField.clear().type(Constants.password);
+    LidarViewerElements.getNewPasswordField.clear().type(validPwd);
+    LidarViewerElements.getConfirmNewPasswordField.clear().type(validPwd);
+  
+    // Step 4: Click update
+    LidarViewerElements.getUpdatePasswordBtn.click();
+  
+    // Step 5: Validate success message
+    cy.contains("Password updated successfully", { timeout: 10000 })
+      .should("be.visible");
+  
+    // Cleanup: revert password back
+    cy.get('body').click(0, 0);
+  
+    LidarViewerElements.getProfileIcon.click();
+    LidarViewerElements.getViewProfileOption.click();
+    LidarViewerElements.getChangePasswordBtn.click();
+  
+    LidarViewerElements.getOldPasswordField.clear().type(validPwd);
+    LidarViewerElements.getNewPasswordField.clear().type(Constants.password);
+    LidarViewerElements.getConfirmNewPasswordField.clear().type(Constants.password);
+  
+    LidarViewerElements.getUpdatePasswordBtn.click();
+  
+    cy.contains("Password updated successfully", { timeout: 10000 })
+      .should("be.visible");
   
   });
 
