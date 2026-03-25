@@ -1,0 +1,36 @@
+{
+  "name": "lidarviewerautomation",
+  "version": "1.0.0",
+  "description": "Automation suite for Lidar viewer",
+  "main": "index.js",
+  "scripts": {
+    "cypress:open": "cypress open",
+    "start": "node scripts/start.js",
+    "test": "npx cypress run",
+    "test-headed": "npx cypress run --headed"
+  },
+  "author": "SandeepSharma",
+  "license": "ISC",
+  "devDependencies": {
+    "@playwright/test": "^1.58.2",
+    "@types/cypress": "^0.1.6",
+    "cypress": "^14.5.4",
+    "cypress-xpath": "^2.0.1",
+    "mochawesome": "^7.1.3",
+    "mochawesome-merge": "^4.4.1",
+    "mochawesome-report-generator": "^6.2.0"
+  },
+  "dependencies": {
+    "cypress-real-events": "^1.14.0",
+    "xlsx": "^0.18.5"
+  },
+  "keywords": [],
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/sandeephcr/lidarviewertesting.git"
+  },
+  "bugs": {
+    "url": "https://github.com/sandeephcr/lidarviewertesting/issues"
+  },
+  "homepage": "https://github.com/sandeephcr/lidarviewertesting#readme"
+}
