@@ -13,12 +13,11 @@ import UserManagementLocators from "../../locators/UserManagementLocators.js";
 import Constants from "../../utils/Constants.js";
 import PoleActions from "../../support/PoleAction.js";
 import ViewerElements from "../../locators/ViewerElements.js";
+import "../../support/commands.js";
 
 
 
 describe("Search Sort Home Tests", () => {
-  const folderPath = ["Shared Space", "Automation"];
-  const runName = "Automation_Atchyutha-";
   beforeEach(() => {
     cy.visit(Cypress.config("baseUrl"));
     Adminlogin(Constants.AdminEmail, Constants.AdminPassword);
@@ -195,6 +194,66 @@ describe("Search Sort Home Tests", () => {
       .should("be.visible")
   });
 
+  it("LVH-3416 - Verify network failure functionality when searching with a valid pole id", () => {
+    // Search Run
+    cy.get('input[placeholder="Type for search"]')
+      .should("be.visible")
+      .clear()
+      .type("Test-Oct30-3");
+
+    cy.get('div.primary-btn[alt="search"]')
+      .should("be.visible")
+      .click();
+
+    // Open Run
+    cy.contains(".runCardHomeName", "Test-Oct30-3")
+      .should("be.visible")
+      .click();
+
+    // Wait for default viewer load
+    cy.get("#canvas3D", { timeout: 20000 })
+      .should("be.visible");
+
+    // Navigate to image 60
+    cy.url().then((url) => {
+      const updatedUrl = url.replace(/\/\d+\?/, '/60?');
+      cy.visit(updatedUrl);
+    });
+
+    // Wait again after re-visit
+    cy.get("#canvas3D", { timeout: 20000 })
+      .should("be.visible");
+
+    // Enable PCD + Camera
+    ViewerElements.getPcdCameraViewBtn
+      .should("be.visible")
+      .click();
+
+    cy.wait(5000);
+    // Place and save pole
+    const poleName = PoleActions.placePole(600, 350);
+    PoleActions.savePole();
+    cy.visit(Cypress.config("baseUrl"));
+    cy.get(".HomeDropDown").first().select("PoleId");
+    cy.get('input[placeholder="Type for search"]')
+    .should("be.visible")
+    .clear().type(poleName);
+    cy.simulateOffline();
+    cy.get('div.primary-btn[alt="search"]')
+      .should("be.visible")
+      .click();
+    LidarViewer.infoMessageContainer
+      .should("be.visible")
+      .invoke("text")
+      .should("match", /check internet connection/i);
+    cy.simulateOnline();
+    cy.get('div.primary-btn[alt="search"]')
+      .should("be.visible")
+      .click();
+    cy.contains(".runCardHomeName", "Test-Oct30-3")
+      .should("be.visible")
+  });
+
   it("LVH-3417 - Verify that the search feature correctly displays associated run data for valid latitude and longitude values.", () => {
 
     let latlng = "26.974109339800187, -82.15931013816875";
@@ -224,6 +283,31 @@ describe("Search Sort Home Tests", () => {
     cy.on("window:alert", (alertText) => {
       expect(alertText).to.contains("longitude cannot be empty");
     });
+  });
+
+  it("LVH-3419 - Verify the network failure functionality for Latitude and Longitude search", () => {
+    
+    let latlng = "26.974109339800187, -82.15931013816875";
+    cy.get(".HomeDropDown").first().select("LatLng");
+    cy.get('input[placeholder="Type for search"]')
+     .should("be.visible")
+     .clear()
+     .type(latlng);
+    cy.simulateOffline();
+     cy.get('div.primary-btn[alt="search"]')
+     .should("be.visible")
+     .click();
+    LidarViewer.infoMessageContainer
+     .should("be.visible")
+     .invoke("text")
+     .should("match", /check internet connection/i);
+    cy.simulateOnline();
+    cy.get('div.primary-btn[alt="search"]')
+    .should("be.visible")
+    .click();
+    cy.contains(".runCardHomeName", "Test-Oct30-3")
+      .should("be.visible")
+
   });
 
   it("LVH-3441 - Verify that the search functionality on the home page correctly identifies and displays existing folders based on the search query", () => {
@@ -276,7 +360,7 @@ describe("Search Sort Home Tests", () => {
     cy.get('.TableData').should('have.length.greaterThan', 0)
   });
 
-  it("LVH-3448 - Clicking on the grid view icon displays all runs in grid view", () => {
+  it("LVH-3448 - Verify that clicking on the grid view icon displays all runs in grid view", () => {
     
     cy.get(".folderName").contains("Shared Space").should("be.visible").dblclick()
     cy.get('[data-testid="grid-view-icon-active"]').should('be.visible')
