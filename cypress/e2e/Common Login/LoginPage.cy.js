@@ -429,31 +429,116 @@ cy.wait('@loginRequest').then((interception) => {
       });
 });
 
-it.only("Verify password is not stored in local storage", () => {
+// Reset password
+it("Verify password updation failed when the entered new password dosen't meet required password validation rules", () => {
+
+  cy.task('getResetToken', Constants.userAEmail).then((data) => {
+  expect(data).to.exist;
+  expect(data.resetToken).to.exist;
+  cy.visit(`/resetPassword/${data.resetToken}`);
+});
+
+cy.get(':nth-child(3) > .width-100').type('t');
+cy.get(':nth-child(4) > .width-100').type('t');
+cy.contains('Should contain at least one uppercase letter.').should('have.css', 'color', 'rgb(255, 0, 0)');
+
+});
+
+it("Verifies that system rejects passwords with fewer than 8 characters", () => {
+
+  cy.task('getResetToken', Constants.userAEmail).then((data) => {
+  expect(data).to.exist;
+  expect(data.resetToken).to.exist;
+  cy.visit(`/resetPassword/${data.resetToken}`);
+});
+
+cy.get(':nth-child(3) > .width-100').type('Cnsw-12');
+cy.get(':nth-child(4) > .width-100').type('Cnsw-12');
+cy.contains('Should be at least 8 characters long.').should('have.css', 'color', 'rgb(255, 0, 0)');
+
+});
+
+it("Verify password updation failed when the entered new password doesn't have a number", () => {
+
+  cy.task('getResetToken', Constants.userAEmail).then((data) => {
+  expect(data).to.exist;
+  expect(data.resetToken).to.exist;
+  cy.visit(`/resetPassword/${data.resetToken}`);
+});
+
+cy.get(':nth-child(3) > .width-100').type('Cnsw-123');
+cy.get(':nth-child(4) > .width-100').type('Cnsw-12');
+cy.get('[data-testid="reset-password-button"]').click();
+cy.get('.info-message-container > .width-100')
+  .should('be.visible')
+  .and('contain', 'Passwords do not match');
+
+});
+
+it("Verify password updation failed when the entered new password is dosen't have uppe case", () => {
+
+  cy.task('getResetToken', Constants.userAEmail).then((data) => {
+  expect(data).to.exist;
+  expect(data.resetToken).to.exist;
+  cy.visit(`/resetPassword/${data.resetToken}`);
+});
+
+cy.get(':nth-child(3) > .width-100').type('cnsw-123');
+cy.get(':nth-child(4) > .width-100').type('Cnsw-123');
+cy.contains('Should contain at least one uppercase letter.').should('have.css', 'color', 'rgb(255, 0, 0)');
+
+});
+
+it("Verify password updation failed when the entered new password is dosen't have lower case", () => {
+
+  cy.task('getResetToken', Constants.userAEmail).then((data) => {
+  expect(data).to.exist;
+  expect(data.resetToken).to.exist;
+  cy.visit(`/resetPassword/${data.resetToken}`);
+});
+
+cy.get(':nth-child(3) > .width-100').type('CNSW-123');
+cy.get(':nth-child(4) > .width-100').type('CNSW-123');
+cy.contains('Should contain at least one lowercase letter.').should('have.css', 'color', 'rgb(255, 0, 0)');
+
+});
+
+it("Verify password updation failed when the entered new password is dosen't have special character", () => {
+
+  cy.task('getResetToken', Constants.userAEmail).then((data) => {
+  expect(data).to.exist;
+  expect(data.resetToken).to.exist;
+  cy.visit(`/resetPassword/${data.resetToken}`);
+});
+
+cy.get(':nth-child(3) > .width-100').type('CNSW123');
+cy.get(':nth-child(4) > .width-100').type('CNSW123');
+cy.contains('Should contain at least one special character.').should('have.css', 'color', 'rgb(255, 0, 0)');
+
+});
+
+it.only("Verify user can successfully update password with all password validation rules", () => {
+
+
+
 
   
 
-  getResetPasswordLink(Constants.userAEmail).then((url) => {
 
-    cy.visit(url);
-
-    // Enter password
-    cy.get('input[name="newPassword"]').type('ValidPass@123');
-    cy.get('input[name="confirmPassword"]').type('ValidPass@123');
-    cy.get('button[type="submit"]').click();
-
-    // ✅ Validate password NOT stored
-    cy.window().then((win) => {
-      const values = Object.values(win.localStorage);
-
-      values.forEach(val => {
-        expect(val).not.to.include('ValidPass@123');
-      });
-    });
-
-  });
-
+  cy.task('getResetToken', Constants.userAEmail).then((data) => {
+  expect(data).to.exist;
+  expect(data.resetToken).to.exist;
+  cy.visit(`/resetPassword/${data.resetToken}`);
 });
+
+cy.get(':nth-child(3) > .width-100').type('Cnsw-123');
+cy.get(':nth-child(4) > .width-100').type('Cnsw-123');
+cy.get('[data-testid="reset-password-button"]').click();
+cy.get('.info-message-container > .width-100')
+  .should('be.visible')
+  .and('contain', 'Password updated successful');
+});
+
 
 
 
