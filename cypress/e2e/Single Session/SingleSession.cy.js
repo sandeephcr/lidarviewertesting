@@ -1,5 +1,6 @@
 import { 
     loginToPortal,
+    loginToPortal1,
  } from "../../utils/commonMethods";
 import LidarViewer from "../../locators/LidarViewer.js";
 import Constants from "../../utils/Constants";
@@ -62,4 +63,32 @@ describe('Single Session Module', () => {
         LidarViewer.getHomeText.should("have.text", "Home Page");
     });
 
+    it('LVH-7652 Single_Session_004 - Verify User B cannot bypass the block message by refreshing the login page', () => {
+
+        loginToPortal(Constants.userAEmail, Constants.userAPassword)
+        LidarViewer.getHomeText.should('be.visible').and('have.text', 'Home Page');
+            cy.clearCookies();
+            cy.clearLocalStorage();
+            cy.wait(2000); // Wait for session to clear properly
+            // cy.visit('/login');
+
+        loginToPortal1(Constants.userAEmail,Constants.userAPassword );
+        cy.get('.overlay-text > :nth-child(1)').should('be.visible');
+     cy.reload();
+   cy.get('.overlay-text > :nth-child(1)').should('be.visible');
+
 });
+
+it('LVH-7648 Verify that the application successfully logs in User A again after they have logged out.', () => {
+
+        loginToPortal(Constants.userAEmail, Constants.userAPassword)
+        LidarViewer.getHomeText.should('be.visible').and('have.text', 'Home Page');
+        cy.logout();
+        cy.url().should('include', 'login');
+        loginToPortal1(Constants.userAEmail, Constants.userAPassword)
+        LidarViewer.getHomeText.should('be.visible').and('have.text', 'Home Page');
+});
+
+});
+
+
