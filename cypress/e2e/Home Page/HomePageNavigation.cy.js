@@ -76,7 +76,7 @@ describe("Home Page Navigation Tests", () => {
 
   it('LVH-3982 - Verify that an alert is displayed when the user attempts to open more than 10 runs ', () => {
     
-    cy.get(".folderName").contains("Atc").should("be.visible").dblclick()
+    cy.get(".folderName").contains("Shared Space").should("be.visible").dblclick()
     cy.wait(2000)
     cy.contains('div[role="checkbox"]', 'Select').should('be.visible').click()
 
@@ -117,5 +117,5 @@ describe("Home Page Navigation Tests", () => {
       "Selected Runs 2"
     );
   });
-  
+
 });
