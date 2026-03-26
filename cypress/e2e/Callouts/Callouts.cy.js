@@ -26,7 +26,7 @@ describe("Callouts Module", () => {
       .should("be.visible")
       .clear()
       .type("Test-Oct30-3");
-
+    cy.wait(500);
     cy.get('div.primary-btn[alt="search"]')
       .should("be.visible")
       .click();
