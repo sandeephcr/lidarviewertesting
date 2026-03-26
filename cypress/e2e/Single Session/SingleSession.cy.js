@@ -63,8 +63,6 @@ describe('Single Session Module', () => {
         LidarViewer.getHomeText.should("have.text", "Home Page");
     });
 
-
-
     it.only('LVH-7652 Single_Session_004 - Verify User B cannot bypass the block message by refreshing the login page', () => {
 
         loginToPortal(Constants.userAEmail, Constants.userAPassword)
@@ -80,8 +78,6 @@ describe('Single Session Module', () => {
    cy.get('.overlay-text > :nth-child(1)').should('be.visible');
 
 });
-
-
 
 it('LVH-7648 Verify that the application successfully logs in User A again after they have logged out.', () => {
 
