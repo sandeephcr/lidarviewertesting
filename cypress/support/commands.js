@@ -103,7 +103,8 @@ Cypress.Commands.add('unblockUser', (email) => {
     cy.intercept('DELETE', '**/api/logout').as('logoutRequest');
   
     // Open profile menu
-    cy.contains('.ToolTip-container', 'Profile menu').find('img.icon-btn').click();
+    cy.contains('.ToolTip-container', 'Profile menu').click();
+    //find('img.icon-btn')
   
     // Click Logout from dropdown
     cy.contains('Logout').should('be.visible').click();
