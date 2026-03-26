@@ -3,6 +3,7 @@ import Constants from "../../utils/Constants.js";
 import {
   Adminlogin,
   loginToPortal,
+  getResetPasswordLink,
 } from "../../utils/commonMethods.js";
 import "../../support/commands.js";
 
@@ -206,9 +207,6 @@ it("Password_Expiry_006 - Verify user cannot bypass expired password page", () =
 
 
 });
-
-
-
 
 
 it("Verify API returns correct flag after password expired", () => {
@@ -420,29 +418,43 @@ it("Verify updating password without internet connection", () => {
 
 
 it("Verify password is hashed before sending", () => {
-
 cy.intercept('POST', '**/api/login').as('loginRequest');
-
 loginToPortal(Constants.ExpiredPasswordEmail30, Constants.ExpiredPasswordEmailPassword30);
-
 cy.wait('@loginRequest').then((interception) => {
-
     const body = interception.request.body;
     expect(body).to.have.property('data');
     expect(body.data).to.be.a('string');
     expect(body.data.length).to.be.greaterThan(50);
-
     expect(body.data).to.match(/^[A-Za-z0-9+/=]+$/);
-
       });
+});
 
+it.only("Verify password is not stored in local storage", () => {
+
+  
+
+  getResetPasswordLink(Constants.userAEmail).then((url) => {
+
+    cy.visit(url);
+
+    // Enter password
+    cy.get('input[name="newPassword"]').type('ValidPass@123');
+    cy.get('input[name="confirmPassword"]').type('ValidPass@123');
+    cy.get('button[type="submit"]').click();
+
+    // ✅ Validate password NOT stored
+    cy.window().then((win) => {
+      const values = Object.values(win.localStorage);
+
+      values.forEach(val => {
+        expect(val).not.to.include('ValidPass@123');
+      });
+    });
+
+  });
 
 });
 
 
 
-
-
-
 });
-

@@ -52,8 +52,6 @@ export const loginToPortal = (email, pwd) => {
 };
 
 
-
-
 export const login1 = (email, pwd) => {
   LidarViewerElements.getEmail.type(email);
   LidarViewerElements.getPassword.type(pwd);
@@ -108,3 +106,20 @@ export const forgotPasswordRequest = (email) => {
     failOnStatusCode: false,
   });
 };
+
+export const getResetPasswordLink = (email) => {
+  return cy.request({
+    method: "GET",
+    url: `${Cypress.config("baseUrl")}/api/reset-password/test/reset-password-link`,
+    qs: { email }, // ✅ move email to query
+    failOnStatusCode: false
+  }).then((response) => {
+
+    expect(response.status).to.eq(200);
+
+    const token = response.body.resetToken;
+
+    return `${Cypress.config("baseUrl")}/resetPassword?token=${token}`;
+  });
+};
+

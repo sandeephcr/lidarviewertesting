@@ -70,6 +70,7 @@ export default {
   ExpiredPasswordEmail31: "atchyutha.padarthi@centillionnetworks.com",
   ExpiredPasswordEmailPassword31: "Cnsw-123",
   WarningPasswordEmail: "testdesignengineer@hcrobo.com",
-  WarningPasswordPassword: "Cnsw-123"
+  WarningPasswordPassword: "Cnsw-123",
+  userAEmail: "resetpassword@hcrobo.com",
 
 };
