@@ -464,6 +464,38 @@ get getReadOption(){
     return cy.get('#root > div > main > div.flex-c.width-100vw.height-100vh.no-overflow > div.width-100.no-overflow.padding-20.no-wrap > div > div.flex-c.flex-grow.padding-20.round-corner-6.no-wrap > div > div.background-overlay.align-center.justify-center > div > div.flex-c.gap-10.ModalLargeBody > div.flex-c > div.scrollContainer > div:nth-child(2) > div.flex-r.buttonDropdowns > div:nth-child(2) > div > div > a:nth-child(1)').click();
 }
 
+get getregisterUsers(){
+
+    return cy.get('.gap-2 > :nth-child(1)')
+}
+
+get getusersInLast60Mins(){
+
+    return cy.get('.gap-2 > :nth-child(2)')
+}
+
+get getTotalActiveRuns(){
+    return cy.get('.gap-2 > :nth-child(3)')
+
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 }
 
