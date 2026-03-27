@@ -432,6 +432,11 @@ cy.wait('@loginRequest').then((interception) => {
 // Reset password
 it("Verify password updation failed when the entered new password dosen't meet required password validation rules", () => {
 
+
+cy.visit('/forgotpassword');
+cy.get('.gap-5 > .width-100').type(Constants.userAEmail);
+cy.get('.Login_Button').click();  
+
   cy.task('getResetToken', Constants.userAEmail).then((data) => {
   expect(data).to.exist;
   expect(data.resetToken).to.exist;
@@ -446,6 +451,10 @@ cy.contains('Should contain at least one uppercase letter.').should('have.css', 
 
 it("Verifies that system rejects passwords with fewer than 8 characters", () => {
 
+cy.visit('/forgotpassword');
+cy.get('.gap-5 > .width-100').type(Constants.userAEmail);
+cy.get('.Login_Button').click();  
+
   cy.task('getResetToken', Constants.userAEmail).then((data) => {
   expect(data).to.exist;
   expect(data.resetToken).to.exist;
@@ -459,6 +468,10 @@ cy.contains('Should be at least 8 characters long.').should('have.css', 'color',
 });
 
 it("Verify password updation failed when the entered new password doesn't have a number", () => {
+
+cy.visit('/forgotpassword');
+cy.get('.gap-5 > .width-100').type(Constants.userAEmail);
+cy.get('.Login_Button').click();  
 
   cy.task('getResetToken', Constants.userAEmail).then((data) => {
   expect(data).to.exist;
@@ -477,6 +490,10 @@ cy.get('.info-message-container > .width-100')
 
 it("Verify password updation failed when the entered new password is dosen't have uppe case", () => {
 
+cy.visit('/forgotpassword');
+cy.get('.gap-5 > .width-100').type(Constants.userAEmail);
+cy.get('.Login_Button').click();  
+
   cy.task('getResetToken', Constants.userAEmail).then((data) => {
   expect(data).to.exist;
   expect(data.resetToken).to.exist;
@@ -490,6 +507,10 @@ cy.contains('Should contain at least one uppercase letter.').should('have.css', 
 });
 
 it("Verify password updation failed when the entered new password is dosen't have lower case", () => {
+
+cy.visit('/forgotpassword');
+cy.get('.gap-5 > .width-100').type(Constants.userAEmail);
+cy.get('.Login_Button').click();  
 
   cy.task('getResetToken', Constants.userAEmail).then((data) => {
   expect(data).to.exist;
@@ -505,7 +526,11 @@ cy.contains('Should contain at least one lowercase letter.').should('have.css', 
 
 it("Verify password updation failed when the entered new password is dosen't have special character", () => {
 
-  cy.task('getResetToken', Constants.userAEmail).then((data) => {
+cy.visit('/forgotpassword');
+cy.get('.gap-5 > .width-100').type(Constants.userAEmail);
+cy.get('.Login_Button').click();  
+
+cy.task('getResetToken', Constants.userAEmail).then((data) => {
   expect(data).to.exist;
   expect(data.resetToken).to.exist;
   cy.visit(`/resetPassword/${data.resetToken}`);
@@ -517,13 +542,11 @@ cy.contains('Should contain at least one special character.').should('have.css',
 
 });
 
-it.only("Verify user can successfully update password with all password validation rules", () => {
+it("Verify user can successfully update password with all password validation rules", () => {
 
-
-
-
-  
-
+cy.visit('/forgotpassword');
+cy.get('.gap-5 > .width-100').type(Constants.userAEmail);
+cy.get('.Login_Button').click();  
 
   cy.task('getResetToken', Constants.userAEmail).then((data) => {
   expect(data).to.exist;
@@ -539,7 +562,23 @@ cy.get('.info-message-container > .width-100')
   .and('contain', 'Password updated successful');
 });
 
+it('Verify error message is shown  to user whe login server is unavaliable', () => {
+     cy.intercept('GET', '/api/login/get-otp/*', {
+      forceNetworkError: true
+    }).as('getOtpFail');
 
+    cy.intercept('POST', '/api/login', {
+      forceNetworkError: true
+    }).as('loginFail');
 
-
+    cy.visit('/login');
+      LidarViewerElements.getEmail.type(Constants.validEmail);
+      LidarViewerElements.getPassword.type(Constants.password);
+      LidarViewerElements.getLoginBtn.click();
+      cy.on('window:alert', (alertText) => {
+  expect(alertText).to.equal('Login failed,unknown error!TypeError: Failed to fetch');
 });
+});
+});
+
+
