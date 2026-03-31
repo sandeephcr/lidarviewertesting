@@ -1,9 +1,9 @@
 import LidarViewerElements from "../../locators/LidarViewer.js";
-import Constants from "../../utils/Constants.js";
+import Constants from "../../utils/Constants/commonLogin.js";
 import {
   Adminlogin,
   loginToPortal,
-} from "../../utils/commonMethods.js";
+} from "../../utils/Common_Methods/commonLogin.js";
 import "../../support/commands.js";
 
 describe("Common Login Tests", () => {
