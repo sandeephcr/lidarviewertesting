@@ -1120,12 +1120,12 @@ describe("Common Login Tests", () => {
       cy.contains("Home Page").should("be.visible");
   
       // Navigate to User Management
-      cy.get('[data-cy=profile-icon]').click(); // adjust if needed
+      cy.contains('.relative.ToolTip-container', 'Profile menu').click(); // adjust if needed
       cy.contains('Administration').click();
       cy.contains('User Management').click();
   
       // Step 4: Search for created user
-      cy.get('input[placeholder="Search"]').clear().type(email);
+      cy.get('input[placeholder="Type for search"]').clear().type(email);
       cy.get('table').contains('td', email).should('exist');
   
     });
