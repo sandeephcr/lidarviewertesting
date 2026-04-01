@@ -1,7 +1,8 @@
 import { Adminlogin } from "../../utils/commonMethods";
 import LidarViewer from "../../locators/LidarViewer.js";
-import Constants from "../../utils/Constants";
+import Constants from "../../utils/Constants/userManagement.js";
 import "../../support/commands.js"
+import { verifySorted } from "../../utils/Common_Methods/userManagement.js";
 
 describe('User Management Module', () => {
     beforeEach(() => {
@@ -492,6 +493,124 @@ describe('User Management Module', () => {
             .and('contain.text', 'password updated successfully');
     });
 
+    it('LVH-3525 - Verify the functionality of editing user details such as username and role by an admin', () => {
+
+        const ORIGINAL_USERNAME = "2TestUser";
+        const UPDATED_USERNAME = `updated${Date.now()}`;
+      
+        // Step 1: Search user
+        LidarViewer.getSearchInput.clear().type(ORIGINAL_USERNAME);
+        LidarViewer.getUserRows.contains('td', ORIGINAL_USERNAME).should('exist');
+      
+        // Step 2: Click Edit
+        LidarViewer.getUserRows.contains('td', ORIGINAL_USERNAME)
+          .parent('tr')
+          .within(() => {
+            cy.get('td:last-child svg').first().click();
+          });
+      
+        // Step 3: Update username
+        LidarViewer.getUsernameInput.clear().type(UPDATED_USERNAME);
+      
+        // Step 4: Update role/designation
+        LidarViewer.getDesignationDropdown().select('Client');
+      
+        // Step 5: Save changes
+       cy.get('button.primary-btn').contains('Update').should('be.visible').click();
+        // Step 6: Verify success message
+        LidarViewer.infoMessageContainer
+          .should('be.visible')
+          .and('contain.text', 'updated'); // adjust message
+      
+        // Step 7: Verify updated data in table
+        LidarViewer.getSearchInput.clear().type(UPDATED_USERNAME);
+        cy.get('table').contains('td', UPDATED_USERNAME).should('exist');
+
+        // Step 8: Revert changes
+        LidarViewer.getSearchInput.clear().type(UPDATED_USERNAME);
+        LidarViewer.getUserRows.contains('td', UPDATED_USERNAME)
+          .parent('tr')
+          .within(() => {
+            cy.get('td:last-child svg').first().click();
+          });
+
+      
+        LidarViewer.getUsernameInput.clear().type(ORIGINAL_USERNAME);
+
+        LidarViewer.getDesignationDropdown().select('Design Engineer'); 
+
+        cy.get('button.primary-btn').contains('Update').should('be.visible').click();
+
+        LidarViewer.infoMessageContainer
+          .should('contain.text', 'updated');
+      
+    });
+
+    it('LVH-3526 - Verify the systems behavior when the network is down during the process of clicking update button', () => {
+
+      const USER = Constants.UserManagementTestUser;
+    
+      // Step 1: Search and open user for edit
+      LidarViewer.getSearchInput.clear().type(USER);
+    
+      LidarViewer.getUserRows.contains('td', USER)
+        .should('exist')
+        .parent('tr')
+        .within(() => {
+          cy.get('td:last-child svg').first().click();
+        });
+    
+      // Step 2: Ensure edit form is visible
+      LidarViewer.getUsernameInput.should('be.visible');
+    
+      // Step 3: Simulate network failure
+      cy.simulateOffline();
+    
+      // Step 4: Click Update
+      cy.contains('button', 'Update')
+        .should('be.visible')
+        .click();
+    
+      // Step 5: Validate network error message
+      cy.contains('check internet', { timeout: 5000 })
+        .should('be.visible');
+    
+      // Step 6: Restore network
+      cy.simulateOnline();
+    
+    });
+
+    it('LVH-3527 -Verify that appropriate error message displayed if the entered password dosent match with confirm password', () => {
+
+      const TEST_USERNAME = Constants.UserManagementTestUser;
+      const NEW_PASSWORD = Constants.UserManagementTestPassword;
+      // Step 1: Search the user in the table
+      LidarViewer.getSearchInput.clear().type(TEST_USERNAME);
+      LidarViewer.getUserRows.contains('td', TEST_USERNAME).should('exist');
+  
+      // Step 2: Click Edit for the user
+      LidarViewer.getUserRows.contains('td', TEST_USERNAME)
+          .parent('tr')
+          .within(() => {
+              // Click the first "Edit" button in Actions
+              cy.get('td:last-child svg').first().click();
+          });
+  
+      // Step 3: Click "Change Password"
+      LidarViewer.getChangePasswordToggle.click();
+  
+      // Step 4: Enter new password and confirm
+      LidarViewer.getNewPasswordInputUM.clear().type(NEW_PASSWORD);
+      LidarViewer.getConfirmPasswordInputUM.clear().type("Cnsw-999");
+  
+      // Step 5: Save password
+      LidarViewer.getSavePasswordButton.click();
+  
+      cy.on('window:alert', (alertText) => {
+        expect(alertText).to.contain("do not match");
+      });
+    });
+
     it('LVH-3528 - Verify that functionality of enabling and disabling user accounts by an admin', () => {
 
         const TEST_USERNAME = Constants.UserManagementTestUser;
@@ -539,5 +658,269 @@ describe('User Management Module', () => {
             });
     
     });
+
+    it('LVH-3529 - Verify that the Enable/Disable icon does not appear for admin users', () => {
+
+      const ADMIN_USER = Constants.AdminEmail;
+    
+      // Step 1: Search for admin user
+      LidarViewer.getSearchInput.clear().type(ADMIN_USER);
+    
+      // Step 2: Locate admin row
+      LidarViewer.getUserRows.contains('td', ADMIN_USER)
+        .should('exist')
+        .parent('tr')
+        .within(() => {
+    
+          // Step 3: Verify Disable button NOT present
+          cy.get('.ToolTip-container:contains("Disable")').should('not.exist');
+    
+          // Step 4: Verify Enable button NOT present
+          cy.get('svg[style*="var(--status-green)"]').should('not.exist');
+    
+        });
+    
+    });
+
+    it('LVH-3530 - Verify the systems behavior when the network is down during the process of enabling or disabling a user account', () => {
+
+      const TEST_USERNAME = Constants.UserManagementTestUser;
+      let initialState; // 'enable' or 'disable'
+    
+      // Step 1: Search user
+      LidarViewer.getSearchInput.clear().type(TEST_USERNAME);
+      LidarViewer.getUserRows.contains('td', TEST_USERNAME).should('exist');
+    
+      // Step 2: Capture initial state
+      LidarViewer.getUserRows.contains('td', TEST_USERNAME)
+        .parent('tr')
+        .then((row) => {
+          const $row = cy.wrap(row);
+    
+          // Check which button is present
+          $row.then(($el) => {
+            if ($el.find('.ToolTip-container:contains("Disable")').length > 0) {
+              initialState = 'disable';
+            } else {
+              initialState = 'enable';
+            }
+          });
+        });
+    
+      // Step 3: Simulate offline
+      cy.simulateOffline();
+    
+      // Step 4: Attempt action based on state
+      LidarViewer.getUserRows.contains('td', TEST_USERNAME)
+        .parent('tr')
+        .then((row) => {
+          const $row = cy.wrap(row);
+    
+          if (initialState === 'disable') {
+            LidarViewer.getDisableButton($row).click();
+          } else {
+            LidarViewer.getEnableButton($row).click();
+          }
+        });
+    
+      // Step 5: Validate network error
+      cy.contains('Network Error', { timeout: 5000 })
+        .should('be.visible');
+    
+      // Step 6: Verify state is unchanged
+      LidarViewer.getUserRows.contains('td', TEST_USERNAME)
+        .parent('tr')
+        .then((row) => {
+          const $row = cy.wrap(row);
+    
+          if (initialState === 'disable') {
+            LidarViewer.getDisableButton($row).should('be.visible');
+          } else {
+            LidarViewer.getEnableButton($row).should('be.visible');
+          }
+        });
+    
+      // Step 7: Restore network
+      cy.simulateOnline();
+    
+    });
+
+    it('LVH-3531 - Verify the functionality of the search operation within the manage users panel', () => {
+
+      const EMAIL = Constants.UserManagementTestUser;
+    
+      // Step 1: Search by Email
+      LidarViewer.getSearchInput.clear().type(EMAIL);
+    
+      // Verify relevant result appears
+      LidarViewer.getUserRows.contains('td', EMAIL)
+        .should('be.visible');
+
+    });
+
+    it('LVH-3532 - Verify that the email, username and role columns in the Manage Users panel can be sorted in ascending and descending order', () => {
+
+      // -------- EMAIL --------
+      cy.contains('th', 'Email').find('.sortIcon').click({ force: true });
+      verifySorted('table tbody tr td:nth-child(2)', 'desc');
+    
+      cy.contains('th', 'Email').find('.sortIcon').click({ force: true });
+      verifySorted('table tbody tr td:nth-child(2)', 'asc');
+    
+      // -------- USERNAME --------
+      cy.contains('th', 'Username').find('.sortIcon').click({ force: true });
+      verifySorted('table tbody tr td:nth-child(3)', 'desc');
+    
+      cy.contains('th', 'Username').find('.sortIcon').click({ force: true });
+      verifySorted('table tbody tr td:nth-child(3)', 'asc');
+    
+      // -------- ROLE --------
+      cy.contains('th', 'Role').find('.sortIcon').click({ force: true });
+      verifySorted('table tbody tr td:nth-child(4)', 'desc');
+    
+      cy.contains('th', 'Role').find('.sortIcon').click({ force: true });
+      verifySorted('table tbody tr td:nth-child(4)', 'asc');
+    
+    });
+
+    it('LVH-3533 - Verify that the search results in the manage users panel can be sorted by email, username, and role in ascending and descending order', () => {
+    
+      // Step 1: Search
+      LidarViewer.getSearchInput.clear().type("Test");
+    
+      // Ensure results are loaded
+      cy.get('table tbody tr').should('have.length.greaterThan', 0);
+    
+      // ---------------- EMAIL ----------------
+    
+      // First click → DESC
+      cy.get('th.col-email .sortIcon').click({ force: true });
+      verifySorted('table tbody tr td:nth-child(2)', 'desc');
+    
+      // Second click → ASC
+      cy.get('th.col-email .sortIcon').click({ force: true });
+      verifySorted('table tbody tr td:nth-child(2)', 'asc');
+    
+      // ---------------- USERNAME ----------------
+    
+      // First click → DESC
+      cy.get('th.col-username .sortIcon').click({ force: true });
+      verifySorted('table tbody tr td:nth-child(3)', 'desc');
+    
+      // Second click → ASC
+      cy.get('th.col-username .sortIcon').click({ force: true });
+      verifySorted('table tbody tr td:nth-child(3)', 'asc');
+    
+      // ---------------- ROLE ----------------
+    
+      // First click → DESC
+      cy.get('th.col-role .sortIcon').click({ force: true });
+      verifySorted('table tbody tr td:nth-child(4)', 'desc');
+    
+      // Second click → ASC
+      cy.get('th.col-role .sortIcon').click({ force: true });
+      verifySorted('table tbody tr td:nth-child(4)', 'asc');
+    
+    });
+
+    it('LVH-3534 - Verify that pagination behavior after removing user from search results', () => {
+
+      let initialPageInfo;
+    
+      // Step 1: Capture initial pagination state
+      cy.get('.pagination-container')
+        .first()
+        .invoke('text')
+        .then((text) => {
+          initialPageInfo = text.trim();
+        });
+    
+      // Step 2: Perform search
+      
+      LidarViewer.getSearchInput.clear().type("Testing");
+    
+      // Wait for filtered results
+      cy.get('table tbody tr').should('have.length.greaterThan', 0);
+    
+      // Step 3: Capture pagination after search (should likely change)
+      cy.get('.pagination-container')
+        .first()
+        .invoke('text')
+        .then((searchPageInfo) => {
+    
+          // Optional: ensure it actually changed
+          expect(searchPageInfo.trim()).to.not.eq(initialPageInfo);
+        });
+    
+      // Step 4: Clear search
+      LidarViewer.getSearchInput.clear();
+    
+      // Wait for original list to reload
+      cy.get('table tbody tr').should('have.length.greaterThan', 0);
+    
+      // Step 5: Verify pagination resets
+      cy.get('.pagination-container')
+        .first()
+        .invoke('text')
+        .should((finalText) => {
+          expect(finalText.trim()).to.eq(initialPageInfo);
+        });
+    
+    });
+
+    it('LVH-3535 - Verify the responsiveness of the manage users page across different screen sizes and devices', () => {
+
+      const viewports = [
+        [1920, 1080], // Desktop
+        [1366, 768],  // Laptop
+        [768, 1024],  // Tablet
+      ];
+    
+      viewports.forEach((size) => {
+    
+        cy.viewport(size[0], size[1]);
+    
+        // Step 1: Verify main components are visible
+        LidarViewer.getSearchInput.should('be.visible');
+        LidarViewer.getAddUserButton.should('be.visible');
+        cy.get('table').should('be.visible');
+    
+        // Step 2: Verify table headers exist
+        cy.get('th.col-email').should('be.visible');
+        cy.get('th.col-username').should('be.visible');
+        cy.get('th.col-role').should('be.visible');
+    
+        // Step 3: Verify search works
+        const SEARCH_TERM = Constants.UserManagementTestUser;
+        LidarViewer.getSearchInput.clear().type(SEARCH_TERM);
+        cy.get('table tbody tr').should('have.length.greaterThan', 0);
+    
+        // Step 4: Verify sorting works (just one column is enough here)
+        cy.get('th.col-email .sortIcon').click({ force: true });
+        verifySorted('table tbody tr td:nth-child(2)', 'desc');
+    
+        cy.get('th.col-email .sortIcon').click({ force: true });
+        verifySorted('table tbody tr td:nth-child(2)', 'asc');
+    
+        // Step 5: Verify enable/disable button exists for a row
+        LidarViewer.getUserRows.first().then((row) => {
+          const $row = cy.wrap(row);
+        
+          LidarViewer.getDisableButton($row).then(($disable) => {
+            if ($disable.length > 0) {
+              expect($disable).to.exist;
+            } else {
+              LidarViewer.getEnableButton($row).should('exist');
+            }
+          });
+        });
+        // Step 6: Reset search for next viewport
+        LidarViewer.getSearchInput.clear();
+    
+      });
+    
+    });
+
+
 
 });
