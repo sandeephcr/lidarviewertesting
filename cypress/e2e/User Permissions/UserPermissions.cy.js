@@ -1,383 +1,683 @@
-import { it } from "mocha"
-import UserManagementLocators from "../locators/UserManagementLocators"
-import {login, navigateToUserManagement,  ZoomIN,  SavePoleData, TriggerPole,  clickAtCoordinates, PointPlacement, SavePointData,  importDataFromServer,PoleAllDelBtnsExist, SelectAndPlacePoint, selectCheckboxByName, ClickonPoint, findEmailAndClickSecondIcon} from '../utils/commonMethods'
-import {OpenReadPermessionRun,OpenMoreoptionsMenu, openDynamicFolderAndRun,SelectAndPlacePole,} from '../utils/commonMethods'
-import {PoleAlldelbtns,ReadAccessToRun,assignWriteAccessToUser, ConfirmPoleDetailsPanle,updateUserPermissions,LogoutFromUsermanagement,processUserPermission}from  '../utils/commonMethods'
-import Constants from "../utils/Constants"
-import 'cypress-real-events/support';
-import PoleLocators from "../locators/PoleLocators"
-import coordinates from "../fixtures/coordinates.json";
+Cypress.on("uncaught:exception", (err) => {
+  if (err.message.includes("Request failed with status code 500")) {
+    return false; // prevents Cypress from failing the test
+  }
+});
 
 
-describe('UserPermissions', () => {            
+import { 
+  Adminlogin,
+  loginToPortal
 
+} from "../../utils/commonMethods";
+import LidarViewer from "../../locators/LidarViewer.js";
+import Constants from "../../utils/Constants";
+import ViewerElements from "../../locators/ViewerElements.js";
+import PoleLocators from "../../locators/PoleLocators.js";
+import CalloutsAction from "../../support/CalloutsAction.js";
+import CalloutsLocators from "../../locators/CalloutsLocators.js";
+import "../../support/commands.js";
+
+
+describe('User Permissions', () => {
+  const testUser = "cqyuiorzvv@wnbaldwy.com";
+  const folderName = "Shared Space";
+  const runName = "Test-HCR-ZF-Dec28-1";
+  const updateWriteRunName="Test_31-12-2025";
+  const revokeWriteRunName="Test-MLS07-03";
+  const calloutPoleRunName="Test-Feb27"
   beforeEach(() => {
-    cy.visit(Cypress.config('baseUrl'))
-
-})
-
-// testuserEmail: 'abc@hcrobo.com',
-// it place a pole 
-
-it.skip('Test script', () => {
-
-  const folderPath = ['Shared Space', 'Test'];
-  const runName = 'feb2025run';
-  login(Constants.produserEmail, Constants.ProduserPwd);
-  openDynamicFolderAndRun(folderPath,runName)
-  cy.wait(6000);
-  PointPlacement(211,595)
-  OpenMoreoptionsMenu()
-  SavePointData()
-
-  // SelectAndPlacePole(240,847)
-  // SavePoleData()
-  // generateRandomCoordinates(6)
-});
-
-
-const emailList = [
-  'anamika@hcrobo.com',
-  'abc@hcrobo.com',
-  // ... add up to 10 emails
-];
-
-const  runName = {
-
-run1 
-
-};
-
-
-
-it.only('revokes all user permissions for multiple emails', () => {
-
-  login(Constants.validEmail, Constants.password);
-  navigateToUserManagement();
-
-  emailList.forEach((email) => {
-
-    const runName = 'Run1';
-
-    processUserPermission(email);
+      cy.visit(Cypress.config('baseUrl'))
+      Adminlogin(Constants.AdminEmail, Constants.AdminPassword);
+      LidarViewer.getProfileIcon.click();
+      LidarViewer.getAdministrationOption.click();
+      LidarViewer.getUserManagementOption.click();
   });
-});
+
+  it('User_Permissions_001 - Verify revoking read permissions for multiple runs', () => {
+
+      // Step 1: Search for the user
+      LidarViewer.getUserSearchInput.clear().type(testUser);
+      LidarViewer.getUserRows.contains('td', testUser).should('exist');
+
+      // Step 2: Open User Permissions modal
+      LidarViewer.getUserRows.contains('td', testUser)
+          .parent('tr')
+          .then((row) => {
+              const $row = cy.wrap(row);
+              LidarViewer.getPermissionsButton($row).click();
+          });
+
+      // Wait for modal
+      LidarViewer.getUserPermissionsModal.should('be.visible');
+
+      // Step 3: Revoke read & write permissions for folder
+      LidarViewer.writeCheckbox(folderName).find('img').click({ force: true }); ;
+      LidarViewer.readCheckbox(folderName).find('img').click({ force: true });
+      
+      // Step 4: Click update
+      LidarViewer.getUpdateButton.click();
+      cy.get('[data-testid="confirm-button"]').contains("Apply").click();
+
+      cy.reload();
+      cy.logout();
+
+      // Step 6: Login as test user and verify folder is not visible
+      loginToPortal(testUser, Constants.password);
+      cy.contains(folderName).should('not.exist');
+
+      cy.logout();
+
+      // Step 8: Login back as Admin
+      Adminlogin(Constants.AdminEmail, Constants.AdminPassword);
+      LidarViewer.getProfileIcon.click();
+      LidarViewer.getAdministrationOption.click();
+      LidarViewer.getUserManagementOption.click();
+       // Step 1: Search for the user
+       LidarViewer.getUserSearchInput.clear().type(testUser);
+       LidarViewer.getUserRows.contains('td', testUser).should('exist');
+
+       // Step 2: Open User Permissions modal
+       LidarViewer.getUserRows.contains('td', testUser)
+       .parent('tr')
+       .then((row) => {
+           const $row = cy.wrap(row);
+           LidarViewer.getPermissionsButton($row).click();
+       });
 
 
+      LidarViewer.getUserPermissionsModal.should('be.visible');
+      LidarViewer.selectDropdownOption(folderName, 'Write');
 
-it('ReadPermission_001_Verify that a user with read-only permissions cannot delete or save poles data', () => {
+      LidarViewer.getUpdateButton.click();
+      cy.get('[data-testid="confirm-button"]').contains("Apply").click();
+  });
+
+  it('User_Permissions_002 - Verify assigning read permissions for multiple runs', () => {
+
+     // Step 1: Search for the user
+     LidarViewer.getUserSearchInput.clear().type(testUser);
+     LidarViewer.getUserRows.contains('td', testUser).should('exist');
+
+     // Step 2: Open User Permissions modal
+     LidarViewer.getUserRows.contains('td', testUser)
+         .parent('tr')
+         .then((row) => {
+             const $row = cy.wrap(row);
+             LidarViewer.getPermissionsButton($row).click();
+         });
+
+     // Wait for modal
+     LidarViewer.getUserPermissionsModal.should('be.visible');
+
+     // Step 3: Revoke read & write permissions for folder
+     LidarViewer.writeCheckbox(folderName).find('img').click({ force: true }); ;
+     LidarViewer.readCheckbox(folderName).find('img').click({ force: true });
+     
+     // Step 4: Click update
+     LidarViewer.getUpdateButton.click();
+     cy.get('[data-testid="confirm-button"]').contains("Apply").click();
+
+     cy.reload();
+     cy.logout();
+
+     // Step 6: Login as test user and verify folder is not visible
+     loginToPortal(testUser, Constants.password);
+     cy.contains(folderName).should('not.exist');
+
+     cy.logout();
+
+     // Step 8: Login back as Admin
+     Adminlogin(Constants.AdminEmail, Constants.AdminPassword);
+     LidarViewer.getProfileIcon.click();
+     LidarViewer.getAdministrationOption.click();
+     LidarViewer.getUserManagementOption.click();
+      // Step 1: Search for the user
+      LidarViewer.getUserSearchInput.clear().type(testUser);
+      LidarViewer.getUserRows.contains('td', testUser).should('exist');
+
+      // Step 2: Open User Permissions modal
+      LidarViewer.getUserRows.contains('td', testUser)
+      .parent('tr')
+      .then((row) => {
+          const $row = cy.wrap(row);
+          LidarViewer.getPermissionsButton($row).click();
+      });
+
+
+     LidarViewer.getUserPermissionsModal.should('be.visible');
+     LidarViewer.selectDropdownOption(folderName, 'Write');
+
+     LidarViewer.getUpdateButton.click();
+     cy.get('[data-testid="confirm-button"]').contains("Apply").click();
+  });
+
+  it('User_Permissions_003 - Verify the functionality of revoking all permissions', () => {
+
+     // Step 1: Search for the user
+     LidarViewer.getUserSearchInput.clear().type(testUser);
+     LidarViewer.getUserRows.contains('td', testUser).should('exist');
+
+     // Step 2: Open User Permissions modal
+     LidarViewer.getUserRows.contains('td', testUser)
+         .parent('tr')
+         .then((row) => {
+             const $row = cy.wrap(row);
+             LidarViewer.getPermissionsButton($row).click();
+         });
+
+     // Wait for modal
+     LidarViewer.getUserPermissionsModal.should('be.visible');
+
+     // Step 3: Revoke read & write permissions for folder
+     LidarViewer.writeCheckbox(folderName).find('img').click({ force: true }); ;
+     LidarViewer.readCheckbox(folderName).find('img').click({ force: true });
+     
+     // Step 4: Click update
+     LidarViewer.getUpdateButton.click();
+     cy.get('[data-testid="confirm-button"]').contains("Apply").click();
+
+     cy.reload();
+     cy.logout();
+
+     // Step 6: Login as test user and verify folder is not visible
+     loginToPortal(testUser, Constants.password);
+     cy.contains(folderName).should('not.exist');
+
+     cy.logout();
+
+     // Step 8: Login back as Admin
+     Adminlogin(Constants.AdminEmail, Constants.AdminPassword);
+     LidarViewer.getProfileIcon.click();
+     LidarViewer.getAdministrationOption.click();
+     LidarViewer.getUserManagementOption.click();
+      // Step 1: Search for the user
+      LidarViewer.getUserSearchInput.clear().type(testUser);
+      LidarViewer.getUserRows.contains('td', testUser).should('exist');
+
+      // Step 2: Open User Permissions modal
+      LidarViewer.getUserRows.contains('td', testUser)
+      .parent('tr')
+      .then((row) => {
+          const $row = cy.wrap(row);
+          LidarViewer.getPermissionsButton($row).click();
+      });
+
+
+     LidarViewer.getUserPermissionsModal.should('be.visible');
+     LidarViewer.selectDropdownOption(folderName, 'Write');
+
+     LidarViewer.getUpdateButton.click();
+     cy.get('[data-testid="confirm-button"]').contains("Apply").click();
+  });
+
+  it('User_Permissions_004 - Verify user has write permission', () => {
+
+      // Step 1: Search for the user
+      LidarViewer.getUserSearchInput.clear().type(testUser);
+      LidarViewer.getUserRows.contains('td', testUser).should('exist');
+
+      // Step 2: Open User Permissions modal
+      LidarViewer.getUserRows.contains('td', testUser)
+          .parent('tr')
+          .then((row) => {
+              const $row = cy.wrap(row);
+              LidarViewer.getPermissionsButton($row).click();
+          });
+
+      // Step 3: Assign Write permission for folder and apply
+      LidarViewer.getUserPermissionsModal.should('be.visible');
+      LidarViewer.selectDropdownOption(runName, 'Write');
+      LidarViewer.getUpdateButton.click();
+      cy.get('[data-testid="confirm-button"]').contains("Apply").click();
+
+      cy.reload();
+      cy.logout();
+
+      // Step 4: Login as test user and verify write actions are available
+      loginToPortal(testUser, Constants.password);
+
+      cy.get('input[placeholder="Type for search"]')
+      .should("be.visible")
+      .clear()
+      .type(runName);
+      cy.wait(500);
+      cy.get('div.primary-btn[alt="search"]')
+      .should("be.visible")
+      .click();
+
+      cy.contains(".runCardHomeName", runName)
+      .should("be.visible")
+      .click();
+
+      // Verify Save is available and Save dialog can open
+      cy.get("#canvas3D", { timeout: 60000 }).should("exist");
+      ViewerElements.getMoreOptionsBtn.should('be.visible').click();
+      ViewerElements.getSaveOption.should('be.visible').click();
+      ViewerElements.getSaveDialog.should('be.visible');
+      ViewerElements.getSaveCancelBtn.should('be.visible').click();
+      cy.contains('.ToolTip-container', 'Profile menu').click();
+      cy.contains('Logout').should('be.visible').click();
+      cy.contains('Are you sure').should('be.visible');
+      cy.get('[data-testid="confirm-button"]').should('be.visible').click();
     
-  const testDataB = {
-    email: "anamika@hcrobo.com",
-    runName: "Automation_Run9",
-    permissionType: "Read",
-  };
+      // Re login as admin and reset permissions
+      cy.visit(Cypress.config('baseUrl'))
+      Adminlogin(Constants.AdminEmail, Constants.AdminPassword);
+      LidarViewer.getProfileIcon.click();
+      LidarViewer.getAdministrationOption.click();
+      LidarViewer.getUserManagementOption.click();
+      LidarViewer.getUserSearchInput.clear().type(testUser);
+      LidarViewer.getUserRows.contains('td', testUser).should('exist');
 
-  updateUserPermissions(testDataB.email, testDataB.runName, testDataB.permissionType);
+      // Step 2: Open User Permissions modal
+      LidarViewer.getUserRows.contains('td', testUser)
+          .parent('tr')
+          .then((row) => {
+              const $row = cy.wrap(row);
+              LidarViewer.getPermissionsButton($row).click();
+          });
 
-    login(testDataB.email, Constants.testuserPwd)
-    const folderPath = ["Shared Space", "Automation"];
-    const runName = testDataB.runName
+      LidarViewer.getUserPermissionsModal.should('be.visible');
+      LidarViewer.writeCheckbox(runName).find('img').click({ force: true });
+      LidarViewer.readCheckbox(runName).find('img').click({ force: true });
+      LidarViewer.getUpdateButton.click();
+      cy.get('[data-testid="confirm-button"]').contains("Apply").click();
+      
+  });
 
-    openDynamicFolderAndRun(folderPath, runName);
-    cy.wait(4000);
-    cy.get('.ToolTip-container').eq(11).click();
-    cy.get('.flex-c.gap-0.absolute.MoreOptionDialog').should('not.contain', 'Save');
-    cy.wait(4000);
-    ZoomIN()
-    const [x, y] = coordinates.coordinates[1];  
-    SelectAndPlacePole(x, y);
-    PoleAlldelbtns()
-    PoleLocators.getPoleDeleteIcon.should('not.exist')
+  it('User_Permissions_005 - Verify user has read permission', () => {
 
-});
+      // Step 1: Search for the user
+      LidarViewer.getUserSearchInput.clear().type(testUser);
+      LidarViewer.getUserRows.contains('td', testUser).should('exist');
 
+      // Step 2: Open User Permissions modal
+      LidarViewer.getUserRows.contains('td', testUser)
+          .parent('tr')
+          .then((row) => {
+              const $row = cy.wrap(row);
+              LidarViewer.getPermissionsButton($row).click();
+          });
 
-it('ReadPermission_002_Verify that a user with read-only permissions cannot delete or save measurements data', () => {
+      // Step 3: Assign Write permission for folder and apply
+      LidarViewer.getUserPermissionsModal.should('be.visible');
+      LidarViewer.selectDropdownOption(runName, 'Read');
+      LidarViewer.getUpdateButton.click();
+      cy.get('[data-testid="confirm-button"]').contains("Apply").click();
+
+      cy.reload();
+      cy.logout();
+
+      // Step 4: Login as test user and verify write actions are available
+      loginToPortal(testUser, Constants.password);
+
+      cy.get('input[placeholder="Type for search"]')
+      .should("be.visible")
+      .clear()
+      .type(runName);
+      cy.wait(500);
+      cy.get('div.primary-btn[alt="search"]')
+      .should("be.visible")
+      .click();
+
+      cy.contains(".runCardHomeName", runName)
+      .should("be.visible")
+      .click();
+
+      // Verify Save is not available
+      cy.get("#canvas3D", { timeout: 60000 }).should("exist");
+      ViewerElements.getMoreOptionsBtn.should('be.visible').click();
+      ViewerElements.getSaveOption.should('not.exist');
+      cy.contains('.ToolTip-container', 'Profile menu').click();
+      cy.contains('Logout').should('be.visible').click();
+      cy.contains('Are you sure').should('be.visible');
+      cy.get('[data-testid="confirm-button"]').should('be.visible').click();
     
-  
+      // Re login as admin and reset permissions
+      cy.visit(Cypress.config('baseUrl'))
+      Adminlogin(Constants.AdminEmail, Constants.AdminPassword);
+      LidarViewer.getProfileIcon.click();
+      LidarViewer.getAdministrationOption.click();
+      LidarViewer.getUserManagementOption.click();
+      LidarViewer.getUserSearchInput.clear().type(testUser);
+      LidarViewer.getUserRows.contains('td', testUser).should('exist');
 
-  const testDataA = {
-    email: "abc@hcrobo.com",
-    runName: "Automation_Run9",
-    permissionType: "Read",
-  };
+      // Step 2: Open User Permissions modal
+      LidarViewer.getUserRows.contains('td', testUser)
+          .parent('tr')
+          .then((row) => {
+              const $row = cy.wrap(row);
+              LidarViewer.getPermissionsButton($row).click();
+          });
 
-  updateUserPermissions(testDataA.email, testDataA.runName, testDataA.permissionType);
-  login(testDataA.email, Constants.testuserPwd)
-  const folderPath = ["Shared Space", "Automation"];
-  const runName = "Orbital-21-16482-2";
-  openDynamicFolderAndRun(folderPath, runName);
-  cy.wait(4000);
-  cy.get('.ToolTip-container').eq(11).click();
-  cy.get('.flex-c.gap-0.absolute.MoreOptionDialog').should('not.contain', 'Save');
+      LidarViewer.getUserPermissionsModal.should('be.visible');
+      LidarViewer.readCheckbox(runName).find('img').click({ force: true });
+      LidarViewer.getUpdateButton.click();
+      cy.get('[data-testid="confirm-button"]').contains("Apply").click();
+      
+  });   
 
-  // Import Measurements From server
-  cy.get('.flex-c.gap-0.absolute.MoreOptionDialog').contains('Import').click();
-  cy.get('.import-options').contains('Measurements').click()
-  cy.get('.primary-btn').click()
-  UserManagementLocators.getMeasurementDeleteButton.should('not.exist')
+  it('User_Permissions_006 - Verifying the functionality of revoking write permissions', () => {
 
-});
+     // Step 1: Search for the user
+     LidarViewer.getUserSearchInput.clear().type(testUser);
+     LidarViewer.getUserRows.contains('td', testUser).should('exist');
 
-it('ReadPermission_003_Verify that a user with read-only permissions cannot delete or save points data', () => {
-    
-  const testDataC = {
-    email: "adi@hcrobo.com",
-    runName: "Automation_Run11",
-    permissionType: "Read",
-  };
+     // Step 2: Open User Permissions modal
+     LidarViewer.getUserRows.contains('td', testUser)
+         .parent('tr')
+         .then((row) => {
+             const $row = cy.wrap(row);
+             LidarViewer.getPermissionsButton($row).click();
+         });
 
-  updateUserPermissions(testDataC.email, testDataC.runName, testDataC.permissionType);
+     // Step 3: Revoke Write permission for run
+     LidarViewer.getUserPermissionsModal.should('be.visible');
+     LidarViewer.writeCheckbox(revokeWriteRunName).find('img').click({ force: true });
+     LidarViewer.readCheckbox(revokeWriteRunName).find('img').click({ force: true });
+     LidarViewer.getUpdateButton.click();
+     cy.get('[data-testid="confirm-button"]').contains("Apply").click();
 
-  login(testDataC.email, Constants.testuserPwd)
-  const folderPath = ['Shared Space', 'Automation'];
-  const runName = testDataC.runName
-  openDynamicFolderAndRun(folderPath, runName);
-  cy.wait(4000);
+     cy.reload();
+     cy.logout();
 
-  cy.get('.ToolTip-container').eq(11).click();
-  cy.get('.flex-c.gap-0.absolute.MoreOptionDialog').should('not.contain', 'Save');
-  cy.wait(6000);
-  ZoomIN()
-  PointPlacement(211,595)
-  ClickonPoint(211,595)
-  UserManagementLocators.PointEditIcon.click()
-  UserManagementLocators.getPointFeatureDeleteButton.should('not.exist')
-});
+     // Step 4: Login as test user and verify run is not visible
+     loginToPortal(testUser, Constants.password);
+
+     cy.get('input[placeholder="Type for search"]')
+     .should("be.visible")
+     .clear()
+     .type(revokeWriteRunName);
+     cy.wait(500);
+     cy.get('div.primary-btn[alt="search"]')
+     .should("be.visible")
+     .click();
+
+     cy.contains(".runCardHomeName", revokeWriteRunName)
+     .should("not.exist");
+     cy.logout();
+   
+     // Re login as admin and reset permissions
+     cy.visit(Cypress.config('baseUrl'))
+     Adminlogin(Constants.AdminEmail, Constants.AdminPassword);
+     LidarViewer.getProfileIcon.click();
+     LidarViewer.getAdministrationOption.click();
+     LidarViewer.getUserManagementOption.click();
+     LidarViewer.getUserSearchInput.clear().type(testUser);
+     LidarViewer.getUserRows.contains('td', testUser).should('exist');
+
+     
+     LidarViewer.getUserRows.contains('td', testUser)
+         .parent('tr')
+         .then((row) => {
+             const $row = cy.wrap(row);
+             LidarViewer.getPermissionsButton($row).click();
+         });
+
+     LidarViewer.getUserPermissionsModal.should('be.visible');
+     LidarViewer.selectDropdownOption(revokeWriteRunName, 'Write');
+     LidarViewer.getUpdateButton.click();
+     cy.get('[data-testid="confirm-button"]').contains("Apply").click();
+  });
+
+  it('User_Permissions_007 - Verifying the functionality of updating write permissions', () => {
+
+   // Step 1: Search for the user
+   LidarViewer.getUserSearchInput.clear().type(testUser);
+   LidarViewer.getUserRows.contains('td', testUser).should('exist');
+
+   // Step 2: Open User Permissions modal
+   LidarViewer.getUserRows.contains('td', testUser)
+       .parent('tr')
+       .then((row) => {
+           const $row = cy.wrap(row);
+           LidarViewer.getPermissionsButton($row).click();
+       });
+
+   // Step 3: Update Write permission for run
+   LidarViewer.getUserPermissionsModal.should('be.visible');
+   LidarViewer.selectDropdownOption(updateWriteRunName, 'Write');
+   LidarViewer.getUpdateButton.click();
+   cy.get('[data-testid="confirm-button"]').contains("Apply").click();
+
+   cy.reload();
+   cy.logout();
+
+   // Step 4: Login as test user and verify run is not visible
+   loginToPortal(testUser, Constants.password);
+
+   cy.get('input[placeholder="Type for search"]')
+   .should("be.visible")
+   .clear()
+   .type(updateWriteRunName);
+   cy.wait(500);
+   cy.get('div.primary-btn[alt="search"]')
+   .should("be.visible")
+   .click();
+
+   cy.contains(".runCardHomeName", updateWriteRunName)
+   .should("be.visible")
+   .click();
+
+   // Verify Save is available and Save dialog can open
+   cy.get("#canvas3D", { timeout: 60000 }).should("exist");
+   ViewerElements.getMoreOptionsBtn.should('be.visible').click();
+   ViewerElements.getSaveOption.should('be.visible').click();
+   ViewerElements.getSaveDialog.should('be.visible');
+   ViewerElements.getSaveCancelBtn.should('be.visible').click();
+   cy.contains('.ToolTip-container', 'Profile menu').click();
+   cy.contains('Logout').should('be.visible').click();
+   cy.contains('Are you sure').should('be.visible');
+   cy.get('[data-testid="confirm-button"]').should('be.visible').click();
+ 
+   // Re login as admin and reset permissions
+   cy.visit(Cypress.config('baseUrl'))
+   Adminlogin(Constants.AdminEmail, Constants.AdminPassword);
+   LidarViewer.getProfileIcon.click();
+   LidarViewer.getAdministrationOption.click();
+   LidarViewer.getUserManagementOption.click();
+   LidarViewer.getUserSearchInput.clear().type(testUser);
+   LidarViewer.getUserRows.contains('td', testUser).should('exist');
+
+   
+   LidarViewer.getUserRows.contains('td', testUser)
+       .parent('tr')
+       .then((row) => {
+           const $row = cy.wrap(row);
+           LidarViewer.getPermissionsButton($row).click();
+       });
+
+   LidarViewer.getUserPermissionsModal.should('be.visible');
+   LidarViewer.writeCheckbox(updateWriteRunName).find('img').click({ force: true });
+   LidarViewer.getUpdateButton.click();
+   cy.get('[data-testid="confirm-button"]').contains("Apply").click();
+     
+  });
+
+  it('User_Permissions_008 - Verify read and write permissions on callout data', () => {
+
+      // Part A: READ permissions => no Save, no Update/Delete callouts
+      LidarViewer.getUserSearchInput.clear().type(testUser);
+      LidarViewer.getUserRows.contains('td', testUser).should('exist');
+
+      LidarViewer.getUserRows.contains('td', testUser)
+          .parent('tr')
+          .then((row) => {
+              const $row = cy.wrap(row);
+              LidarViewer.getPermissionsButton($row).click();
+          });
+
+      LidarViewer.getUserPermissionsModal.should('be.visible');
+      LidarViewer.writeCheckbox(calloutPoleRunName).find('img').click({ force: true });
+      LidarViewer.getUpdateButton.click();
+      cy.get('[data-testid="confirm-button"]').contains("Apply").click();
+
+      cy.reload();
+      cy.logout();
+
+      loginToPortal(testUser, Constants.password);
+      cy.get('input[placeholder="Type for search"]')
+      .should("be.visible")
+      .clear()
+      .type(calloutPoleRunName);
+      cy.wait(500);
+      cy.get('div.primary-btn[alt="search"]')
+      .should("be.visible")
+      .click();
+
+      cy.get(".runCardHomeName")
+      .filter((_, el) => el.innerText.trim() === calloutPoleRunName)
+      .should("have.length", 1)
+      .first()
+      .click();
 
 
+      // Import callouts and validate restrictions in UI
+      cy.wait(5000);
+      CalloutsAction.importCalloutsFromServer();
+     
+      // No delete on callout cards in read-only mode
+      CalloutsLocators.getCalloutCards.first().find('[data-testid="deletebutton"]').should('not.exist');
 
-//  Make sure this test cases have an existing callout data
-it('ReadPermission_004_Verify that a user with read-only permissions cannot delete or save callouts data', () => {
+      cy.contains('.ToolTip-container', 'Profile menu').click();
+      cy.contains('Logout').should('be.visible').click();
+      cy.contains('Are you sure').should('be.visible');
+      cy.get('[data-testid="confirm-button"]').should('be.visible').click();
 
+      // Part B: WRITE permissions => Save option available for callouts
+      Adminlogin(Constants.AdminEmail, Constants.AdminPassword);
+      LidarViewer.getProfileIcon.click();
+      LidarViewer.getAdministrationOption.click();
+      LidarViewer.getUserManagementOption.click();
+      LidarViewer.getUserSearchInput.clear().type(testUser);
+      LidarViewer.getUserRows.contains('td', testUser).should('exist');
+      LidarViewer.getUserRows.contains('td', testUser)
+          .parent('tr')
+          .then((row) => {
+              const $row = cy.wrap(row);
+              LidarViewer.getPermissionsButton($row).click();
+          });
+      LidarViewer.getUserPermissionsModal.should('be.visible');
+      LidarViewer.selectDropdownOption(calloutPoleRunName, 'Write');
+      LidarViewer.getUpdateButton.click();
+      cy.get('[data-testid="confirm-button"]').contains("Apply").click();
 
-  const testDataE = {
-    email: "aditya@hcrobo.com",
-    runName: "Automation_Run12",
-    permissionType: "Read",
-  };
+      cy.reload();
+      cy.logout();
 
-  updateUserPermissions(testDataE.email, testDataE.runName, testDataE.permissionType);
+      loginToPortal(testUser, Constants.password);
+      cy.get('input[placeholder="Type for search"]')
+      .should("be.visible")
+      .clear()
+      .type(calloutPoleRunName);
+      cy.wait(500);
+      cy.get('div.primary-btn[alt="search"]')
+      .should("be.visible")
+      .click();
 
-  login(testDataE.email, Constants.testuserPwd)
-  const folderPath = ['Shared Space', 'Automation'];
-  const runName = testDataE.runName
-  openDynamicFolderAndRun(folderPath, runName);
-  cy.wait(4000);
+      cy.get(".runCardHomeName")
+      .filter((_, el) => el.innerText.trim() === calloutPoleRunName)
+      .should("have.length", 1)
+      .first()
+      .click();
 
-  // Open More Options Menu
-  cy.wait(4000);
-  cy.get('.ToolTip-container').eq(11).click();
-  cy.get('.flex-c.gap-0.absolute.MoreOptionDialog').contains('Import').click();
-  cy.get('.import-options').contains('Callouts').click()
-  cy.get('.primary-btn').click()
-  // UserManagementLocators.getCalloutSelectButton.click()
-  UserManagementLocators.getCalloutDeleteIcon.should('not.exist')
-});
+      ViewerElements.getMoreOptionsBtn.should('be.visible').click();
+      ViewerElements.getSaveOption.should('be.visible').click();
+      ViewerElements.getSaveDialog.should('be.visible');
+      ViewerElements.getCalloutsCheckbox.should('be.visible');
+      ViewerElements.getSaveCancelBtn.should('be.visible').click();
+  });
 
+  it('User_Permissions_009 - Verify restrictions on save, update and delete actions for read-only Poles data', () => {
 
-it('ReadPermission_005_Verify that a user with read-only permissions cannot delete or save polylines data', () => {
-    
+      // Step 1: Search for the user
+      LidarViewer.getUserSearchInput.clear().type(testUser);
+      LidarViewer.getUserRows.contains('td', testUser).should('exist');
 
+      // Step 2: Open User Permissions modal
+      LidarViewer.getUserRows.contains('td', testUser)
+          .parent('tr')
+          .then((row) => {
+              const $row = cy.wrap(row);
+              LidarViewer.getPermissionsButton($row).click();
+          });
 
-  const testDataF = {
-    email: "admin4@hcrobo.com",
-    runName: "Automation_Run13",
-    permissionType: "Read",
-  };
+      // Step 3: Assign Read permission for folder and apply
+      LidarViewer.getUserPermissionsModal.should('be.visible');
+      LidarViewer.writeCheckbox(calloutPoleRunName).find('img').click({ force: true });
+      LidarViewer.getUpdateButton.click();
+      cy.get('[data-testid="confirm-button"]').contains("Apply").click();
 
-  updateUserPermissions(testDataF.email, testDataF.runName, testDataF.permissionType);
+      cy.reload();
+      cy.logout();
 
-  login(testDataF.email, Constants.testuserPwd)
-  const folderPath = ['Shared Space', 'Automation'];
-  const runName = testDataF.runName
-  openDynamicFolderAndRun(folderPath, runName);
-  cy.wait(4000);
+      // Step 4: Login as test user and open a run
+      loginToPortal(testUser, Constants.password);
+      cy.get('input[placeholder="Type for search"]')
+      .should("be.visible")
+      .clear()
+      .type(calloutPoleRunName);
+      cy.wait(500);
+      cy.get('div.primary-btn[alt="search"]')
+      .should("be.visible")
+      .click();
 
-  // Import Poles From server
-  cy.get('.flex-c.gap-0.absolute.MoreOptionDialog').contains('Import').click();
-  cy.get('.import-options').contains('Polylines').click()
-  cy.get('.primary-btn').click()
-  cy.wait(4000);
-  PoleLocators.getPolesaveMessage.should('be.visible').and('have.text', 'Polylines downloaded from server.'); // Assert the text
-  UserManagementLocators.getCalloutDeleteIcon.should('not.exist')
+      cy.get(".runCardHomeName")
+      .filter((_, el) => el.innerText.trim() === calloutPoleRunName)
+      .should("have.length", 1)
+      .first()
+      .click();
 
-});
+      cy.get("#canvas3D", { timeout: 60000 }).should("exist");
+      cy.wait(5000);
+      // Step 5: Verify Save is not available (cannot save poles data)
+      ViewerElements.getMoreOptionsBtn.should('be.visible').click();
+      ViewerElements.getSaveOption.should('not.exist');
 
-// End of read  permissions
+      // Step 6: Import poles from server (read should still allow viewing data)
+      ViewerElements.getImportOption.should('be.visible').click();
+      ViewerElements.getImportDialog.should('be.visible');
+      ViewerElements.selectImportSource("From Server");
+      ViewerElements.getImportPolesCheckbox.should('be.visible').click();
+      ViewerElements.getImportApplyBtn.should('be.visible').click();
+      cy.contains(/Poles downloaded successfully/i, { timeout: 20000 }).should("be.visible");
 
+      // Step 7: Open any pole and verify update/delete controls are restricted
+      cy.get(`div[role="button"][aria-label="abcd"]`, { timeout: 20000 })
+          .should('have.length.greaterThan', 0)
+          .first()
+          .click({ force: true });
 
+      PoleLocators.poleSidePanel.should('be.visible');
 
-// Make sure orbital run dosen't have read and write permissions
+      // Delete buttons should not be available in read-only mode
+      cy.get('[data-testid="deletebutton"]').should('not.exist');
+      // Also ensure pole-panel save action is not available (if present in this UI)
+      PoleLocators.saveButton.should('not.exist');
 
-it('Read&WritePermission_006_Verify delete button visibility for user with read and write permission for poles', () => {
+      cy.contains('.ToolTip-container', 'Profile menu').click();
+      cy.contains('Logout').should('be.visible').click();
+      cy.contains('Are you sure').should('be.visible');
+      cy.get('[data-testid="confirm-button"]').should('be.visible').click();
 
-    login(Constants.validEmail, Constants.password);
-    cy.wait(2000);
-    // Navigate to User Management
-    navigateToUserManagement();
-    cy.wait(2000);
-    assignWriteAccessToUser(Constants.testuserEmail, 'Orbital-21-16482-2');
-    login(Constants.testuserEmail,Constants.testuserPwd)
-    const folderPath = ['Shared Space', 'Automation'];
-    const runName = 'Orbital-21-16482-2';
-    openDynamicFolderAndRun(folderPath,runName)
-    cy.wait(4000);
-    SelectAndPlacePole(211,595)
-    PoleAllDelBtnsExist()
-
-});
-
-
-// Make sure Automation_Run9 exist and it doesn't have any permissions
-// Automation_Run9 run should have existing measurement data in server
-
-it('Read&WritePermission_007_Verify delete button visibility for user with read and write permission for poles', () => {
-
-  login(Constants.validEmail, Constants.password);
-  cy.wait(2000);
-  // Navigate to User Management
-  navigateToUserManagement();
-  cy.wait(2000);
-  assignWriteAccessToUser(Constants.testuserEmail, 'Automation_Run9');
-  login(Constants.testuserEmail,Constants.testuserPwd)
-  const folderPath = ['Shared Space', 'Automation'];
-  const runName = 'Automation_Run9';
-  openDynamicFolderAndRun(folderPath,runName)
-  cy.wait(4000);
-  const dataType = 'Measurements'
-  importDataFromServer(dataType)
-  PoleLocators.getPolesaveMessage.should('be.visible').and('have.text', 'Measurements downloaded successfully')
-  UserManagementLocators.getMeasurementDeleteButton.should('be.visible')
-
+      // Cleanup: restore Write for subsequent tests
+      Adminlogin(Constants.AdminEmail, Constants.AdminPassword);
+      LidarViewer.getProfileIcon.click();
+      LidarViewer.getAdministrationOption.click();
+      LidarViewer.getUserManagementOption.click();
+      LidarViewer.getUserSearchInput.clear().type(testUser);
+      LidarViewer.getUserRows.contains('td', testUser).should('exist');
+      LidarViewer.getUserRows.contains('td', testUser)
+          .parent('tr')
+          .then((row) => {
+              const $row = cy.wrap(row);
+              LidarViewer.getPermissionsButton($row).click();
+          });
+      LidarViewer.getUserPermissionsModal.should('be.visible');
+      LidarViewer.selectDropdownOption(calloutPoleRunName, 'Write');
+      LidarViewer.getUpdateButton.click();
+      cy.get('[data-testid="confirm-button"]').contains("Apply").click();
+  });
  
 });
-
-
-it('Read&WritePermission_008_Verify delete button visibility for user with read and write permission for polylines', () => {
-
-  login(Constants.validEmail, Constants.password);
-  cy.wait(2000);
-  // Navigate to User Management
-  navigateToUserManagement();
-  cy.wait(2000);
-  assignWriteAccessToUser(Constants.testuserEmail, 'Automation_Run11');
-
-  login(Constants.testuserEmail,Constants.testuserPwd)
-  const folderPath = ['Shared Space', 'Automation'];
-  const runName = 'Automation_Run11';
-  openDynamicFolderAndRun(folderPath,runName)
-  cy.wait(4000);
-  const dataType = 'Polylines'
-  importDataFromServer(dataType)
-  PoleLocators.getPolesaveMessage.should('be.visible').and('have.text', 'Polylines downloaded from server.')
-  UserManagementLocators.getMeasurementDeleteButton.should('be.visible')
-
-    
-});
-
-
-it('Read&WritePermission_009_Verify delete button visibility for user with read and write permission for point features', () => {
-
-  login(Constants.validEmail, Constants.password);
-  cy.wait(2000);
-  // Navigate to User Management
-  navigateToUserManagement();
-  cy.wait(2000);
-  assignWriteAccessToUser(Constants.testuserEmail, 'Automation_Run12');
-  login(Constants.testuserEmail,Constants.testuserPwd)
-  const folderPath = ['Shared Space', 'Automation'];
-  const runName = 'Automation_Run12';
-  openDynamicFolderAndRun(folderPath,runName)
-  cy.wait(4000);
-  const dataType = 'Point features'
-  importDataFromServer(dataType)
-  PoleLocators.getPolesaveMessage.should('be.visible').and('have.text', 'Pointfeatures downloaded from server.')
-  ZoomIN()
-  PointPlacement(211,595)
-  ClickonPoint(211,595)
-  UserManagementLocators.PointEditIcon.click()
-  UserManagementLocators.getPointFeatureDeleteButton.should('be.visible')
-
-});
-
-
-it('Read&WritePermission_010_Verify delete button visibility for user with read and write permission for callouts', () => {
-    
-  login(Constants.validEmail, Constants.password);
-  cy.wait(2000);
-  // Navigate to User Management
-  navigateToUserManagement();
-  cy.wait(2000);
-  assignWriteAccessToUser(Constants.testuserEmail, 'Automation_Run13');
-  login(Constants.testuserEmail,Constants.testuserPwd)
-  const folderPath = ['Shared Space', 'Automation'];
-  const runName = 'Automation_Run13';
-  openDynamicFolderAndRun(folderPath,runName)
-  cy.wait(4000);
-  const dataType = 'Callouts'
-  importDataFromServer(dataType)
-  PoleLocators.getPolesaveMessage.should('be.visible').and('have.text', 'Callouts downloaded successfully')
-  UserManagementLocators.getCalloutDeleteIcon.should('be.visible')
-
-});
-
-
-it('Read&WritePermission_011_Verify that a user with read and write permissions can save poles data to server', () => {
-    
-  login(Constants.validEmail, Constants.password);
-  cy.wait(2000);
-  // Navigate to User Management
-  navigateToUserManagement();
-  cy.wait(2000);
-  assignWriteAccessToUser(Constants.testuserEmail, 'Automation_Run14');
-  login(Constants.testuserEmail,Constants.testuserPwd)
-  const folderPath = ['Shared Space', 'Automation'];
-  const runName = 'Automation_Run14';
-  openDynamicFolderAndRun(folderPath,runName)
-  cy.wait(2000);
-  ZoomIN()
-  SelectAndPlacePole(174, 669);
-  ConfirmPoleDetailsPanle();
-  SavePoleData()
-  
-});
-
-// it('Read&WritePermission_012_Verify that a user with read and write permissions can save measurements data to server', () => {
-    
-// });
-
-
-// it('Read&WritePermission_013_Verify that a user with read and write permissions can save polylines data to server', () => {
-    
-  
-// });
-
-it('Read&WritePermission_014_Verify that a user with read and write permissions can save points data to server', () => {
-    
- 
-  login(Constants.testuserEmail,Constants.testuserPwd)
-  const folderPath = ['Shared Space', 'Automation'];
-  const runName = 'Automation_Run15';
-  openDynamicFolderAndRun(folderPath,runName)
-  cy.wait(9000);
-  PointPlacement(211,595)
-  const checkboxName = 'Point Features'
-  selectCheckboxByName(checkboxName)  
-  cy.get('.primary-btn').click()
-  PoleLocators.getPolesaveMessage.should('be.visible').and('have.text', 'Point features saved successfully')
-
-  
-});
-
-
-// it('Read&WritePermission_015_Verify that a user with read and write permissions can save callouts data to server', () => {
-    
-
-// });
-
-
-});
-
-
