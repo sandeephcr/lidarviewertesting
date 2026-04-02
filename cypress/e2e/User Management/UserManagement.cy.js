@@ -13,7 +13,6 @@ describe('User Management Module', () => {
         LidarViewer.getUserManagementOption.click();
     });
 
-    
     it('LVH-3508 - Verify that the search, edit, disable/enable, and register functionalities are loaded and displayed correctly when the user management tab is clicked', () => {
 
         const TEST_USERNAME = Constants.UserManagementTestUser;
@@ -920,7 +919,6 @@ describe('User Management Module', () => {
       });
     
     });
-
 
 
 });
